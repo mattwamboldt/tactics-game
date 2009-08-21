@@ -1,6 +1,10 @@
 ﻿#include "GroundUnit.as"
 var Type:Number = SOLDIER;
 
+//used to determine which enemies this unit
+//type should attack first
+var attackablePriorities:Array = [GRANADIER, MINER, SOLDIER];
+
 this.CheckColour = function(i, j):Boolean
 {
 	return grid[i][j].mColour != mColour && grid[i][j].occupiedUnit.GroundUnit;

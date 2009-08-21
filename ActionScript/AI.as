@@ -46,6 +46,35 @@
 	
 	REV 9(Completed)
 	Add Multiple play modes. player vs player, player vs ai, and ai vs ai.
+	
+	REV 10(Completed)
+	Create an array of priorities for each unit type to differentiate
+	what they go after.
+	
+	REV 11(Completed)
+	Change the getMoveList Function to return an array of objects representing
+	the i,j of each move, as well as a score which at this point will be 100/the distance.
+	Then change the attackrandom to use this score to determine the selected move,
+	instead of distance. This is the start of weight based ai.
+	
+	REV 12
+	Remove attack attackables function. Add a function to return the value of each unit destroyed
+	by making a move based on the unit priorities and add them together. Then add this to
+	the previous score. Tune and enjoy sometimes units not getting destroyed when they are adjacent.
+	
+	REV 13
+	Add function to check if a unit in a location is vulnerable to attack. Use this to negatively
+	impact the score of moving to that location. Tune and enjoy units no longer commiting suicide.
+	
+	REV 14
+	Add loops to find the unit in the entire army with the best scoring move, and move that unit.
+	Tune and this means the opposition will start to act like they are more than just one random
+	unit on the feild. We may have to go with random from the top five to keep it from being too hard.
+	
+	REV 15
+	Add shortest path function, and use that to get the distance. Also use that to determine if a unit 
+	is still trapped and negatively effect score. This may prove too crazy. If done it will be the last
+	large ai change until someone pro comes along.
 */
 
 //This function performs All AI functions
@@ -93,23 +122,19 @@ this.TakeMines = function(colourToRun:Number):Boolean
 	var possibleMoves:Array;
 	var randomMiner = movableDeminers[Math.round(Math.random() * (movableDeminers.length - 1))];
 	var closestMineLocation = GetNearestMine(randomMiner);
-	possibleMoves = GetMoveList(randomMiner);
+	possibleMoves = GetMoveList(randomMiner, closestMineLocation);
 	
-	var chosenMove = possibleMoves[0];
-	var shortestdistance = GetDistanceToCoordinates(chosenMove, closestMineLocation.i, closestMineLocation.j);
-
+	var bestMove = possibleMoves[0];
+	
 	for(var t = 0; t < possibleMoves.length; ++t)
 	{
-		var moveDistance = GetDistanceToCoordinates(possibleMoves[t], closestMineLocation.i, closestMineLocation.j);
-		
-		if(moveDistance < shortestdistance)
+		if(bestMove.score < possibleMoves[t].score)
 		{
-			chosenMove = possibleMoves[t];
-			shortestdistance = moveDistance;
+			bestMove = possibleMoves[t];
 		}
 	}
 
-	randomMiner.Move(chosenMove.i, chosenMove.j, true);
+	randomMiner.Move(bestMove.i, bestMove.j, true);
 	
 	if(colourToRun == BLUE)
 	{
@@ -198,23 +223,23 @@ this.AttackRandom = function(colourToRun:Number)
 	}
 	
 	var target = GetNearestUnit(unit);
-	var possibleMoves:Array = GetMoveList(unit);
-	var shortestMove = possibleMoves[0];
+	var possibleMoves:Array = GetMoveList(unit, target);
+	var bestMove = possibleMoves[0];
 	
 	for(var t = 0; t < possibleMoves.length; ++t)
 	{
-		if(GetDistance(shortestMove, target) > GetDistance(possibleMoves[t], target))
+		if(bestMove.score < possibleMoves[t].score)
 		{
-			shortestMove = possibleMoves[t];
+			bestMove = possibleMoves[t];
 		}
 	}
 	
-	if(unit.CheckOccupied(shortestMove.i, shortestMove.j))
+	if(unit.CheckOccupied(bestMove.i, bestMove.j))
 	{
-		unit.RemoveUnits(shortestMove.i, shortestMove.j);
+		unit.RemoveUnits(bestMove.i, bestMove.j);
 	}
 	
-	unit.Move(shortestMove.i, shortestMove.j, true);
+	unit.Move(bestMove.i, bestMove.j, true);
 	
 	if(colourToRun == BLUE)
 	{
@@ -230,11 +255,7 @@ this.AttackRandom = function(colourToRun:Number)
 	Returns the unit that is closest to the given unit
 */
 this.GetNearestUnit = function(sourceUnit)
-{
-	var originalPoint = new Object();
-	originalPoint.i = sourceUnit.GetI();
-	originalPoint.j = sourceUnit.GetJ();
-	
+{	
 	var opposingSide:Number = RED;
 	
 	if(sourceUnit.mColour == RED)
@@ -242,59 +263,32 @@ this.GetNearestUnit = function(sourceUnit)
 		opposingSide = BLUE;
 	}
 	
-	var nearestTarget = PickRandomUnit(opposingSide);
+	var originalPoint = new Object();
+	originalPoint.i = sourceUnit.GetI();
+	originalPoint.j = sourceUnit.GetJ();
 	
-	if(sourceUnit.CanAttack(BOMBER))
-	{
-		for(var t = 0; t < mUnits[opposingSide][BOMBER].length; ++t)
-		{
-			if(GetDistance(originalPoint, mUnits[opposingSide][BOMBER][t]) < GetDistance(originalPoint, nearestTarget))
-			{
-				nearestTarget = mUnits[opposingSide][BOMBER][t];
-			}
-		}
-	}
+	var nearestTarget = new Object();
+	nearestTarget.i = -1;
+	nearestTarget.j = -1;
 	
-	if(sourceUnit.CanAttack(GRANADIER))
-	{
-		for(var t = 0; t < mUnits[opposingSide][GRANADIER].length; ++t)
-		{
-			if(GetDistance(originalPoint, mUnits[opposingSide][GRANADIER][t]) < GetDistance(originalPoint, nearestTarget))
-			{
-				nearestTarget = mUnits[opposingSide][GRANADIER][t];
-			}
-		}
-	}
+	var distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
 	
-	if(sourceUnit.CanAttack(FIGHTER))
+	for(var i = 0; i < sourceUnit.attackablePriorities.length; i++)
 	{
-		for(var t = 0; t < mUnits[opposingSide][FIGHTER].length; ++t)
+		var typeToAttack = sourceUnit.attackablePriorities[i];
+		
+		for(var t = 0; t < mUnits[opposingSide][typeToAttack].length; ++t)
 		{
-			if(GetDistance(originalPoint, mUnits[opposingSide][FIGHTER][t]) < GetDistance(originalPoint, nearestTarget))
+			var iCoord = mUnits[opposingSide][typeToAttack][t].GetI();
+			var jCoord = mUnits[opposingSide][typeToAttack][t].GetJ();
+			var distanceToUnit = GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+			
+			if(distanceToUnit < distanceToNearest
+			   || nearestTarget.i == -1)
 			{
-				nearestTarget = mUnits[opposingSide][FIGHTER][t];
-			}
-		}
-	}
-	
-	if(sourceUnit.CanAttack(SOLDIER))
-	{
-		for(var t = 0; t < mUnits[opposingSide][SOLDIER].length; ++t)
-		{
-			if(GetDistance(originalPoint, mUnits[opposingSide][SOLDIER][t]) < GetDistance(originalPoint, nearestTarget))
-			{
-				nearestTarget = mUnits[opposingSide][SOLDIER][t];
-			}
-		}
-	}
-	
-	if(sourceUnit.CanAttack(MINER))
-	{
-		for(var t = 0; t < mUnits[opposingSide][MINER].length; ++t)
-		{
-			if(GetDistance(originalPoint, mUnits[opposingSide][MINER][t]) < GetDistance(originalPoint, nearestTarget))
-			{
-				nearestTarget = mUnits[opposingSide][MINER][t];
+				nearestTarget.i = iCoord;
+				nearestTarget.j = jCoord;
+				distanceToNearest = distanceToUnit;
 			}
 		}
 	}
@@ -363,6 +357,7 @@ this.GetDistanceOfShortestPath = function(point, unit):Number
 {
 }
 */
+
 /*
 	Returns the distance between two points
 */
@@ -385,7 +380,7 @@ this.GetDistance = function(point, unit):Number
 	This retreives all the locations the unit can move to.  
 */
 
-this.GetMoveList = function(unit):Array
+this.GetMoveList = function(unit, target):Array
 {
 	var moveList:Array = new Array();
 	var clamp = unit.GetClampArea();
@@ -403,6 +398,10 @@ this.GetMoveList = function(unit):Array
 				var newMove = new Object();
 				newMove.i = i;
 				newMove.j = j;
+				trace("adding move to " + i + " " + j);
+				trace("distance to " + target.i + ", " + target.j + " is " + GetDistanceToCoordinates(newMove, target.i, target.j));
+				newMove.score = 100 / (GetDistanceToCoordinates(newMove, target.i, target.j) + 1); //add 1 to prevent infinity
+				trace("score is now " + newMove.score);
 				moveList.push(newMove);
 			}
 		}

@@ -1,6 +1,10 @@
 ﻿#include "AirUnits.as"
 var Type:Number = BOMBER;
 
+//used to determine which enemies this unit
+//type should attack first
+var attackablePriorities:Array = [GRANADIER, MINER, SOLDIER];
+
 this.GetClampArea = function():Object
 {
 	var returnValue = new Object();
