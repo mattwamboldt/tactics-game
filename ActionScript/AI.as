@@ -57,7 +57,7 @@
 	Then change the attackrandom to use this score to determine the selected move,
 	instead of distance. This is the start of weight based ai.
 	
-	REV 12
+	REV 12(Completed)
 	Remove attack attackables function. Add a function to return the value of each unit destroyed
 	by making a move based on the unit priorities and add them together. Then add this to
 	the previous score. Tune and enjoy sometimes units not getting destroyed when they are adjacent.
@@ -80,22 +80,19 @@
 //This function performs All AI functions
 this.AIPass = function(colourToRun:Number)
 {
-	if(AttackAttackables(colourToRun) == false)
+	var randomness = Math.round(Math.random() * 100);
+	//40% chance to try to take mines
+	if(randomness >= 60)
 	{
-		var randomness = Math.round(Math.random() * 100);
-		//40% chance to try to take mines
-		if(randomness >= 60)
-		{
-			if(TakeMines(colourToRun) == false)
-			{
-				AttackRandom(colourToRun);
-			}
-		}
-		//60% chance to look for other units to destroy
-		else
+		if(TakeMines(colourToRun) == false)
 		{
 			AttackRandom(colourToRun);
 		}
+	}
+	//60% chance to look for other units to destroy
+	else
+	{
+		AttackRandom(colourToRun);
 	}
 }
 
@@ -161,51 +158,10 @@ this.IsEnemyMine = function(i, j, Unit):Boolean
 }
 
 /*
-	This function will look for units that we can attack
-	and will attack them. It searches the different user types
-	randomly. This is version 2 of the AI.
+	This tells us if a square is adjacent to units that will destroy the passed in units.
 */
-this.AttackAttackables = function(colourToRun:Number):Boolean
+this.IsDeathTrap = function(i, j, Unit):Boolean
 {
-	var unit = null;
-	for(var unitType = 0; unitType < MINER; unitType++)
-	{
-		for(var unitIndex = 0; unitIndex < mUnits[colourToRun][unitType].length; ++unitIndex)
-		{
-			unit = mUnits[colourToRun][unitType][unitIndex];
-			var clamp = unit.GetClampArea();
-			var UnitLeftBound = (clamp.leftCut - clamp.leftCut % unit._width) / mGrid[0][0]._width;
-			var UnitRightBound = (clamp.rightCut - clamp.rightCut % unit._width) / mGrid[0][0]._width;
-			var UnitTopBound = (clamp.topCut - clamp.topCut % unit._height) / mGrid[0][0]._height;
-			var UnitBottomBound = (clamp.bottomCut - clamp.bottomCut % unit._height) / mGrid[0][0]._height;
-			
-			for(var i = UnitTopBound; i <= UnitBottomBound; i += (unit._width / mGrid[0][0]._width))
-			{
-				for( var j = UnitLeftBound; j <= UnitRightBound; j += (unit._height / mGrid[0][0]._height))
-				{
-					if(unit.CheckOccupied(i, j))
-					{
-						if(unit.CheckColour(i,j) == true)
-						{
-							unit.RemoveUnits(i, j);
-							unit.Move(i, j, true);
-							if(colourToRun == BLUE)
-							{
-								CheckMines(RED);
-							}
-							else
-							{
-								CheckMines(BLUE);
-							}
-							
-							return true;
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	return false;
 }
 
@@ -376,10 +332,23 @@ this.GetDistance = function(point, unit):Number
 	return GetDistanceToCoordinates(point, unit.GetI(), unit.GetJ());
 }
 
+//this rates the
+this.GetDestructionScore = function(sourceUnit, targetUnit):Number
+{
+	for(var i = 0; i < sourceUnit.attackablePriorities.length; i++)
+	{
+		if(sourceUnit.attackablePriorities[i] == targetUnit.Type)
+		{
+			return (NUM_UNIT_TYPES - i) * 200;
+		}
+	}
+	
+	return 0;
+}
+
 /*
 	This retreives all the locations the unit can move to.  
 */
-
 this.GetMoveList = function(unit, target):Array
 {
 	var moveList:Array = new Array();
@@ -393,15 +362,47 @@ this.GetMoveList = function(unit, target):Array
 	{
 		for( var j = UnitLeftBound; j <= UnitRightBound; j += (unit._height / mGrid[0][0]._height))
 		{
-			if((unit.CheckOccupied(i, j) == false || unit.CheckColour(i,j) == true) && IsEnemyMine(i, j, unit) == false)
+			//staying place is the only invalid move right now
+			if(i != unit.GetI() || j != unit.GetJ())
 			{
 				var newMove = new Object();
 				newMove.i = i;
 				newMove.j = j;
+				//set score to use distance
 				trace("adding move to " + i + " " + j);
 				trace("distance to " + target.i + ", " + target.j + " is " + GetDistanceToCoordinates(newMove, target.i, target.j));
 				newMove.score = 100 / (GetDistanceToCoordinates(newMove, target.i, target.j) + 1); //add 1 to prevent infinity
 				trace("score is now " + newMove.score);
+				
+				//factor in if the move will take another unit
+				if(unit.CheckOccupied(i, j))
+				{
+					if(unit.CheckColour(i,j))
+					{
+						newMove.score += GetDestructionScore(unit, mGrid[i][j].occupiedUnit);
+						trace("we found an oponnent, kill IT! " + newMove.score);
+					}
+					else
+					{
+						trace("can't kill my allies");
+						//cannot move onto friendly squares
+						continue;
+					}
+				}
+				else if(IsEnemyMine(i, j, unit))
+				{
+					trace("it's usually not a good idea to commit intentional suicide.");
+					//avoid unoccupied enemy mines
+					continue;
+				}
+				
+				//factor in if the move will get you killed
+				if(IsEnemyMine(i, j, unit) || IsDeathTrap(i, j, unit))
+				{
+					newMove.score -= 900;
+					trace("This may kill me, but maybe its good for the group " + newMove.score);
+				}
+				
 				moveList.push(newMove);
 			}
 		}
