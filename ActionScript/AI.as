@@ -62,7 +62,7 @@
 	by making a move based on the unit priorities and add them together. Then add this to
 	the previous score. Tune and enjoy sometimes units not getting destroyed when they are adjacent.
 	
-	REV 13
+	REV 13(Completed)
 	Add function to check if a unit in a location is vulnerable to attack. Use this to negatively
 	impact the score of moving to that location. Tune and enjoy units no longer commiting suicide.
 	
@@ -152,16 +152,100 @@ this.TakeMines = function(colourToRun:Number):Boolean
 	unit in question is a deminer it returns false since they can move accross
 	those just fine.
 */
-this.IsEnemyMine = function(i, j, Unit):Boolean
+this.IsEnemyMine = function(i:Number, j:Number, Unit):Boolean
 {
 	return Unit.Type != MINER && (Math.floor(i / 2) % 2 == Math.floor(j / 2) % 2) && (mMineGrid[Math.floor(i / 2)][Math.floor(j / 2)].mColour != Unit.mColour);
+}
+
+this.FloorAtMinimum = function(numberToLimit:Number, minimumAmount:Number):Number
+{
+	if(numberToLimit < minimumAmount)
+	{
+		return minimumAmount;
+	}
+	
+	return numberToLimit;
+}
+
+this.CapAtMaximum = function(numberToLimit:Number, maximumAmount:Number):Number
+{
+	if(numberToLimit > maximumAmount)
+	{
+		return maximumAmount;
+	}
+	
+	return numberToLimit;
+}
+
+this.MakeEven = function(numberToEvenize:Number):Number
+{
+	if(numberToEvenize % 2 != 0)
+	{
+		return numberToEvenize - 1;
+	}
+	
+	return numberToEvenize;
 }
 
 /*
 	This tells us if a square is adjacent to units that will destroy the passed in units.
 */
-this.IsDeathTrap = function(i, j, Unit):Boolean
+this.IsDeathTrap = function(i:Number, j:Number, Unit):Boolean
 {
+	//first loop for adjacent ground units
+	var lowerI = FloorAtMinimum(i - 1, 0);
+	var lowerJ = FloorAtMinimum(j - 1, 0);
+	
+	var upperI = CapAtMaximum(i + Unit.Width(), GRID_WIDTH - 1);
+	var upperJ = CapAtMaximum(j + Unit.Height(), GRID_HEIGHT - 1);
+	
+	for(var t = lowerI; t <= upperI; ++t)
+	{
+		for(var v = lowerJ; v <= upperJ; ++v)
+		{
+			var adjacentUnit = mGrid[t][v].occupiedUnit;
+			if(adjacentUnit != null && adjacentUnit.mColour != Unit.mColour)
+			{
+				//check if the unit in the adjacent square has this as an attackable unit
+				for(var priority = 0; priority < adjacentUnit.attackablePriorities.length; priority++)
+				{
+					if(adjacentUnit.attackablePriorities[priority] == Unit.Type)
+					{
+						return true;
+					}
+				}
+			}
+		}
+	}
+	
+	//then loop for surrounding air units
+	lowerI = MakeEven(FloorAtMinimum(i - 2, 0));
+	upperI = MakeEven(CapAtMaximum(i + 2, GRID_WIDTH - 2));
+	
+	lowerJ = MakeEven(FloorAtMinimum(j - 2, 0));
+	upperJ = MakeEven(CapAtMaximum(j + 2, GRID_HEIGHT - 2));
+	
+	for(var t = lowerI; t <= upperI; t += 2)
+	{
+		for(var v = lowerJ; v <= upperJ; v += 2)
+		{
+			var adjacentUnit = mGrid[t][v].occupiedUnit;
+			if(adjacentUnit != null
+			   && adjacentUnit.AirUnit == true
+			   && adjacentUnit.mColour != Unit.mColour)
+			{
+				//check if the unit in the adjacent square has this as an attackable unit
+				for(var priority = 0; priority < adjacentUnit.attackablePriorities.length; priority++)
+				{
+					if(adjacentUnit.attackablePriorities[priority] == Unit.Type)
+					{
+						return true;
+					}
+				}
+			}
+		}
+	}
+	
 	return false;
 }
 
@@ -379,7 +463,17 @@ this.GetMoveList = function(unit, target):Array
 				{
 					if(unit.CheckColour(i,j))
 					{
-						newMove.score += GetDestructionScore(unit, mGrid[i][j].occupiedUnit);
+						var damageScore = GetDestructionScore(unit, mGrid[i][j].occupiedUnit);
+						if(damageScore == 0)
+						{
+							//cant move into the space of an unattackable unit
+							continue;
+						}
+						else
+						{
+							newMove.score += damageScore;
+						}
+						
 						trace("we found an oponnent, kill IT! " + newMove.score);
 					}
 					else
@@ -396,6 +490,7 @@ this.GetMoveList = function(unit, target):Array
 					continue;
 				}
 				
+				trace("check for death");
 				//factor in if the move will get you killed
 				if(IsEnemyMine(i, j, unit) || IsDeathTrap(i, j, unit))
 				{
@@ -403,6 +498,7 @@ this.GetMoveList = function(unit, target):Array
 					trace("This may kill me, but maybe its good for the group " + newMove.score);
 				}
 				
+				trace("move added");
 				moveList.push(newMove);
 			}
 		}
@@ -604,65 +700,3 @@ this.PickRandomUnit = function(side:Number):Object
 	
 	return unit;
 }
-
-/*
-	This function will pick a random unit, and a random
-	location for it to move to. This is version 1 of
-	the AI logic, and the default if the others fail.
-FUNCTION NO LONGER USED
-this.PickRandom = function()
-{
-	var unit = null;
-	var notMoved = true;
-	do
-	{
-		while(CanUnitMove(unit) == false)
-		{
-			unit = PickRandomUnit("Blue");
-		}
-		var clamp = unit.GetClampArea();
-		var UnitLeftBound = (clamp.leftCut - clamp.leftCut % unit._width) / mGrid[0][0]._width;
-		var UnitRightBound = (clamp.rightCut - clamp.rightCut % unit._width) / mGrid[0][0]._width;
-		var UnitTopBound = (clamp.topCut - clamp.topCut % unit._height) / mGrid[0][0]._height;
-		var UnitBottomBound = (clamp.bottomCut - clamp.bottomCut % unit._height) / mGrid[0][0]._height;
-		
-		var j = unit.GetJ() + (unit._width / mGrid[0][0]._width) * Math.round(Math.random() * 2) - (unit._width / mGrid[0][0]._width);
-		if(j < UnitLeftBound)
-		{
-			j = UnitLeftBound;
-		}
-		else if(j > UnitRightBound)
-		{
-			j = UnitRightBound;
-		}
-		
-		var i = unit.GetI() + (unit._width / mGrid[0][0]._width) * Math.round(Math.random() * 2) - (unit._width / mGrid[0][0]._width);
-		if(i < UnitTopBound)
-		{
-			i = UnitTopBound;
-		}
-		else if(i > UnitBottomBound)
-		{
-			i = UnitBottomBound;
-		}
-		
-		if(unit.CheckOccupied(i, j))
-		{
-			if(unit.CheckColour(i,j) == true && IsEnemyMine(i, j, unit) == false)
-			{
-				unit.RemoveUnits(i, j);
-				unit.Move(i, j, true);
-				CheckMines("Red");
-				CheckVictory();
-				notMoved = false;
-			}
-		}
-		else if(IsEnemyMine(i, j, unit) == false)
-		{
-			unit.Move(i, j, true);
-			CheckMines("Red");
-			CheckVictory();
-			notMoved = false;
-		}
-	}while(notMoved);
-}*/

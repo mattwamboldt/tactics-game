@@ -10,10 +10,10 @@ var mGrid:Array = new Array(); //this holds the individual squares that make up 
 #include "ActionScript/Constants.as"
 
 //Create and place the faoundation layer of small squares
-for( var i = 0; i < 16; ++i)
+for( var i = 0; i < GRID_WIDTH; ++i)
 {
 	mGrid[i] = new Array();
-	for( var j = 0; j < 16; ++j)
+	for( var j = 0; j < GRID_HEIGHT; ++j)
 	{
 		duplicateMovieClip("square", "square" + i + "i" + j +"j", this.getNextHighestDepth());
 		mGrid[i][j] = this["square" + i + "i" + j +"j"];
@@ -115,18 +115,19 @@ this.CheckMines = function(colour)
 				{
 					for(var u = 0; u < 2; ++u)
 					{
-						if(mGrid[i*2 + t][j*2 + u].occupiedUnit.Type == MINER
-							&& mGrid[i*2 + t][j*2 + u].mColour == colour)
+						var square = mGrid[i*2 + t][j*2 + u];
+						if(square.occupiedUnit.Type == MINER
+							&& square.mColour == colour)
 						{
 							mMineGrid[i][j].ChangeColour(colour);
 						}
-						else if(mGrid[i*2 + t][j*2 + u].occupiedUnit.mColour != mMineGrid[i][j].mColour
-								&& mGrid[i*2 + t][j*2 + u].occupiedUnit.Type != MINER
-								&& mGrid[i*2 + t][j*2 + u].occupiedUnit.GroundUnit)
+						else if(square.occupiedUnit.mColour != mMineGrid[i][j].mColour
+								&& square.occupiedUnit.Type != MINER
+								&& square.occupiedUnit.GroundUnit)
 						{
-							RemoveUnit(mGrid[i*2 + t][j*2 + u].occupiedUnit);
-							mGrid[i*2 + t][j*2 + u].occupied = false;
-							mGrid[i*2 + t][j*2 + u].TurnNeutral();
+							RemoveUnit(square.occupiedUnit);
+							square.occupied = false;
+							square.TurnNeutral();
 						}
 					}
 				}

@@ -78,4 +78,14 @@ this.GetJ = function()
 	return ((this._x - this._x % this._width) / grid[0][0]._width);
 }
 
+this.Height = function():Number
+{
+	return (this._height / grid[0][0]._height);
+}
+
+this.Width = function():Number
+{
+	return (this._width / grid[0][0]._width);
+}
+
 this.onReleaseOutside = this.onRelease;

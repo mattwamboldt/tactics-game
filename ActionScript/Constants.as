@@ -8,3 +8,6 @@ var SOLDIER:Number = 2;
 var GRANADIER:Number = 3;
 var MINER:Number = 4;
 var NUM_UNIT_TYPES:Number = 5;
+
+var GRID_WIDTH = 16;
+var GRID_HEIGHT = 16;

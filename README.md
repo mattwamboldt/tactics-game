@@ -79,3 +79,6 @@ Once the AI is set up and tunable, I'm not sure what changes to make. Adding sou
 Not liking the way this feels. It's no longer agressive enough. It is more intelligent about what a certain unit should do, but not about which unit should work.
 
 This may be fixed by the later changes. Hope so.
+
+### Version 1.4.3
+It feels like the AI is now far too defensive, too cautious, too unwilling to lose units. Technically though it's too stupid to know when units are in danger, besides the random one it picks. The next change is the big one to finally give some global senses. Lets see what happens.
