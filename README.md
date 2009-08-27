@@ -82,3 +82,12 @@ This may be fixed by the later changes. Hope so.
 
 ### Version 1.4.3
 It feels like the AI is now far too defensive, too cautious, too unwilling to lose units. Technically though it's too stupid to know when units are in danger, besides the random one it picks. The next change is the big one to finally give some global senses. Lets see what happens.
+
+### Version 1.4.4
+Well after alot of additions i did not expect to make it seems the ai is good enough to beat me in a quick game. Not sure if i'd say it's challenging but this is a first.
+
+I have noticed that without introducing some randomness, ai vs ai games always result in weird infinite loop situations, with the same moves being made back and forth forever. Introducing even a mild amount of randomness screws up the ai, to the point of almost being random entirely.
+
+The resizing does not work correctly as there is a flip between i and j and what they represent. A size of 12x12 seems to make the game quicker and the distance problems less evident. May go with this from now on, not sure.
+
+Really don't know how to fix the ai vs ai problem at this point. The ai should probably vary in some way so that the sides behave differently. At the same time I'm clueless as to how to write any more. It's painful to admit it, but I have no idea how to improve this, and it needs improvement.

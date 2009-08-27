@@ -25,10 +25,10 @@ for( var i = 0; i < GRID_WIDTH; ++i)
 var mMineGrid:Array = new Array(); //this holds all the mines
 
 //Create and place the mine squares
-for( var i = 0; i < 8; ++i )
+for( var i = 0; i < GRID_WIDTH/2; ++i )
 {
 	mMineGrid[i] = new Array();
-	for( var j = 0; j < 8; ++j )
+	for( var j = 0; j < GRID_HEIGHT/2; ++j )
 	{
 		//this check is what generates the checker pattern of the mines
 		if(i % 2 == j % 2)
@@ -64,7 +64,7 @@ mUnits[BLUE][SOLDIER] = new Array();
 mUnits[BLUE][GRANADIER] = new Array();
 mUnits[BLUE][MINER] = new Array();
 
-for( var i = 0; i < 4; ++i )
+for( var i = 0; i < GRID_WIDTH/4; ++i )
 {
 	this.attachMovie( "bomberUnit", "blueBomber" + i, this.getNextHighestDepth() );
 	mUnits[BLUE][BOMBER][i] = this["blueBomber" + i];
@@ -77,7 +77,7 @@ for( var i = 0; i < 4; ++i )
 	mUnits[RED][FIGHTER][i] = this["redFighter" + i];
 }
 
-for( var i = 0; i < 8; ++i )
+for( var i = 0; i < GRID_WIDTH/2; ++i )
 {
 	this.attachMovie( "deminerUnit", "blueDeminer" + i, this.getNextHighestDepth() );
 	mUnits[BLUE][MINER][i] = this["blueDeminer" + i];
@@ -90,7 +90,7 @@ for( var i = 0; i < 8; ++i )
 	mUnits[RED][GRANADIER][i] = this["redGranadier" + i];
 }
 
-for( var i = 0; i < 16; ++i )
+for( var i = 0; i < GRID_WIDTH; ++i )
 {
 	this.attachMovie( "soldierUnit", "blueSoldier" + i, this.getNextHighestDepth() );
 	mUnits[BLUE][SOLDIER][i] = this["blueSoldier" + i];
@@ -103,9 +103,9 @@ for( var i = 0; i < 16; ++i )
 this.CheckMines = function(colour)
 {
 	//The outer loop goes through the mines
-	for( var i = 0; i < 8; ++i )
+	for( var i = 0; i < GRID_WIDTH/2; ++i )
 	{
-		for( var j = 0; j < 8; ++j )
+		for( var j = 0; j < GRID_HEIGHT/2; ++j )
 		{
 			//only gets us mines that have a value
 			if(i % 2 == j % 2)
@@ -231,9 +231,9 @@ this.CheckVictory = function():Boolean
 	var winningColour:Number = mMineGrid[0][0].mColour
 	var hasWon:Boolean = true;
 	
-	for( var i = 0; i < 8; ++i )
+	for( var i = 0; i < GRID_WIDTH/2; ++i )
 	{
-		for( var j = 0; j < 8; ++j )
+		for( var j = 0; j < GRID_HEIGHT/2; ++j )
 		{
 			if(i % 2 == j % 2 && winningColour != mMineGrid[i][j].mColour)
 			{

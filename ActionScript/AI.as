@@ -69,7 +69,7 @@
 	REV 14
 	Add loops to find the unit in the entire army with the best scoring move, and move that unit.
 	Tune and this means the opposition will start to act like they are more than just one random
-	unit on the feild. We may have to go with random from the top five to keep it from being too hard.
+	unit on the feild. We may have to go with random from the top five to keep it from being too predictable.
 	
 	REV 15
 	Add shortest path function, and use that to get the distance. Also use that to determine if a unit 
@@ -80,58 +80,47 @@
 //This function performs All AI functions
 this.AIPass = function(colourToRun:Number)
 {
-	var randomness = Math.round(Math.random() * 100);
-	//40% chance to try to take mines
-	if(randomness >= 60)
+	var bestMove = null;
+	var unitToMove = null;
+	
+	for(var unitType = 0; unitType < NUM_UNIT_TYPES; unitType++)
 	{
-		if(TakeMines(colourToRun) == false)
+		var array = mUnits[colourToRun][unitType];
+		for(var unitIndex = 0; unitIndex < array.length; ++unitIndex)
 		{
-			AttackRandom(colourToRun);
+			var target = null;
+			var unit = array[unitIndex];
+			if(unit.Type == MINER)
+			{
+				target = GetNearestMine(unit);
+			}
+			else
+			{
+				target = GetNearestUnit(unit);
+			}
+			
+			var possibleMoves:Array = GetMoveList(unit, target);
+			
+			for(var i = 0; i < possibleMoves.length; ++i)
+			{
+				if(bestMove == null || bestMove.score < possibleMoves[i].score)
+				{
+					bestMove = possibleMoves[i];
+					unitToMove = unit;
+				}
+			}
 		}
 	}
-	//60% chance to look for other units to destroy
-	else
+	
+	trace("colourToRun = " + colourToRun);
+	trace("bestMove.score = " + bestMove.score);
+	
+	if(unitToMove.CheckOccupied(bestMove.i, bestMove.j))
 	{
-		AttackRandom(colourToRun);
-	}
-}
-
-/*
-	This function will check all the miner units, pick one and move
-	them.
-*/
-this.TakeMines = function(colourToRun:Number):Boolean
-{
-	var movableDeminers:Array = new Array();
-	for(var t = 0; t < mUnits[colourToRun][MINER].length; ++t)
-	{
-		if(CanUnitMove(mUnits[colourToRun][MINER][t]) == true)
-		{
-			movableDeminers.push(mUnits[colourToRun][MINER][t]);
-		}
+		unitToMove.RemoveUnits(bestMove.i, bestMove.j);
 	}
 	
-	if(movableDeminers.length == 0)
-	{
-		return false;
-	}
-	
-	var possibleMoves:Array;
-	var randomMiner = movableDeminers[Math.round(Math.random() * (movableDeminers.length - 1))];
-	var closestMineLocation = GetNearestMine(randomMiner);
-	possibleMoves = GetMoveList(randomMiner, closestMineLocation);
-	
-	var bestMove = possibleMoves[0];
-	
-	for(var t = 0; t < possibleMoves.length; ++t)
-	{
-		if(bestMove.score < possibleMoves[t].score)
-		{
-			bestMove = possibleMoves[t];
-		}
-	}
-
-	randomMiner.Move(bestMove.i, bestMove.j, true);
+	unitToMove.Move(bestMove.i, bestMove.j, true);
 	
 	if(colourToRun == BLUE)
 	{
@@ -143,8 +132,6 @@ this.TakeMines = function(colourToRun:Number):Boolean
 	}
 	
 	CheckVictory();
-	
-	return true;
 }
 
 /*
@@ -154,7 +141,15 @@ this.TakeMines = function(colourToRun:Number):Boolean
 */
 this.IsEnemyMine = function(i:Number, j:Number, Unit):Boolean
 {
-	return Unit.Type != MINER && (Math.floor(i / 2) % 2 == Math.floor(j / 2) % 2) && (mMineGrid[Math.floor(i / 2)][Math.floor(j / 2)].mColour != Unit.mColour);
+	return Unit.Type != MINER && Unit.GroundUnit == true && (Math.floor(i / 2) % 2 == Math.floor(j / 2) % 2) && (mMineGrid[Math.floor(i / 2)][Math.floor(j / 2)].mColour != Unit.mColour);
+}
+
+/*
+	This tells us if a square is a friendly mine location.
+*/
+this.IsFriendlyMine = function(i:Number, j:Number, Unit):Boolean
+{
+	return Unit.Type != MINER && Unit.GroundUnit == true && (Math.floor(i / 2) % 2 == Math.floor(j / 2) % 2) && (mMineGrid[Math.floor(i / 2)][Math.floor(j / 2)].mColour == Unit.mColour);
 }
 
 this.FloorAtMinimum = function(numberToLimit:Number, minimumAmount:Number):Number
@@ -192,6 +187,7 @@ this.MakeEven = function(numberToEvenize:Number):Number
 */
 this.IsDeathTrap = function(i:Number, j:Number, Unit):Boolean
 {
+	var unitAtIJ = mGrid[i][j].occupiedUnit
 	//first loop for adjacent ground units
 	var lowerI = FloorAtMinimum(i - 1, 0);
 	var lowerJ = FloorAtMinimum(j - 1, 0);
@@ -204,7 +200,10 @@ this.IsDeathTrap = function(i:Number, j:Number, Unit):Boolean
 		for(var v = lowerJ; v <= upperJ; ++v)
 		{
 			var adjacentUnit = mGrid[t][v].occupiedUnit;
-			if(adjacentUnit != null && adjacentUnit.mColour != Unit.mColour)
+			if(adjacentUnit != null
+			   && adjacentUnit.GroundUnit == true
+			   && adjacentUnit.mColour != Unit.mColour
+			   && adjacentUnit != unitAtIJ)
 			{
 				//check if the unit in the adjacent square has this as an attackable unit
 				for(var priority = 0; priority < adjacentUnit.attackablePriorities.length; priority++)
@@ -232,7 +231,8 @@ this.IsDeathTrap = function(i:Number, j:Number, Unit):Boolean
 			var adjacentUnit = mGrid[t][v].occupiedUnit;
 			if(adjacentUnit != null
 			   && adjacentUnit.AirUnit == true
-			   && adjacentUnit.mColour != Unit.mColour)
+			   && adjacentUnit.mColour != Unit.mColour
+			   && adjacentUnit != unitAtIJ)
 			{
 				//check if the unit in the adjacent square has this as an attackable unit
 				for(var priority = 0; priority < adjacentUnit.attackablePriorities.length; priority++)
@@ -247,48 +247,6 @@ this.IsDeathTrap = function(i:Number, j:Number, Unit):Boolean
 	}
 	
 	return false;
-}
-
-/*
-	This function will pick a random unit that can move
-	and a random unit to target, then try to navigate to
-	that target. Wish me luck.
-*/
-this.AttackRandom = function(colourToRun:Number)
-{
-	var unit = null;
-	while(CanUnitMove(unit) == false)
-	{
-		unit = PickRandomUnit(colourToRun);
-	}
-	
-	var target = GetNearestUnit(unit);
-	var possibleMoves:Array = GetMoveList(unit, target);
-	var bestMove = possibleMoves[0];
-	
-	for(var t = 0; t < possibleMoves.length; ++t)
-	{
-		if(bestMove.score < possibleMoves[t].score)
-		{
-			bestMove = possibleMoves[t];
-		}
-	}
-	
-	if(unit.CheckOccupied(bestMove.i, bestMove.j))
-	{
-		unit.RemoveUnits(bestMove.i, bestMove.j);
-	}
-	
-	unit.Move(bestMove.i, bestMove.j, true);
-	
-	if(colourToRun == BLUE)
-	{
-		CheckMines(RED);
-	}
-	else
-	{
-		CheckMines(BLUE);
-	}
 }
 
 /*
@@ -323,7 +281,8 @@ this.GetNearestUnit = function(sourceUnit)
 			var jCoord = mUnits[opposingSide][typeToAttack][t].GetJ();
 			var distanceToUnit = GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
 			
-			if(distanceToUnit < distanceToNearest
+			//if an opponent is on their mine they're safe so don't bother with them.
+			if((distanceToUnit < distanceToNearest && IsEnemyMine(iCoord, jCoord, sourceUnit) == false)
 			   || nearestTarget.i == -1)
 			{
 				nearestTarget.i = iCoord;
@@ -352,9 +311,9 @@ this.GetNearestMine = function(sourceUnit)
 	var distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
 	
 	//The outer loop goes through the mines
-	for( var i = 0; i < 8; ++i )
+	for( var i = 0; i < GRID_WIDTH/2; ++i )
 	{
-		for( var j = 0; j < 8; ++j )
+		for( var j = 0; j < GRID_HEIGHT/2; ++j )
 		{
 			//only gets us mines that have a value
 			if(i % 2 == j % 2)
@@ -409,14 +368,8 @@ this.GetDistanceToCoordinates = function(startPoint, endPointI, endPointJ):Numbe
 }
 
 /*
-	Returns the distance between the point given and the unit
+	This rates the destruction of the targetUnit given the sourceUnit's priorities
 */
-this.GetDistance = function(point, unit):Number
-{
-	return GetDistanceToCoordinates(point, unit.GetI(), unit.GetJ());
-}
-
-//this rates the
 this.GetDestructionScore = function(sourceUnit, targetUnit):Number
 {
 	for(var i = 0; i < sourceUnit.attackablePriorities.length; i++)
@@ -431,10 +384,20 @@ this.GetDestructionScore = function(sourceUnit, targetUnit):Number
 }
 
 /*
+	This rates the how valuable a unit is out of all the units
+*/
+this.GetUnitValue = function(unit):Number
+{
+	return unitWorths[unit.Type] * 200;
+}
+
+/*
 	This retreives all the locations the unit can move to.  
 */
 this.GetMoveList = function(unit, target):Array
 {
+	var randomUnitBonus = random(5);
+	
 	var moveList:Array = new Array();
 	var clamp = unit.GetClampArea();
 	var UnitLeftBound = (clamp.leftCut - clamp.leftCut % unit._width) / mGrid[0][0]._width;
@@ -452,11 +415,9 @@ this.GetMoveList = function(unit, target):Array
 				var newMove = new Object();
 				newMove.i = i;
 				newMove.j = j;
+				
 				//set score to use distance
-				trace("adding move to " + i + " " + j);
-				trace("distance to " + target.i + ", " + target.j + " is " + GetDistanceToCoordinates(newMove, target.i, target.j));
 				newMove.score = 100 / (GetDistanceToCoordinates(newMove, target.i, target.j) + 1); //add 1 to prevent infinity
-				trace("score is now " + newMove.score);
 				
 				//factor in if the move will take another unit
 				if(unit.CheckOccupied(i, j))
@@ -473,230 +434,45 @@ this.GetMoveList = function(unit, target):Array
 						{
 							newMove.score += damageScore;
 						}
-						
-						trace("we found an oponnent, kill IT! " + newMove.score);
 					}
 					else
 					{
-						trace("can't kill my allies");
 						//cannot move onto friendly squares
 						continue;
 					}
 				}
 				else if(IsEnemyMine(i, j, unit))
 				{
-					trace("it's usually not a good idea to commit intentional suicide.");
 					//avoid unoccupied enemy mines
 					continue;
 				}
 				
-				trace("check for death");
 				//factor in if the move will get you killed
 				if(IsEnemyMine(i, j, unit) || IsDeathTrap(i, j, unit))
 				{
-					newMove.score -= 900;
-					trace("This may kill me, but maybe its good for the group " + newMove.score);
+					newMove.score -= GetUnitValue(unit);
 				}
 				
-				trace("move added");
+				//incentivize entering friendly mines for safety reasons 
+				if(IsFriendlyMine(i, j, unit)
+					&& IsFriendlyMine(unit.GetI(), unit.GetJ(), unit) == false)
+				{
+					newMove.score += 75;
+				}
+				
+				//penalize leaveing friendly mines for safety reasons 
+				if(IsFriendlyMine(unit.GetI(), unit.GetJ(), unit)
+					&& IsFriendlyMine(i, j, unit) == false)
+				{
+					newMove.score -= 40;
+				}
+				
+				//newMove.score =+ randomUnitBonus;
+				
 				moveList.push(newMove);
 			}
 		}
 	}
 	
 	return moveList;
-}
-
-/*
-	This is a helper function that will take the units current
-	location, look at all possible locations around it, and return
-	whether it finds one it can move to.
-*/
-this.CanUnitMove = function(unit):Boolean
-{
-	if(unit.Type == null)
-	{
-		return false;
-	}
-	
-	var clamp = unit.GetClampArea();
-	var UnitLeftBound = (clamp.leftCut - clamp.leftCut % unit._width) / mGrid[0][0]._width;
-	var UnitRightBound = (clamp.rightCut - clamp.rightCut % unit._width) / mGrid[0][0]._width;
-	var UnitTopBound = (clamp.topCut - clamp.topCut % unit._height) / mGrid[0][0]._height;
-	var UnitBottomBound = (clamp.bottomCut - clamp.bottomCut % unit._height) / mGrid[0][0]._height;
-	
-	for(var i = UnitTopBound; i <= UnitBottomBound; i += (unit._width / mGrid[0][0]._width))
-	{
-		for( var j = UnitLeftBound; j <= UnitRightBound; j += (unit._height / mGrid[0][0]._height))
-		{
-			if((unit.CheckOccupied(i, j) == false || unit.CheckColour(i,j) == true) && IsEnemyMine(i, j, unit) == false)
-			{
-				return true;
-			}
-		}
-	}
-	
-	return false;
-}
-
-/*
-	Another helper function that picks a random unit from the chosen side
-*/
-this.PickRandomUnit = function(side:Number):Object
-{
-	var unit = null;
-	var arrayToUse = null;
-	do
-	{
-		unit = null;
-		switch(Math.round(Math.random() * 4))
-		{
-			case 0:
-				if(mUnits[side][BOMBER].length > 0)
-				{
-					arrayToUse = mUnits[side][BOMBER];
-				}
-				else if(mUnits[side][FIGHTER].length > 0)
-				{
-					arrayToUse = mUnits[side][SOLDIER];
-				}
-				else if(mUnits[side][GRANADIER].length > 0)
-				{
-					arrayToUse = mUnits[side][GRANADIER];
-				}
-				else if(mUnits[side][SOLDIER].length > 0)
-				{
-					arrayToUse = mUnits[side][FIGHTER];
-				}
-				else if(mUnits[side][MINER].length > 0)
-				{
-					arrayToUse = mUnits[side][MINER];
-				}
-				else
-				{
-					trace("This shouldn't be getting called, the ai lost and user should know!!");
-					return;
-				}
-				break;
-				
-			case 1:
-				if(mUnits[side][FIGHTER].length > 0)
-				{
-					arrayToUse = mUnits[side][FIGHTER];
-				}
-				else if(mUnits[side][GRANADIER].length > 0)
-				{
-					arrayToUse = mUnits[side][GRANADIER];
-				}
-				else if(mUnits[side][BOMBER].length > 0)
-				{
-					arrayToUse = mUnits[side][BOMBER];
-				}
-				else if(mUnits[side][SOLDIER].length > 0)
-				{
-					arrayToUse = mUnits[side][SOLDIER];
-				}
-				else if(mUnits[side][MINER].length > 0)
-				{
-					arrayToUse = mUnits[side][MINER];
-				}
-				else
-				{
-					trace("This shouldn't be getting called, the ai lost and user should know!!");
-					return;
-				}
-				break;
-				
-			case 2:
-				if(mUnits[side][SOLDIER].length > 0)
-				{
-					arrayToUse = mUnits[side][SOLDIER];
-				}
-				else if(mUnits[side][GRANADIER].length > 0)
-				{
-					arrayToUse = mUnits[side][GRANADIER];
-				}
-				else if(mUnits[side][MINER].length > 0)
-				{
-					arrayToUse = mUnits[side][MINER];
-				}
-				else if(mUnits[side][BOMBER].length > 0)
-				{
-					arrayToUse = mUnits[side][BOMBER];
-				}
-				else if(mUnits[side][FIGHTER].length > 0)
-				{
-					arrayToUse = mUnits[side][FIGHTER];
-				}
-				else
-				{
-					trace("This shouldn't be getting called, the ai lost and user should know!!");
-					return;
-				}
-				break;
-				
-			case 3:
-				if(mUnits[side][GRANADIER].length > 0)
-				{
-					arrayToUse = mUnits[side][GRANADIER];
-				}
-				else if(mUnits[side][SOLDIER].length > 0)
-				{
-					arrayToUse = mUnits[side][SOLDIER];
-				}
-				else if(mUnits[side][BOMBER].length > 0)
-				{
-					arrayToUse = mUnits[side][BOMBER];
-				}
-				else if(mUnits[side][FIGHTER].length > 0)
-				{
-					arrayToUse = mUnits[side][FIGHTER];
-				}
-				else if(mUnits[side][MINER].length > 0)
-				{
-					arrayToUse = mUnits[side][MINER];
-				}
-				else
-				{
-					trace("This shouldn't be getting called, the ai lost and user should know!!");
-					return;
-				}
-				break;
-				
-			case 4:
-				if(mUnits[side][MINER].length > 0)
-				{
-					arrayToUse = mUnits[side][MINER];
-				}
-				else if(mUnits[side][SOLDIER].length > 0)
-				{
-					arrayToUse = mUnits[side][SOLDIER];
-				}
-				else if(mUnits[side][FIGHTER].length > 0)
-				{
-					arrayToUse = mUnits[side][FIGHTER];
-				}
-				else if(mUnits[side][BOMBER].length > 0)
-				{
-					arrayToUse = mUnits[side][BOMBER];
-				}
-				else if(mUnits[side][GRANADIER].length > 0)
-				{
-					arrayToUse = mUnits[side][GRANADIER];
-				}
-				else
-				{
-					trace("This shouldn't be getting called, the ai lost and user should know!!");
-					return;
-				}
-				break;
-				
-			default:
-				trace("THIS SHOULD NEVER HAPPEN, IT MEANS RANDOM IS BROKEN");
-				return;
-		}
-		unit = arrayToUse[Math.round(Math.random() * arrayToUse.length - 1)];
-	}while(unit.Type == null);
-	
-	return unit;
 }

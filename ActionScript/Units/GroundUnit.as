@@ -1,6 +1,8 @@
 ﻿#include "Unit.as"
 
 var GroundUnit = true;
+var AirUnit = false;
+
 this.CheckOccupied = function(i, j):Boolean
 {
 	return grid[i][j].occupied;

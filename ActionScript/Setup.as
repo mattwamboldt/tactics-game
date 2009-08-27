@@ -5,9 +5,9 @@
 mine._visible = false;
 
 //here we set the occupancy and allegiances of the small squares to neutral
-for( var i = 0; i < 16; ++i)
+for( var i = 0; i < GRID_WIDTH; ++i)
 {
-	for( var j = 0; j < 16; ++j)
+	for( var j = 0; j < GRID_HEIGHT; ++j)
 	{
 		mGrid[i][j].occupied = false;
 		mGrid[i][j].TurnNeutral();
@@ -15,18 +15,18 @@ for( var i = 0; i < 16; ++i)
 }
 
 //Here we set the occupancy and allegiances of the mines
-for( var i = 0; i < 8; ++i )
+for( var i = 0; i < GRID_WIDTH/2; ++i )
 {
-	for( var j = 0; j < 8; ++j )
+	for( var j = 0; j < GRID_HEIGHT/2; ++j )
 	{
 		if(mMineGrid[i][j] != null)
 		{
-			if(i <= 1)
+			if(i < 2)
 			{
 				mMineGrid[i][j].occupied = true;
 				mMineGrid[i][j].TurnBlue();
 			}
-			else if(i >= 6)
+			else if(i >= (GRID_HEIGHT/2) - 2)
 			{
 				mMineGrid[i][j].occupied = true;
 				mMineGrid[i][j].TurnRed();
@@ -48,7 +48,7 @@ for( var i = 0; i < 8; ++i )
 //each unit, and set their allegience. This is the only time
 //this will be set until the game is over
 //we also need to set the references for where the units initially stand
-for( var i = 0; i < 4; ++i )
+for( var i = 0; i < GRID_WIDTH/4; ++i )
 {
 	mUnits[BLUE][BOMBER][i].grid = mGrid;
 	mUnits[BLUE][BOMBER][i].TurnBlue();
@@ -60,14 +60,14 @@ for( var i = 0; i < 4; ++i )
 	
 	mUnits[RED][FIGHTER][i].grid = mGrid;
 	mUnits[RED][FIGHTER][i].TurnRed();
-	mUnits[RED][FIGHTER][i].SetLocation(14, i * 4);
+	mUnits[RED][FIGHTER][i].SetLocation((GRID_HEIGHT - 2), i * 4);
 	
 	mUnits[RED][BOMBER][i].grid = mGrid;
 	mUnits[RED][BOMBER][i].TurnRed();
-	mUnits[RED][BOMBER][i].SetLocation(14, (i * 4) + 2);
+	mUnits[RED][BOMBER][i].SetLocation((GRID_HEIGHT - 2), (i * 4) + 2);
 }
 
-for( var i = 0; i < 8; ++i )
+for( var i = 0; i < GRID_WIDTH/2; ++i )
 {
 	mUnits[BLUE][GRANADIER][i].grid = mGrid;
 	mUnits[BLUE][GRANADIER][i].TurnBlue();
@@ -79,14 +79,14 @@ for( var i = 0; i < 8; ++i )
 	
 	mUnits[RED][GRANADIER][i].grid = mGrid;
 	mUnits[RED][GRANADIER][i].TurnRed();
-	mUnits[RED][GRANADIER][i].SetLocation(13, (Math.floor((i + 1) / 2) * 4 - i % 2));
+	mUnits[RED][GRANADIER][i].SetLocation((GRID_HEIGHT - 3), (Math.floor((i + 1) / 2) * 4 - i % 2));
 	
 	mUnits[RED][MINER][i].grid = mGrid;
 	mUnits[RED][MINER][i].TurnRed();
-	mUnits[RED][MINER][i].SetLocation(13, ((i % 2) + 1) + ( 4 *  Math.floor(i / 2)));
+	mUnits[RED][MINER][i].SetLocation((GRID_HEIGHT - 3), ((i % 2) + 1) + ( 4 *  Math.floor(i / 2)));
 }
 
-for( var i = 0; i < 16; ++i )
+for( var i = 0; i < GRID_WIDTH; ++i )
 {
 	mUnits[BLUE][SOLDIER][i].grid = mGrid;
 	mUnits[BLUE][SOLDIER][i].TurnBlue();
@@ -94,5 +94,5 @@ for( var i = 0; i < 16; ++i )
 	
 	mUnits[RED][SOLDIER][i].grid = mGrid;
 	mUnits[RED][SOLDIER][i].TurnRed();
-	mUnits[RED][SOLDIER][i].SetLocation(12, i);
+	mUnits[RED][SOLDIER][i].SetLocation((GRID_HEIGHT - 4), i);
 }
