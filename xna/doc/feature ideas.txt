@@ -1,0 +1,18 @@
+Ideas that should be done regardless
+- Switch to 3d rendering
+- Animation
+- Sound
+- A map system so you can have different boards and unit arrangements
+- Debugging graphics for the AI
+
+Develop further as a board game
+- Different difficulties
+- Timed play
+- Ninja mode where both sides go at once
+- Port to a android or iOS
+
+Develop into an TBSRPG
+- Health and damage
+- Leveling Up
+- Expand map system into an RPG Maker tile type system
+- 
