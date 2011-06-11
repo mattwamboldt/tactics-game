@@ -33,34 +33,6 @@ namespace Board_Game.Code.Units
             position.Y = newLocationI * Tile.TILE_SIZE;
         }
 
-        public override void Render(SpriteBatch spriteBatch)
-        {
-            float scale = Tile.MINE_SIZE / texture.Width;
-
-            Color color = Color.White;
-
-            if (side.mColour == Constants.RED)
-            {
-                color = Color.Red;
-            }
-            else if (side.mColour == Constants.BLUE)
-            {
-                color = Color.Blue;
-            }
-
-            spriteBatch.Draw(
-                texture,
-                position,
-                null,
-                color,
-                0f,
-                Vector2.Zero,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
-        }
-
         public override bool CheckOccupied(int i, int j)
         {
             return (grid.mTiles[i, j].occupied || grid.mTiles[i + 1, j].occupied

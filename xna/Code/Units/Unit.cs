@@ -39,6 +39,7 @@ namespace Board_Game.Code.Units
         public int height;
         public int width;
         public AI mAIRef;
+        public bool isSelected;
 
         //used to determine which enemies this unit
         //type should attack first
@@ -55,11 +56,35 @@ namespace Board_Game.Code.Units
             CanFly = false;
             position = new Vector2(0, 0);
             texture = inTexture;
+            isSelected = false;
         }
 
-        public virtual void Render(SpriteBatch spriteBatch)
+        public void Render(SpriteBatch spriteBatch)
         {
-            throw new NotImplementedException();
+            float scale = ScreenDimensions().X / texture.Width;
+
+            Color color = Color.White;
+
+            if (side.mColour == Constants.RED)
+            {
+                color = Color.Red;
+            }
+            else if (side.mColour == Constants.BLUE)
+            {
+                color = Color.Blue;
+            }
+
+            spriteBatch.Draw(
+                texture,
+                position,
+                null,
+                color,
+                0f,
+                Vector2.Zero,
+                scale,
+                SpriteEffects.None,
+                0f
+            );
         }
 
         public virtual bool CheckOccupied(int i, int j)
@@ -122,6 +147,8 @@ namespace Board_Game.Code.Units
 
             return returnValue;
         }
+
+
 
         /*
          * Uncomment this as features are implemented

@@ -101,7 +101,7 @@ namespace Board_Game.Code
         const int TURN_TIME = 250;
         int elapsedTime = 0;
 
-        bool redIsHuman = false;
+        bool redIsHuman = true;
         bool blueIsHuman = false;
         public int[] unitWorths = { 8, 7, 2, 6, 4 };
         private Random random;
@@ -254,8 +254,6 @@ namespace Board_Game.Code
                 }
             }
 
-            //trace("colourToRun = " + colourToRun);
-            //trace("bestMove.score = " + bestMove.score);
             if (unitToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
             {
                 unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);

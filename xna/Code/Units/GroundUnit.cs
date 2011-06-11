@@ -45,34 +45,6 @@ namespace Board_Game.Code.Units
             position.Y = newLocationI * Tile.TILE_SIZE;
         }
 
-        public override void Render(SpriteBatch spriteBatch)
-        {
-            float scale = Tile.TILE_SIZE / texture.Width;
-
-            Color color = Color.White;
-
-            if (side.mColour == Constants.RED)
-            {
-                color = Color.Red;
-            }
-            else if (side.mColour == Constants.BLUE)
-            {
-                color = Color.Blue;
-            }
-
-            spriteBatch.Draw(
-                texture,
-                position,
-                null,
-                color,
-                0f,
-                Vector2.Zero,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
-        }
-
         public override Vector2 ScreenDimensions()
         {
             return new Vector2(Tile.TILE_SIZE, Tile.TILE_SIZE);
