@@ -55,13 +55,13 @@ namespace Board_Game
 
             // TODO: use this.Content to load your game content here
             mAI.Initialize(
-                Content.Load<Texture2D>("tile"),
-                Content.Load<Texture2D>("minetile"),
-                Content.Load<Texture2D>("bomber"),
-                Content.Load<Texture2D>("fighter"),
-                Content.Load<Texture2D>("soldier"),
-                Content.Load<Texture2D>("deminer"),
-                Content.Load<Texture2D>("grenadier"),
+                Content.Load<Texture2D>("textures/tiles/single"),
+                Content.Load<Texture2D>("textures/tiles/mine"),
+                Content.Load<Texture2D>("textures/units/bomber"),
+                Content.Load<Texture2D>("textures/units/fighter"),
+                Content.Load<Texture2D>("textures/units/soldier"),
+                Content.Load<Texture2D>("textures/units/deminer"),
+                Content.Load<Texture2D>("textures/units/grenadier"),
                 Content.Load<SpriteFont>("fonts/Button"),
                 Content.Load<SpriteFont>("fonts/Tutorial"),
                 Content.Load<SpriteFont>("fonts/UnitName"));
