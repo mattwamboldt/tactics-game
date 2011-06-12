@@ -16,11 +16,9 @@ Tasks:
 Sprint 2 - UI
 Goal - Arrange and implement the games UI interface
 - Allow the grid position to be adjusted by the calling code
-- Add Score Rendering
-- Add a completed game message
 - Extract the old UI tutorial Imagery and render it
 - rearrange all of the elements into a nice layout
-- Implement relative sizing and placement for all items
+- Implement relative sizing and placement for all items (meaning create a basic layout engine)
 
 Sprint 3 - Cleanup
 Goal - Bring the game up to the code standard it had in Flash, taking advantage of C# features to simplify the codebase.
@@ -48,6 +46,7 @@ Goal - Introduce Keyboard control and a Logging input system
 - adjust AI to move units through selection
 - allow the game to read this log and play using it.
 - Inform the user whose turn it is with the colour of the selector
+- Add a completed game message
 
 Sprint 3 - Network Play
 Goal - Allow the game to be played by a pair of people over the internet.

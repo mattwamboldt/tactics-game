@@ -257,11 +257,24 @@ namespace Board_Game.Code
 
             //-draw the text
             //--buttons
-            spriteBatch.DrawString(mButton, "Red",new Vector2(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40), Color.White);
-            spriteBatch.DrawString(mButton, "Blue", new Vector2(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40), Color.White);
+            string redString = "HUMAN";
+            string blueString = "HUMAN";
+            if (!redIsHuman)
+            {
+                redString = "AI";
+            }
 
+            spriteBatch.DrawString(mButton, redString, CenterAlign(new Rectangle(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
+
+            if (!blueIsHuman)
+            {
+                blueString = "AI";
+            }
+
+            spriteBatch.DrawString(mButton, blueString, CenterAlign(new Rectangle(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, mButton), Color.White);
+            
             //--sidebar header
-            spriteBatch.DrawString(mButton, "UNITS", new Vector2(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), Color.White);
+            spriteBatch.DrawString(mButton, "UNITS", CenterAlign(new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), "UNITS", mButton), Color.White);
 
             //--unit descriptions
             string[] titles = new string[] { "BOMBER", "FIGHTER", "SOLDIER", "DE-MINER", "BAZOOKA" };
@@ -347,6 +360,16 @@ namespace Board_Game.Code
             }
 
             return builder.ToString();
+        }
+
+        Vector2 CenterAlign(Rectangle parentRectangle, string text, SpriteFont font)
+        {
+            return CenterAlign(parentRectangle, font.MeasureString(text));
+        }
+
+        Vector2 CenterAlign(Rectangle parentRectangle, Vector2 dimensions)
+        {
+            return new Vector2(parentRectangle.Center.X - (int)(dimensions.X / 2), parentRectangle.Center.Y - (int)(dimensions.Y / 2));
         }
 
         /// <summary>
