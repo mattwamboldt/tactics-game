@@ -216,6 +216,7 @@ namespace Board_Game.Code
             pixel.SetData<Color>(new Color[] { Color.White });
 
             //draw the UI
+            //TODO: Move UI into a tool and class to remove all of these consants and draw calls
             //-draw a box under the grid
             spriteBatch.Draw(pixel, new Rectangle(0, 0, Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
             
@@ -229,11 +230,16 @@ namespace Board_Game.Code
             spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50, 250, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
 
             //-draw the unit backgrounds
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + 50 + 15, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 2, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 3, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 4, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
+
+            for (int i = 0; i < 5; i++)
+            {
+                spriteBatch.Draw(pixel, new Rectangle(
+                Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5,
+                30 + 20 + 5 + (50 + 15) * i,
+                (int)Tile.TILE_SIZE * 2 + 10,
+                (int)Tile.TILE_SIZE * 2 + 10),
+               Color.DarkGray);
+            }
 
             //-draw the units
             spriteBatch.Draw(mBomberTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
@@ -258,9 +264,40 @@ namespace Board_Game.Code
             spriteBatch.DrawString(mButton, "UNITS", new Vector2(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), Color.White);
 
             //--unit descriptions
-            //--tutorial text
+            string[] titles = new string[] { "BOMBER", "FIGHTER", "SOLDIER", "DE-MINER", "BAZOOKA" };
+            string[] descriptions = new string[] {
+                "Movement: 1 large square\nDestroys ground units.",
+                "Movement: 1 large square\nDestroys air units.",
+                "Movement: 1 square\nDestroys ground units.",
+                "Movement: 1 square\nCaptures mines.",
+                "Movement: 1 square\nDestroys all units."
+            };
 
-            String tutorialText = "The Objective of the game is to destroy all opponent units, or take control of all mines (squares the are around a diamond). The De-Miner units convert a neutral(grey) or enemy mine to your colour, at which point you can move your other units safely across.\n\nFlying units, which are the bomber and fighter, will not be destroyed by mines.";
+            for (int i = 0; i < 5; i++)
+            {
+                spriteBatch.DrawString(
+                    mTutorial, 
+                    titles[i],
+                    new Vector2(
+                        Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
+                        30 + 20 + 5 + (50 + 15) * i),
+                   Color.White);
+
+                spriteBatch.DrawString(
+                    mTutorial,
+                    WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, descriptions[i]),
+                    new Vector2(
+                        Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
+                        30 + 20 + 5 + (50 + 15) * i + 15),
+                   Color.White);
+            }
+
+            //--tutorial text
+            String tutorialText = "The Objective of the game is to destroy all opponent units, or take control "
+                + "of all mines (squares the are around a diamond). The De-Miner units convert a neutral(grey) "
+                + "or enemy mine to your colour, at which point you can move your other units safely across."
+                + "\n\nFlying units, which are the bomber and fighter, will not be destroyed by mines.";
+
             spriteBatch.DrawString(
                 mTutorial,
                 WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
