@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace Board_Game.Code
 {
@@ -10,9 +11,11 @@ namespace Board_Game.Code
     {
         public Tile[,] mTiles;
         public Tile[,] mMines;
+        public Vector2 position;
 
         public GameGrid(int width, int height, Texture2D tileTexture, Texture2D mineTexture)
         {
+            position = new Vector2(20, 20);
             mTiles = new Tile[width, height];
             for (int i = 0; i < width; ++i)
             {
@@ -58,7 +61,7 @@ namespace Board_Game.Code
             {
                 for (var j = 0; j <= mTiles.GetUpperBound(1); ++j)
                 {
-                    mTiles[i, j].Render(spriteBatch);
+                    mTiles[i, j].Render(spriteBatch, position);
                 }
             }
 
@@ -68,7 +71,7 @@ namespace Board_Game.Code
                 {
                     if (mMines[i, j] != null)
                     {
-                        mMines[i, j].Render(spriteBatch);
+                        mMines[i, j].Render(spriteBatch, position);
                     }
                 }
             }

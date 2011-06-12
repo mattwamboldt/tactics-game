@@ -59,9 +59,14 @@ namespace Board_Game.Code.Units
             isSelected = false;
         }
 
-        public void Render(SpriteBatch spriteBatch)
+        public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
             float scale = ScreenDimensions().X / texture.Width;
+
+            Vector2 renderPosition = new Vector2(
+                parentPosition.X + position.X,
+                parentPosition.Y + position.Y
+            );
 
             Color color = Color.White;
 
@@ -76,7 +81,7 @@ namespace Board_Game.Code.Units
 
             spriteBatch.Draw(
                 texture,
-                position,
+                renderPosition,
                 null,
                 color,
                 0f,

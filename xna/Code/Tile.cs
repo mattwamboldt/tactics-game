@@ -30,7 +30,7 @@ namespace Board_Game.Code
             texture = inTexture;
         }
 
-        public void Render(SpriteBatch spriteBatch)
+        public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
             float scale;
             Color color = Color.White;
@@ -56,6 +56,9 @@ namespace Board_Game.Code
                 drawPosition.X = position.X * TILE_SIZE;
                 drawPosition.Y = position.Y * TILE_SIZE;
             }
+
+            drawPosition.X += parentPosition.X;
+            drawPosition.Y += parentPosition.Y;
 
             spriteBatch.Draw(
                 texture,

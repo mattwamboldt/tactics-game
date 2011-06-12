@@ -61,7 +61,10 @@ namespace Board_Game
                 Content.Load<Texture2D>("fighter"),
                 Content.Load<Texture2D>("soldier"),
                 Content.Load<Texture2D>("deminer"),
-                Content.Load<Texture2D>("grenadier"));
+                Content.Load<Texture2D>("grenadier"),
+                Content.Load<SpriteFont>("fonts/Button"),
+                Content.Load<SpriteFont>("fonts/Tutorial"),
+                Content.Load<SpriteFont>("fonts/UnitName"));
 
         }
 

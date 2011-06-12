@@ -109,6 +109,15 @@ namespace Board_Game.Code
         private Units.Unit[,][] mUnits;
         private GameGrid mGrid;
 
+        Texture2D mBomberTexture;
+        Texture2D mFighterTexture;
+        Texture2D mSoldierTexture;
+        Texture2D mDeminerTexture;
+        Texture2D mGrenadierTexture;
+        SpriteFont mButton;
+        SpriteFont mTutorial;
+        SpriteFont mUnitName;
+
         public void Initialize(
             Texture2D tileTexture,
             Texture2D mineTexture,
@@ -116,10 +125,22 @@ namespace Board_Game.Code
             Texture2D fighterTexture,
             Texture2D soldierTexture,
             Texture2D deminerTexture,
-            Texture2D grenadierTexture)
+            Texture2D grenadierTexture,
+            SpriteFont button,
+            SpriteFont tutorial,
+            SpriteFont unitName)
         {
             random = new Random();
             mGrid = new GameGrid(Constants.GRID_WIDTH, Constants.GRID_HEIGHT, tileTexture, mineTexture);
+
+            mBomberTexture = bomberTexture;
+            mFighterTexture = fighterTexture;
+            mSoldierTexture = soldierTexture;
+            mDeminerTexture = deminerTexture;
+            mGrenadierTexture = grenadierTexture;
+            mButton = button;
+            mTutorial = tutorial;
+            mUnitName = unitName;
 
             //Here we assign a reference to the main grid for
             //each unit, and set their allegience. This is the only time
@@ -191,6 +212,63 @@ namespace Board_Game.Code
 
         public void Render(SpriteBatch spriteBatch)
         {
+            Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            pixel.SetData<Color>(new Color[] { Color.White });
+
+            //draw the UI
+            //-draw a box under the grid
+            spriteBatch.Draw(pixel, new Rectangle(0, 0, Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
+            
+            //-draw the box under UNITS
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), Color.Black);
+
+            //-draw the tutorial text box
+            spriteBatch.Draw(pixel, new Rectangle(0, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30, Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
+
+            //-draw the unit sidebar box
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50, 250, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
+
+            //-draw the unit backgrounds
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + 50 + 15, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 2, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 3, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
+            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 4, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.DarkGray);
+
+            //-draw the units
+            spriteBatch.Draw(mBomberTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mFighterTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + 50 + 15, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mSoldierTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 2, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mDeminerTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 3, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mGrenadierTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 4, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+
+            //-draw the buttons
+            spriteBatch.Draw(pixel, new Rectangle(20 - 1, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Red);
+
+            spriteBatch.Draw(pixel, new Rectangle(20 - 1 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Blue);
+
+            //-draw the text
+            //--buttons
+            spriteBatch.DrawString(mButton, "Red",new Vector2(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40), Color.White);
+            spriteBatch.DrawString(mButton, "Blue", new Vector2(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40), Color.White);
+
+            //--sidebar header
+            spriteBatch.DrawString(mButton, "UNITS", new Vector2(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), Color.White);
+
+            //--unit descriptions
+            //--tutorial text
+
+            String tutorialText = "The Objective of the game is to destroy all opponent units, or take control of all mines (squares the are around a diamond). The De-Miner units convert a neutral(grey) or enemy mine to your colour, at which point you can move your other units safely across.\n\nFlying units, which are the bomber and fighter, will not be destroyed by mines.";
+            spriteBatch.DrawString(
+                mTutorial,
+                WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
+                new Vector2(5, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30 + 5),
+                Color.White
+            );
+
+            //draw the grid
             mGrid.Render(spriteBatch);
 
             for (int side = 0; side < Constants.NEUTRAL; ++side)
@@ -199,18 +277,46 @@ namespace Board_Game.Code
                 {
                     for (int i = 0; i < mUnits[side, unitType].Length; ++i)
                     {
-                        mUnits[side, unitType][i].Render(spriteBatch);
+                        mUnits[side, unitType][i].Render(spriteBatch, mGrid.position);
                     }
                 }
             }
         }
 
-        // Uncomment as features come online
+        /// <summary>
+        /// Takes an initial string and adds carriage returns to make it fit within a given width.
+        /// </summary>
+        /// <param name="width">The width of the space to fit into</param>
+        /// <param name="font">The font to render for measuring size</param>
+        /// <param name="text">The text to wrap</param>
+        /// <returns>The string with carriage returns to fit into the width</returns>
+        String WrapString(float width, SpriteFont font, String text)
+        {
+            //split the incoming text on spaces
+            string[] words = text.Split(new Char[] { ' ' });
+
+            //add each string to the builder measuring the width each time
+            //if its greater than the desired, add a carriage return
+            StringBuilder builder = new StringBuilder(text.Length);
+            
+            foreach (string word in words)
+            {
+                if (font.MeasureString(builder.ToString() + word + " ").X > width)
+                {
+                    builder.Append("\n");
+                }
+
+                builder.Append(word + " ");
+            }
+
+            return builder.ToString();
+        }
+
         /// <summary>
         /// Was AIPass in Flash. This decides which unit should move and then
         /// moves that unit.
         /// </summary>
-        /// <param name="side">Whether red or blue is going</param>
+        /// <param name="colourToRun">Whether red or blue is going</param>
         public void Update(int colourToRun)
         {
             Move bestMove;
