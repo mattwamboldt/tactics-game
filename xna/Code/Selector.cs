@@ -135,6 +135,8 @@ namespace Board_Game.Code
                     {
                         mAIRef.CheckMines(Constants.RED);
                     }
+
+                    mAIRef.CheckVictory();
                 }
                 else
                 {
@@ -143,7 +145,7 @@ namespace Board_Game.Code
                         selectedUnit = null;
                         unit.isSelected = false;
                     }
-                    else if (unit.side.mColour == mSide.mColour)
+                    else if (unit != null && unit.side.mColour == mSide.mColour)
                     {
                         selectedUnit.isSelected = false;
                         selectedUnit = unit;
@@ -166,6 +168,8 @@ namespace Board_Game.Code
                 {
                     mAIRef.CheckMines(Constants.RED);
                 }
+
+                mAIRef.CheckVictory();
             }
         }
 

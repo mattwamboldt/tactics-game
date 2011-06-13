@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 /*
     AI History: MSW
@@ -105,6 +106,7 @@ namespace Board_Game.Code
         bool blueIsHuman = false;
         public int[] unitWorths = { 8, 7, 2, 6, 4 };
         private Random random;
+        private Sides winner;
 
         private Units.Unit[,][] mUnits;
         private GameGrid mGrid;
@@ -146,6 +148,8 @@ namespace Board_Game.Code
             mUnitName = unitName;
             mSelector = new Selector(selectorTexture, mGrid, this);
             mSelector.mSide.TurnRed();
+            winner = new Sides();
+            winner.TurnNeutral();
 
             //Here we assign a reference to the main grid for
             //each unit, and set their allegience. This is the only time
@@ -326,6 +330,7 @@ namespace Board_Game.Code
             //draw the grid
             mGrid.Render(spriteBatch);
 
+            //draw the units
             for (int side = 0; side < Constants.NEUTRAL; ++side)
             {
                 for (int unitType = 0; unitType < Constants.NUM_UNIT_TYPES; ++unitType)
@@ -338,6 +343,50 @@ namespace Board_Game.Code
             }
 
             mSelector.Render(spriteBatch, mGrid.position);
+
+            if (winner.mColour != Constants.NEUTRAL)
+            {
+                //we have a winner
+
+                string victorString = "";
+                if (winner.mColour == Constants.RED)
+                {
+                    victorString = "Red has won!";
+                }
+                else if (winner.mColour == Constants.BLUE)
+                {
+                    victorString = "Blue has won";
+                }
+
+                //determine the background size based on the text size
+                Vector2 stringSize = mButton.MeasureString(victorString);
+                Vector2 backgroundSize = new Vector2(stringSize.X + 20, stringSize.Y + 10);
+
+                //draw the background and string centered to the grid
+                Vector2 backgroundLocation = CenterAlign(
+                    new Rectangle(
+                        (int)mGrid.position.X,
+                        (int)mGrid.position.Y,
+                        Constants.GRID_WIDTH * (int)Tile.TILE_SIZE,
+                        Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE),
+                    backgroundSize);
+
+                Rectangle backgroundRect = new Rectangle(
+                    (int)backgroundLocation.X,
+                    (int)backgroundLocation.Y,
+                    (int)backgroundSize.X,
+                    (int)backgroundSize.Y);
+
+                spriteBatch.Draw(pixel, new Rectangle(backgroundRect.X - 2, backgroundRect.Y - 2, backgroundRect.Width + 4, backgroundRect.Height + 4), Color.White);
+                spriteBatch.Draw(pixel, backgroundRect, Color.Black);
+
+                spriteBatch.DrawString(
+                    mButton,
+                    victorString,
+                    CenterAlign(backgroundRect, victorString, mButton),
+                    Color.White
+                );
+            }
         }
 
         /// <summary>
@@ -386,66 +435,71 @@ namespace Board_Game.Code
         /// <param name="colourToRun">Whether red or blue is going</param>
         public void Update(int colourToRun)
         {
-            Move bestMove;
-            bestMove.score = -99;
-            bestMove.position.Y = -99;
-            bestMove.position.X = -99;
-            Units.Unit unitToMove = null;
-
-            for (int unitType = 0; unitType < Constants.NUM_UNIT_TYPES; unitType++)
+            if (winner.mColour == Constants.NEUTRAL)
             {
-                Units.Unit[] array = mUnits[colourToRun, unitType];
+                Move bestMove;
+                bestMove.score = -99;
+                bestMove.position.Y = -99;
+                bestMove.position.X = -99;
+                Units.Unit unitToMove = null;
 
-                for (int unitIndex = 0; unitIndex < array.Length; ++unitIndex)
+                for (int unitType = 0; unitType < Constants.NUM_UNIT_TYPES; unitType++)
                 {
-                    Vector2 target;
-                    Units.Unit unit = array[unitIndex];
-                    if (unit.Type == Constants.UnitType.Miner)
-                    {
-                        target = GetNearestMine(unit);
-                    }
-                    else
-                    {
-                        target = GetNearestUnit(unit);
-                    }
+                    Units.Unit[] array = mUnits[colourToRun, unitType];
 
-                    Stack<Move> possibleMoves = GetMoveList(unit, target);
-
-                    if (possibleMoves.Count == 0)
+                    for (int unitIndex = 0; unitIndex < array.Length; ++unitIndex)
                     {
-                        Console.Out.WriteLine("No moves for " + unitType + " at " + unit.position);
-                    }
-
-                    foreach(Move move in possibleMoves)
-                    {
-                        if (unitToMove == null || bestMove.score < move.score)
+                        Vector2 target;
+                        Units.Unit unit = array[unitIndex];
+                        if (unit.Type == Constants.UnitType.Miner)
                         {
-                            bestMove = move;
-                            unitToMove = unit;
+                            target = GetNearestMine(unit);
+                        }
+                        else
+                        {
+                            target = GetNearestUnit(unit);
+                        }
+
+                        Stack<Move> possibleMoves = GetMoveList(unit, target);
+
+                        if (possibleMoves.Count == 0)
+                        {
+                            Console.Out.WriteLine("No moves for " + unitType + " at " + unit.position);
+                        }
+
+                        foreach (Move move in possibleMoves)
+                        {
+                            if (unitToMove == null || bestMove.score < move.score)
+                            {
+                                bestMove = move;
+                                unitToMove = unit;
+                            }
                         }
                     }
                 }
-            }
 
-            if (unitToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
-            {
-                unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);
-            }
+                if (unitToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
+                {
+                    unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);
+                }
 
-            unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X, true);
+                unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X, true);
 
-            if (colourToRun == Constants.BLUE)
-            {
-                CheckMines(Constants.RED);
-            }
-            else
-            {
-                CheckMines(Constants.BLUE);
-            }
+                if (colourToRun == Constants.BLUE)
+                {
+                    CheckMines(Constants.RED);
+                }
+                else
+                {
+                    CheckMines(Constants.BLUE);
+                }
 
-            CheckVictory();
+                CheckVictory();
+            }
         }
 
+
+        //TODO: Could move to unit
         /*
             This tells us if a square is actually an enemy mine location. If the
             unit in question is a deminer it returns false since they can move accross
@@ -469,7 +523,9 @@ namespace Board_Game.Code
                 && (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
                 && (mGrid.mMines[i / 2, j / 2].side.mColour == Unit.side.mColour);
         }
+        //end
 
+        //TODO: Pull into a util or math type class
         public int FloorAtMinimum(int numberToLimit, int minimumAmount)
         {
             if(numberToLimit < minimumAmount)
@@ -499,7 +555,10 @@ namespace Board_Game.Code
 
             return numberToEvenize;
         }
+        //end
 
+
+        //TODO: Move to the Unit
         /*
             This tells us if a square is adjacent to units that will destroy the passed in units.
         */
@@ -567,35 +626,41 @@ namespace Board_Game.Code
 
             return false;
         }
+        //end
 
-        //This checks to see who, if anyone, hsa won, and displays the appropriate message
-        public bool CheckVictory()
+        //determines and sets the winner if a side has won by capturing all the mines.
+        public bool MineVictory()
         {
-            int winningColour = mGrid.mMines[0, 0].side.mColour;
-            bool hasWon = true;
+            winner.mColour = mGrid.mMines[0, 0].side.mColour;
 
-            for( var i = 0; i < Constants.GRID_WIDTH/2; ++i )
+            for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
             {
                 for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
                 {
-                    if (i % 2 == j % 2 && winningColour != mGrid.mMines[i, j].side.mColour)
+                    if (i % 2 == j % 2 && winner.mColour != mGrid.mMines[i, j].side.mColour)
                     {
-                        hasWon = false;
+                        winner.TurnNeutral();
+                        return false;
                     }
                 }
             }
 
-            if(hasWon == false)
+            return true;
+        }
+
+        //This checks to see who, if anyone, hsa won
+        public void CheckVictory()
+        {
+            if (!MineVictory())
             {
-                //we need to check for a destruction victory for blue
+                //we need to check for a destruction victory
                 if (mUnits[Constants.RED, Constants.SOLDIER].Length == 0
                     && mUnits[Constants.RED, Constants.FIGHTER].Length == 0
                     && mUnits[Constants.RED, Constants.SOLDIER].Length == 0
                     && mUnits[Constants.RED, Constants.GRANADIER].Length == 0
                     && mUnits[Constants.RED, Constants.MINER].Length == 0)
                 {
-                    winningColour = Constants.BLUE;
-                    hasWon = true;
+                    winner.TurnBlue();
                 }
                 else if (mUnits[Constants.BLUE, Constants.BOMBER].Length == 0
                     && mUnits[Constants.BLUE, Constants.FIGHTER].Length == 0
@@ -603,26 +668,9 @@ namespace Board_Game.Code
                     && mUnits[Constants.BLUE, Constants.GRANADIER].Length == 0
                     && mUnits[Constants.BLUE, Constants.MINER].Length == 0)
                 {
-                    winningColour = Constants.RED;
-                    hasWon = true;
+                    winner.TurnRed();
                 }
             }
-
-           /* if(hasWon == true)
-            {
-                if(winningColour == BLUE)
-                {
-                    this._parent.txtWinLose.text = "Blue has won!!!";
-                }
-                else
-                {
-                    this._parent.txtWinLose.text = "Red has won!!!";
-                }
-
-                this._parent.txtWinLose._visible = true;
-            }*/
-
-            return hasWon;
         }
 
         //This function Checks to see if mines need to be changed to teh given colour
@@ -842,17 +890,7 @@ namespace Board_Game.Code
             return moveList;
         }
 
-        /*
-            Return the number of squares for the shortest path between the
-            point and unit, avoiding mines, possibly adding extra for potentially
-            dangerous moves to discourage movement in that direction.
-        
-        this.GetShortestPathToEnemy = function(unit):Number
-        {
-            var moveArray = GetMoveList(unit, null);
-        }
-        */
-
+        //TODO: Expand to a pathfinding algorithm, to avoid units getting lost
         /*
             Returns the distance between two points
         */
@@ -909,10 +947,13 @@ namespace Board_Game.Code
         internal void ChangeTurns()
         {
             currentTurn = (currentTurn + 1) % 2;
+            mSelector.mSide.ChangeColour(currentTurn);
         }
 
         internal void Update(GameTime gameTime)
         {
+            HandleInput();
+
             if ((!redIsHuman && currentTurn == Constants.RED)
                 || (!blueIsHuman && currentTurn == Constants.BLUE))
             {
@@ -930,41 +971,16 @@ namespace Board_Game.Code
             }
         }
 
-        //this._parent.redBtn.onRelease = function()
-        //{
-        //    //first we toggle to the opposite control scheme
-        //    redIsHuman = !redIsHuman;
-
-        //    if(redIsHuman)
-        //    {
-        //        this.txtController.text = "Human";
-        //    }
-        //    else
-        //    {
-        //        this.txtController.text = "AI";
-        //    }
-
-        //    CheckAILoop();
-        //}
-
-        //this._parent.blueBtn.onRelease = function()
-        //{
-        //    //first we toggle to the opposite control scheme
-        //    blueIsHuman = !blueIsHuman;
-
-        //    if(blueIsHuman)
-        //    {
-        //        this.txtController.text = "Human";
-        //    }
-        //    else
-        //    {
-        //        this.txtController.text = "AI";
-        //    }
-
-        //    CheckAILoop();
-        //}
-
-        //this._parent.txtWinLose.text = "";
-        //this._parent.txtWinLose.selectable = false;
+        public void HandleInput()
+        {
+            if (InputManager.Get().isTriggered(Keys.R))
+            {
+                redIsHuman = !redIsHuman;
+            }
+            else if (InputManager.Get().isTriggered(Keys.B))
+            {
+                blueIsHuman = !blueIsHuman;
+            }
+        }
     }
 }
