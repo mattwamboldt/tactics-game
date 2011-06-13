@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Board_Game.Code.UI;
 
 /*
     AI History: MSW
@@ -136,6 +137,8 @@ namespace Board_Game.Code
             SpriteFont unitName)
         {
             random = new Random();
+
+            //TODO: separate into a gamestate class
             mGrid = new GameGrid(Constants.GRID_WIDTH, Constants.GRID_HEIGHT, tileTexture, mineTexture);
 
             mBomberTexture = bomberTexture;
@@ -273,17 +276,17 @@ namespace Board_Game.Code
                 redString = "AI";
             }
 
-            spriteBatch.DrawString(mButton, redString, CenterAlign(new Rectangle(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
+            spriteBatch.DrawString(mButton, redString, Layout.CenterAlign(new Rectangle(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
 
             if (!blueIsHuman)
             {
                 blueString = "AI";
             }
 
-            spriteBatch.DrawString(mButton, blueString, CenterAlign(new Rectangle(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, mButton), Color.White);
+            spriteBatch.DrawString(mButton, blueString, Layout.CenterAlign(new Rectangle(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, mButton), Color.White);
             
             //--sidebar header
-            spriteBatch.DrawString(mButton, "UNITS", CenterAlign(new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), "UNITS", mButton), Color.White);
+            spriteBatch.DrawString(mButton, "UNITS", Layout.CenterAlign(new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), "UNITS", mButton), Color.White);
 
             //--unit descriptions
             string[] titles = new string[] { "BOMBER", "FIGHTER", "SOLDIER", "DE-MINER", "BAZOOKA" };
@@ -307,7 +310,7 @@ namespace Board_Game.Code
 
                 spriteBatch.DrawString(
                     mTutorial,
-                    WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, descriptions[i]),
+                    Layout.WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, descriptions[i]),
                     new Vector2(
                         Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
                         30 + 20 + 5 + (50 + 15) * i + 15),
@@ -322,7 +325,7 @@ namespace Board_Game.Code
 
             spriteBatch.DrawString(
                 mTutorial,
-                WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
+                Layout.WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
                 new Vector2(5, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30 + 5),
                 Color.White
             );
@@ -363,7 +366,7 @@ namespace Board_Game.Code
                 Vector2 backgroundSize = new Vector2(stringSize.X + 20, stringSize.Y + 10);
 
                 //draw the background and string centered to the grid
-                Vector2 backgroundLocation = CenterAlign(
+                Vector2 backgroundLocation = Layout.CenterAlign(
                     new Rectangle(
                         (int)mGrid.position.X,
                         (int)mGrid.position.Y,
@@ -383,51 +386,12 @@ namespace Board_Game.Code
                 spriteBatch.DrawString(
                     mButton,
                     victorString,
-                    CenterAlign(backgroundRect, victorString, mButton),
+                    Layout.CenterAlign(backgroundRect, victorString, mButton),
                     Color.White
                 );
             }
         }
-
-        /// <summary>
-        /// Takes an initial string and adds carriage returns to make it fit within a given width.
-        /// </summary>
-        /// <param name="width">The width of the space to fit into</param>
-        /// <param name="font">The font to render for measuring size</param>
-        /// <param name="text">The text to wrap</param>
-        /// <returns>The string with carriage returns to fit into the width</returns>
-        String WrapString(float width, SpriteFont font, String text)
-        {
-            //split the incoming text on spaces
-            string[] words = text.Split(new Char[] { ' ' });
-
-            //add each string to the builder measuring the width each time
-            //if its greater than the desired, add a carriage return
-            StringBuilder builder = new StringBuilder(text.Length);
-            
-            foreach (string word in words)
-            {
-                if (font.MeasureString(builder.ToString() + word + " ").X > width)
-                {
-                    builder.Append("\n");
-                }
-
-                builder.Append(word + " ");
-            }
-
-            return builder.ToString();
-        }
-
-        Vector2 CenterAlign(Rectangle parentRectangle, string text, SpriteFont font)
-        {
-            return CenterAlign(parentRectangle, font.MeasureString(text));
-        }
-
-        Vector2 CenterAlign(Rectangle parentRectangle, Vector2 dimensions)
-        {
-            return new Vector2(parentRectangle.Center.X - (int)(dimensions.X / 2), parentRectangle.Center.Y - (int)(dimensions.Y / 2));
-        }
-
+        
         /// <summary>
         /// Was AIPass in Flash. This decides which unit should move and then
         /// moves that unit.
@@ -485,6 +449,7 @@ namespace Board_Game.Code
 
                 unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X, true);
 
+                //TODO: move into a gamestate class update
                 if (colourToRun == Constants.BLUE)
                 {
                     CheckMines(Constants.RED);
@@ -497,33 +462,6 @@ namespace Board_Game.Code
                 CheckVictory();
             }
         }
-
-
-        //TODO: Could move to unit
-        /*
-            This tells us if a square is actually an enemy mine location. If the
-            unit in question is a deminer it returns false since they can move accross
-            those just fine.
-        */
-        public bool IsEnemyMine(int i, int j, Units.Unit Unit)
-        {
-            return Unit.Type != Constants.UnitType.Miner
-                && Unit.CanFly == false
-                && (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
-                && (mGrid.mMines[i / 2, j / 2].side.mColour != Unit.side.mColour);
-        }
-
-        /*
-            This tells us if a square is a friendly mine location.
-        */
-        public bool IsFriendlyMine(int i, int j, Units.Unit Unit)
-        {
-            return Unit.Type != Constants.UnitType.Miner
-                && Unit.CanFly == false
-                && (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
-                && (mGrid.mMines[i / 2, j / 2].side.mColour == Unit.side.mColour);
-        }
-        //end
 
         //TODO: Pull into a util or math type class
         public int FloorAtMinimum(int numberToLimit, int minimumAmount)
@@ -628,6 +566,7 @@ namespace Board_Game.Code
         }
         //end
 
+        //TODO: could be moved to a gamestate class
         //determines and sets the winner if a side has won by capturing all the mines.
         public bool MineVictory()
         {
@@ -648,6 +587,7 @@ namespace Board_Game.Code
             return true;
         }
 
+        //TODO: could be moved to a gamestate class
         //This checks to see who, if anyone, hsa won
         public void CheckVictory()
         {
@@ -673,6 +613,7 @@ namespace Board_Game.Code
             }
         }
 
+        //TODO: could be moved to a gamestate class
         //This function Checks to see if mines need to be changed to teh given colour
         //It also checks for any units that are on mines, that shoudl be deleted
         public void CheckMines(int colour)
@@ -714,6 +655,7 @@ namespace Board_Game.Code
             }
         }
 
+        //TODO: could be moved to the unit class
         /*
             Returns the unit that is closest to the given unit
         */
@@ -742,7 +684,7 @@ namespace Board_Game.Code
                     double distanceToUnit = GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
 
                     //if an opponent is on their mine they're safe so don't bother with them.
-                    if((distanceToUnit < distanceToNearest && IsEnemyMine(iCoord, jCoord, unit) == false)
+                    if((distanceToUnit < distanceToNearest && unit.IsEnemyMine(iCoord, jCoord) == false)
                        || nearestTarget.Y == -1)
                     {
                         nearestTarget.Y = iCoord;
@@ -755,6 +697,7 @@ namespace Board_Game.Code
             return nearestTarget;
         }
 
+        //TODO: could be moved to the unit class
         /*
             Returns the mine that is closest to the given unit
         */
@@ -802,6 +745,7 @@ namespace Board_Game.Code
             return nearestMine;
         }
 
+        //TODO: could be moved to the unit class
         /*
             This retreives all the locations the unit can move to.  
         */
@@ -852,7 +796,7 @@ namespace Board_Game.Code
                                 continue;
                             }
                         }
-                        else if(IsEnemyMine(i, j, unit))
+                        else if(unit.IsEnemyMine(i, j))
                         {
                             //avoid unoccupied enemy mines
                             continue;
@@ -876,7 +820,7 @@ namespace Board_Game.Code
                         }
 
                         //factor in if the move will get you killed
-                        if (IsEnemyMine((int)newMove.position.Y, (int)newMove.position.X, unit)
+                        if (unit.IsEnemyMine((int)newMove.position.Y, (int)newMove.position.X)
                             || IsDeathTrap((int)newMove.position.Y, (int)newMove.position.X, unit))
                         {
                             newMove.score -= GetUnitValue(unit);
@@ -889,6 +833,7 @@ namespace Board_Game.Code
 
             return moveList;
         }
+        //end
 
         //TODO: Expand to a pathfinding algorithm, to avoid units getting lost
         /*
@@ -900,6 +845,7 @@ namespace Board_Game.Code
             float iDifference = startPoint.Y - endPointI;
             return Math.Sqrt( (jDifference * jDifference) + (iDifference * iDifference) );
         }
+        //end
 
         /*
             This rates the destruction of the targetUnit given the sourceUnit's priorities

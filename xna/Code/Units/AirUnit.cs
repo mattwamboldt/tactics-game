@@ -77,5 +77,16 @@ namespace Board_Game.Code.Units
         {
             return new Vector2(Tile.MINE_SIZE, Tile.MINE_SIZE);
         }
+
+        //flying units ignore mines
+        public override bool IsEnemyMine(int i, int j)
+        {
+            return false;
+        }
+
+        public override bool IsFriendlyMine(int i, int j)
+        {
+            return false;
+        }
     }
 }

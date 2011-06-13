@@ -30,5 +30,16 @@ namespace Board_Game.Code.Units
 	        return false;
         }
 
+        //sides don't matter to miners since they convert
+        public override bool IsEnemyMine(int i, int j)
+        {
+            return false;
+        }
+
+        public override bool IsFriendlyMine(int i, int j)
+        {
+            return false;
+        }
+
     }
 }

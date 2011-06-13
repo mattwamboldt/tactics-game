@@ -172,5 +172,25 @@ namespace Board_Game.Code.Units
         {
             throw new NotImplementedException();
         }
+
+        /*
+            This tells us if a square is actually an enemy mine location. If the
+            unit in question is a deminer it returns false since they can move accross
+            those just fine.
+        */
+        public virtual bool IsEnemyMine(int i, int j)
+        {
+            return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
+                && (grid.mMines[i / 2, j / 2].side.mColour != side.mColour);
+        }
+
+        /*
+            This tells us if a square is a friendly mine location.
+        */
+        public virtual bool IsFriendlyMine(int i, int j)
+        {
+            return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
+                && (grid.mMines[i / 2, j / 2].side.mColour == side.mColour);
+        }
     }
 }
