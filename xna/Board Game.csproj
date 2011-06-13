@@ -87,6 +87,8 @@
     <Compile Include="Code\AI.cs" />
     <Compile Include="Code\Constants.cs" />
     <Compile Include="Code\GameGrid.cs" />
+    <Compile Include="Code\InputManager.cs" />
+    <Compile Include="Code\Selector.cs" />
     <Compile Include="Code\Sides.cs" />
     <Compile Include="Code\Tile.cs" />
     <Compile Include="Code\Units\AirUnit.cs" />

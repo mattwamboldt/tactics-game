@@ -39,7 +39,7 @@ namespace Board_Game
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            InputManager.Initialize();
 
             base.Initialize();
         }
@@ -62,6 +62,7 @@ namespace Board_Game
                 Content.Load<Texture2D>("textures/units/soldier"),
                 Content.Load<Texture2D>("textures/units/deminer"),
                 Content.Load<Texture2D>("textures/units/grenadier"),
+                Content.Load<Texture2D>("textures/UI/selector"),
                 Content.Load<SpriteFont>("fonts/Button"),
                 Content.Load<SpriteFont>("fonts/Tutorial"),
                 Content.Load<SpriteFont>("fonts/UnitName"));
@@ -88,6 +89,7 @@ namespace Board_Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            InputManager.Get().Update();
             mAI.Update(gameTime);
 
             // TODO: Add your update logic here

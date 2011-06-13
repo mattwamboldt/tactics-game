@@ -79,6 +79,11 @@ namespace Board_Game.Code.Units
                 color = Color.Blue;
             }
 
+            if (isSelected)
+            {
+                color = Color.Yellow;
+            }
+
             spriteBatch.Draw(
                 texture,
                 renderPosition,
@@ -152,70 +157,6 @@ namespace Board_Game.Code.Units
 
             return returnValue;
         }
-
-
-
-        /*
-         * Uncomment this as features are implemented
-         
-        //When user clicks on this unit...
-        this.onPress = function()
-        {
-	        //We check to see if it's the units turn
-	        if(this._parent.currentTurn == mColour)
-	        {
-		        //set the movement area of the piece.
-		        var clampArea = GetClampArea();
-		        startDrag(this, true, clampArea.leftCut, clampArea.topCut, clampArea.rightCut, clampArea.bottomCut);
-	        }
-        }
-
-        this.onRelease = function()
-        {
-	        if(this._parent.currentTurn == mColour)
-	        {
-		        var j = (this._x - this._x % this._width) / grid[originalI][originalJ]._width;
-		        var i = (this._y - this._y % this._height) / grid[originalI][originalJ]._height;
-		        if(CheckOccupied(i, j))
-		        {
-			        if(CheckColour(i,j) == true)
-			        {
-				        RemoveUnits(i, j);
-				        Move(i, j, true);
-				        if(mColour == RED)
-				        {
-					        this._parent.CheckMines(BLUE);
-				        }
-				        else if(mColour == BLUE)
-				        {
-					        this._parent.CheckMines(RED);
-				        }
-			        }
-			        else
-			        {
-				        Move(originalI, originalJ, false);
-			        }
-		        }
-		        else
-		        {
-			        Move(i, j, true);
-			        if(mColour == RED)
-			        {
-				        this._parent.CheckMines(BLUE);
-			        }
-			        else if(mColour == BLUE)
-			        {
-				        this._parent.CheckMines(RED);
-			        }
-		        }
-		        stopDrag();
-	        }
-        }
-
-        
-
-        this.onReleaseOutside = this.onRelease;
-        */
         
         public int GetI()
         {

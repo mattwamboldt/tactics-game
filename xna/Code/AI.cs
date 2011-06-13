@@ -114,6 +114,8 @@ namespace Board_Game.Code
         Texture2D mSoldierTexture;
         Texture2D mDeminerTexture;
         Texture2D mGrenadierTexture;
+        Selector mSelector;
+
         SpriteFont mButton;
         SpriteFont mTutorial;
         SpriteFont mUnitName;
@@ -126,6 +128,7 @@ namespace Board_Game.Code
             Texture2D soldierTexture,
             Texture2D deminerTexture,
             Texture2D grenadierTexture,
+            Texture2D selectorTexture,
             SpriteFont button,
             SpriteFont tutorial,
             SpriteFont unitName)
@@ -141,6 +144,8 @@ namespace Board_Game.Code
             mButton = button;
             mTutorial = tutorial;
             mUnitName = unitName;
+            mSelector = new Selector(selectorTexture, mGrid, this);
+            mSelector.mSide.TurnRed();
 
             //Here we assign a reference to the main grid for
             //each unit, and set their allegience. This is the only time
@@ -331,6 +336,8 @@ namespace Board_Game.Code
                     }
                 }
             }
+
+            mSelector.Render(spriteBatch, mGrid.position);
         }
 
         /// <summary>
@@ -906,16 +913,20 @@ namespace Board_Game.Code
 
         internal void Update(GameTime gameTime)
         {
-            if((!redIsHuman && currentTurn == Constants.RED)
+            if ((!redIsHuman && currentTurn == Constants.RED)
                 || (!blueIsHuman && currentTurn == Constants.BLUE))
             {
                 elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
-                
+
                 if (elapsedTime >= TURN_TIME)
                 {
                     Update(currentTurn);
                     elapsedTime = 0;
                 }
+            }
+            else
+            {
+                mSelector.HandleInput();
             }
         }
 
