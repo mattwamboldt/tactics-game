@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Board_Game.Code.UI;
+using Board_Game.Code.Util;
 
 /*
     AI History: MSW
@@ -98,7 +99,7 @@ namespace Board_Game.Code
     {
         int currentTurn = 0;
         //This is a guarunteed amount of time that has to pass
-        //between tunrs before teh AI process is allowed to fire.
+        //between turns before teh AI process is allowed to fire.
         //It prevents the game from running too quickly in AI vs AI matches
         const int TURN_TIME = 250;
         int elapsedTime = 0;
@@ -463,39 +464,6 @@ namespace Board_Game.Code
             }
         }
 
-        //TODO: Pull into a util or math type class
-        public int FloorAtMinimum(int numberToLimit, int minimumAmount)
-        {
-            if(numberToLimit < minimumAmount)
-            {
-                return minimumAmount;
-            }
-
-            return numberToLimit;
-        }
-
-        public int CapAtMaximum(int numberToLimit, int maximumAmount)
-        {
-            if(numberToLimit > maximumAmount)
-            {
-                return maximumAmount;
-            }
-
-            return numberToLimit;
-        }
-
-        public int MakeEven(int numberToEvenize)
-        {
-            if(numberToEvenize % 2 != 0)
-            {
-                return numberToEvenize - 1;
-            }
-
-            return numberToEvenize;
-        }
-        //end
-
-
         //TODO: Move to the Unit
         /*
             This tells us if a square is adjacent to units that will destroy the passed in units.
@@ -503,12 +471,13 @@ namespace Board_Game.Code
         public bool IsDeathTrap(int i, int j, Units.Unit Unit)
         {
             var unitAtIJ = mGrid.mTiles[i, j].occupiedUnit;
-            //first loop for adjacent ground units
-            var lowerI = FloorAtMinimum(i - 1, 0);
-            var lowerJ = FloorAtMinimum(j - 1, 0);
 
-            var upperI = CapAtMaximum(i + Unit.width, Constants.GRID_WIDTH - 1);
-            var upperJ = CapAtMaximum(j + Unit.height, Constants.GRID_HEIGHT - 1);
+            //first loop for adjacent ground units
+            var lowerI = Rounding.FloorAtMinimum(i - 1, 0);
+            var lowerJ = Rounding.FloorAtMinimum(j - 1, 0);
+
+            var upperI = Rounding.CapAtMaximum(i + Unit.width, Constants.GRID_WIDTH - 1);
+            var upperJ = Rounding.CapAtMaximum(j + Unit.height, Constants.GRID_HEIGHT - 1);
 
             for (var t = lowerI; t <= upperI; ++t)
             {
@@ -534,11 +503,11 @@ namespace Board_Game.Code
             }
 
             //then loop for surrounding air units
-            lowerI = MakeEven(FloorAtMinimum(i - 2, 0));
-            upperI = MakeEven(CapAtMaximum(i + 2, Constants.GRID_WIDTH - 2));
+            lowerI = Rounding.MakeEven(Rounding.FloorAtMinimum(i - 2, 0));
+            upperI = Rounding.MakeEven(Rounding.CapAtMaximum(i + 2, Constants.GRID_WIDTH - 2));
 
-            lowerJ = MakeEven(FloorAtMinimum(j - 2, 0));
-            upperJ = MakeEven(CapAtMaximum(j + 2, Constants.GRID_HEIGHT - 2));
+            lowerJ = Rounding.MakeEven(Rounding.FloorAtMinimum(j - 2, 0));
+            upperJ = Rounding.MakeEven(Rounding.CapAtMaximum(j + 2, Constants.GRID_HEIGHT - 2));
 
             for (var t = lowerI; t <= upperI; t += 2)
             {
