@@ -192,5 +192,46 @@ namespace Board_Game.Code.Units
             return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
                 && (grid.mMines[i / 2, j / 2].side.mColour == side.mColour);
         }
+
+        /*
+            Finds the space that the unit most wants to move into
+        */
+        public virtual Vector2 GetNearestTarget()
+        {
+            int opposingSide = Constants.RED;
+
+            if (side.mColour == Constants.RED)
+            {
+                opposingSide = Constants.BLUE;
+            }
+
+            Vector2 originalPoint = new Vector2(GetJ(), GetI());
+            Vector2 nearestTarget = new Vector2(-1, -1);
+
+            double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
+
+            for (var i = 0; i < attackablePriorities.Length; i++)
+            {
+                Constants.UnitType typeToAttack = attackablePriorities[i];
+
+                for (var t = 0; t < mAIRef.Units[opposingSide, (int)typeToAttack].Length; ++t)
+                {
+                    var iCoord = mAIRef.Units[opposingSide, (int)typeToAttack][t].GetI();
+                    var jCoord = mAIRef.Units[opposingSide, (int)typeToAttack][t].GetJ();
+                    double distanceToUnit = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+
+                    //if an opponent is on their mine they're safe so don't bother with them.
+                    if ((distanceToUnit < distanceToNearest && IsEnemyMine(iCoord, jCoord) == false)
+                       || nearestTarget.Y == -1)
+                    {
+                        nearestTarget.Y = iCoord;
+                        nearestTarget.X = jCoord;
+                        distanceToNearest = distanceToUnit;
+                    }
+                }
+            }
+
+            return nearestTarget;
+        }
     }
 }

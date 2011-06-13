@@ -111,6 +111,7 @@ namespace Board_Game.Code
         private Sides winner;
 
         private Units.Unit[,][] mUnits;
+        public Units.Unit[,][] Units { get { return mUnits; } }
         private GameGrid mGrid;
 
         Texture2D mBomberTexture;
@@ -414,16 +415,9 @@ namespace Board_Game.Code
 
                     for (int unitIndex = 0; unitIndex < array.Length; ++unitIndex)
                     {
-                        Vector2 target;
+                        
                         Units.Unit unit = array[unitIndex];
-                        if (unit.Type == Constants.UnitType.Miner)
-                        {
-                            target = GetNearestMine(unit);
-                        }
-                        else
-                        {
-                            target = GetNearestUnit(unit);
-                        }
+                        Vector2 target = unit.GetNearestTarget();
 
                         Stack<Move> possibleMoves = GetMoveList(unit, target);
 
@@ -622,96 +616,6 @@ namespace Board_Game.Code
                     }
                 }
             }
-        }
-
-        //TODO: could be moved to the unit class
-        /*
-            Returns the unit that is closest to the given unit
-        */
-        private Vector2 GetNearestUnit(Units.Unit unit)
-        {
-            int opposingSide = Constants.RED;
-
-            if (unit.side.mColour == Constants.RED)
-            {
-                opposingSide = Constants.BLUE;
-            }
-
-            Vector2 originalPoint = new Vector2(unit.GetJ(), unit.GetI());
-            Vector2 nearestTarget = new Vector2(-1,-1);
-
-            double distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
-
-            for (var i = 0; i < unit.attackablePriorities.Length; i++)
-            {
-                Constants.UnitType typeToAttack = unit.attackablePriorities[i];
-
-                for(var t = 0; t < mUnits[opposingSide, (int)typeToAttack].Length; ++t)
-                {
-                    var iCoord = mUnits[opposingSide, (int)typeToAttack][t].GetI();
-                    var jCoord = mUnits[opposingSide, (int)typeToAttack][t].GetJ();
-                    double distanceToUnit = GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
-
-                    //if an opponent is on their mine they're safe so don't bother with them.
-                    if((distanceToUnit < distanceToNearest && unit.IsEnemyMine(iCoord, jCoord) == false)
-                       || nearestTarget.Y == -1)
-                    {
-                        nearestTarget.Y = iCoord;
-                        nearestTarget.X = jCoord;
-                        distanceToNearest = distanceToUnit;
-                    }
-                }
-            }
-
-            return nearestTarget;
-        }
-
-        //TODO: could be moved to the unit class
-        /*
-            Returns the mine that is closest to the given unit
-        */
-        private Vector2 GetNearestMine(Units.Unit unit)
-        {
-            Vector2 originalPoint = new Vector2(unit.GetJ(), unit.GetI());
-            Vector2 nearestMine = new Vector2(-1, -1);
-
-            double distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
-
-            //The outer loop goes through the mines
-            for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
-            {
-                for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
-                {
-                    //only gets us mines that have a value
-                    if (i % 2 == j % 2)
-                    {
-                        //we want to head for mines of the opposite colour
-                        if (mGrid.mMines[i, j].side.mColour != unit.side.mColour)
-                        {
-                            //inner loops checks the mine itself
-                            for (var t = 0; t < 2; ++t)
-                            {
-                                for (var u = 0; u < 2; ++u)
-                                {
-                                    var iCoord = i * 2 + t;
-                                    var jCoord = j * 2 + u;
-                                    var distanceToMineSquare = GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
-
-                                    if (distanceToMineSquare < distanceToNearest
-                                       || nearestMine.Y == -1)
-                                    {
-                                        nearestMine.Y = iCoord;
-                                        nearestMine.X = jCoord;
-                                        distanceToNearest = distanceToMineSquare;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return nearestMine;
         }
 
         //TODO: could be moved to the unit class
