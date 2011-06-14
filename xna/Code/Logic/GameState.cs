@@ -14,6 +14,9 @@ namespace Board_Game.Code.Logic
         Player mRed;
         Player mBlue;
 
+        public Player Red { get { return mRed; } }
+        public Player Blue { get { return mBlue; } }
+
         public GameState(AI AIref)
         {
             //passing in the same AI for now, but could be different later

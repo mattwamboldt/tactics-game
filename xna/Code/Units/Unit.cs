@@ -190,11 +190,15 @@ namespace Board_Game.Code.Units
         */
         public virtual Vector2 GetNearestTarget()
         {
-            int opposingSide = Constants.RED;
+            List<Unit> opposingUnits;
 
             if (side == Constants.Side.Red)
             {
-                opposingSide = Constants.BLUE;
+                opposingUnits = mAIRef.State.Blue.Units;
+            }
+            else
+            {
+                opposingUnits = mAIRef.State.Red.Units;
             }
 
             Vector2 originalPoint = new Vector2(GetJ(), GetI());
@@ -202,14 +206,12 @@ namespace Board_Game.Code.Units
 
             double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
 
-            for (var i = 0; i < attackablePriorities.Length; i++)
+            foreach (Unit unit in opposingUnits)
             {
-                Constants.UnitType typeToAttack = attackablePriorities[i];
-
-                for (var t = 0; t < mAIRef.Units[opposingSide, (int)typeToAttack].Length; ++t)
+                if (CanAttack(unit.Type))
                 {
-                    var iCoord = mAIRef.Units[opposingSide, (int)typeToAttack][t].GetI();
-                    var jCoord = mAIRef.Units[opposingSide, (int)typeToAttack][t].GetJ();
+                    var iCoord = unit.GetI();
+                    var jCoord = unit.GetJ();
                     double distanceToUnit = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
 
                     //if an opponent is on their mine they're safe so don't bother with them.

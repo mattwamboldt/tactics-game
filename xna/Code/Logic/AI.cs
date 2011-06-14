@@ -111,10 +111,10 @@ namespace Board_Game.Code
         private Random random;
         private Constants.Side winner;
 
-        private Units.Unit[,][] mUnits;
-        public Units.Unit[,][] Units { get { return mUnits; } }
         public GameGrid mGrid;
         private GameState mGameState;
+
+        public GameState State { get { return mGameState; } }
 
         Texture2D mBomberTexture;
         Texture2D mFighterTexture;
@@ -166,73 +166,6 @@ namespace Board_Game.Code
                 deminerTexture,
                 grenadierTexture
             );
-
-            //Here we assign a reference to the main grid for
-            //each unit, and set their allegience. This is the only time
-            //this will be set until the game is over
-            //we also need to set the references for where the units initially stand
-
-            mUnits = new Units.Unit[Constants.NEUTRAL, Constants.NUM_UNIT_TYPES][];
-            mUnits[Constants.RED, Constants.BOMBER] = new Units.Unit[Constants.GRID_WIDTH/4];
-            mUnits[Constants.BLUE, Constants.BOMBER] = new Units.Unit[Constants.GRID_WIDTH/4];
-            mUnits[Constants.RED, Constants.FIGHTER] = new Units.Unit[Constants.GRID_WIDTH/4];
-            mUnits[Constants.BLUE, Constants.FIGHTER] = new Units.Unit[Constants.GRID_WIDTH/4];
-
-            for( int i = 0; i < Constants.GRID_WIDTH/4; ++i )
-            {
-                mUnits[Constants.RED, Constants.BOMBER][i] = new Units.Bomber(mGrid, this, bomberTexture);
-                mUnits[Constants.RED, Constants.BOMBER][i].side = Constants.Side.Red;
-                mUnits[Constants.RED, Constants.BOMBER][i].SetLocation((Constants.GRID_HEIGHT - 2), (i * 4) + 2);
-
-                mUnits[Constants.BLUE, Constants.BOMBER][i] = new Units.Bomber(mGrid, this, bomberTexture);
-                mUnits[Constants.BLUE, Constants.BOMBER][i].side = Constants.Side.Blue;
-                mUnits[Constants.BLUE, Constants.BOMBER][i].SetLocation(0, i * 4);
-
-                mUnits[Constants.RED, Constants.FIGHTER][i] = new Units.Fighter(mGrid, this, fighterTexture);
-                mUnits[Constants.RED, Constants.FIGHTER][i].side = Constants.Side.Red;
-                mUnits[Constants.RED, Constants.FIGHTER][i].SetLocation((Constants.GRID_HEIGHT - 2), i * 4);
-
-                mUnits[Constants.BLUE, Constants.FIGHTER][i] = new Units.Fighter(mGrid, this, fighterTexture);
-                mUnits[Constants.BLUE, Constants.FIGHTER][i].side = Constants.Side.Blue;
-                mUnits[Constants.BLUE, Constants.FIGHTER][i].SetLocation(0, (i * 4) + 2);
-            }
-
-            mUnits[Constants.RED, Constants.MINER] = new Units.Unit[Constants.GRID_WIDTH/2];
-            mUnits[Constants.BLUE, Constants.MINER] = new Units.Unit[Constants.GRID_WIDTH/2];
-            mUnits[Constants.RED, Constants.GRANADIER] = new Units.Unit[Constants.GRID_WIDTH/2];
-            mUnits[Constants.BLUE, Constants.GRANADIER] = new Units.Unit[Constants.GRID_WIDTH/2];
-
-            for( var i = 0; i < Constants.GRID_WIDTH/2; ++i )
-            {
-                mUnits[Constants.RED, Constants.MINER][i] = new Units.Deminer(mGrid, this, deminerTexture);
-                mUnits[Constants.RED, Constants.MINER][i].side = Constants.Side.Red;
-                mUnits[Constants.RED, Constants.MINER][i].SetLocation((Constants.GRID_HEIGHT - 3), ((i % 2) + 1) + (int)(4 * Math.Floor(i / 2.0f)));
-
-                mUnits[Constants.BLUE, Constants.MINER][i] = new Units.Deminer(mGrid, this, deminerTexture);
-                mUnits[Constants.BLUE, Constants.MINER][i].side = Constants.Side.Blue;
-                mUnits[Constants.BLUE, Constants.MINER][i].SetLocation(2, ((i % 2) + 1) + (4 * (int)(Math.Floor(i / 2.0f))));
-
-                mUnits[Constants.RED, Constants.GRANADIER][i] = new Units.Grenadier(mGrid, this, grenadierTexture);
-                mUnits[Constants.RED, Constants.GRANADIER][i].side = Constants.Side.Red;
-                mUnits[Constants.RED, Constants.GRANADIER][i].SetLocation((Constants.GRID_HEIGHT - 3), (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
-
-                mUnits[Constants.BLUE, Constants.GRANADIER][i] = new Units.Grenadier(mGrid, this, grenadierTexture);
-                mUnits[Constants.BLUE, Constants.GRANADIER][i].side = Constants.Side.Blue;
-                mUnits[Constants.BLUE, Constants.GRANADIER][i].SetLocation(2, (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
-            }
-
-            mUnits[Constants.RED, Constants.SOLDIER] = new Units.Unit[Constants.GRID_WIDTH];
-            mUnits[Constants.BLUE, Constants.SOLDIER] = new Units.Unit[Constants.GRID_WIDTH];
-            for( var i = 0; i < Constants.GRID_WIDTH; ++i )
-            {
-                mUnits[Constants.RED, Constants.SOLDIER][i] = new Units.Soldier(mGrid, this, soldierTexture);
-                mUnits[Constants.RED, Constants.SOLDIER][i].side = Constants.Side.Red;
-                mUnits[Constants.RED, Constants.SOLDIER][i].SetLocation((Constants.GRID_HEIGHT - 4), i);
-
-                mUnits[Constants.BLUE, Constants.SOLDIER][i] = new Units.Soldier(mGrid, this, soldierTexture);
-                mUnits[Constants.BLUE, Constants.SOLDIER][i].side = Constants.Side.Blue;
-                mUnits[Constants.BLUE, Constants.SOLDIER][i].SetLocation(3, i);
-            }
         }
 
         public void Render(SpriteBatch spriteBatch)
@@ -347,16 +280,8 @@ namespace Board_Game.Code
             mGrid.Render(spriteBatch);
 
             //draw the units
-            for (int side = 0; side < Constants.NEUTRAL; ++side)
-            {
-                for (int unitType = 0; unitType < Constants.NUM_UNIT_TYPES; ++unitType)
-                {
-                    for (int i = 0; i < mUnits[side, unitType].Length; ++i)
-                    {
-                        mUnits[side, unitType][i].Render(spriteBatch, mGrid.position);
-                    }
-                }
-            }
+            mGameState.Blue.Render(spriteBatch, mGrid.position);
+            mGameState.Red.Render(spriteBatch, mGrid.position);
 
             mSelector.Render(spriteBatch, mGrid.position);
 
@@ -420,30 +345,34 @@ namespace Board_Game.Code
                 bestMove.position.X = -99;
                 Units.Unit unitToMove = null;
 
-                for (int unitType = 0; unitType < Constants.NUM_UNIT_TYPES; unitType++)
+                List<Units.Unit> units;
+
+                if(colourToRun == (int)Constants.Side.Red)
                 {
-                    Units.Unit[] array = mUnits[colourToRun, unitType];
+                    units = mGameState.Red.Units;
+                }
+                else
+                {
+                    units = mGameState.Blue.Units;
+                }
 
-                    for (int unitIndex = 0; unitIndex < array.Length; ++unitIndex)
+                foreach (Units.Unit unit in units)
+                {
+                    Vector2 target = unit.GetNearestTarget();
+
+                    Stack<Move> possibleMoves = GetMoveList(unit, target);
+
+                    if (possibleMoves.Count == 0)
                     {
-                        
-                        Units.Unit unit = array[unitIndex];
-                        Vector2 target = unit.GetNearestTarget();
+                        Console.Out.WriteLine("No moves for " + unit.Type + " at " + unit.position);
+                    }
 
-                        Stack<Move> possibleMoves = GetMoveList(unit, target);
-
-                        if (possibleMoves.Count == 0)
+                    foreach (Move move in possibleMoves)
+                    {
+                        if (unitToMove == null || bestMove.score < move.score)
                         {
-                            Console.Out.WriteLine("No moves for " + unitType + " at " + unit.position);
-                        }
-
-                        foreach (Move move in possibleMoves)
-                        {
-                            if (unitToMove == null || bestMove.score < move.score)
-                            {
-                                bestMove = move;
-                                unitToMove = unit;
-                            }
+                            bestMove = move;
+                            unitToMove = unit;
                         }
                     }
                 }
@@ -568,19 +497,11 @@ namespace Board_Game.Code
             if (!MineVictory())
             {
                 //we need to check for a destruction victory
-                if (mUnits[Constants.RED, Constants.SOLDIER].Length == 0
-                    && mUnits[Constants.RED, Constants.FIGHTER].Length == 0
-                    && mUnits[Constants.RED, Constants.SOLDIER].Length == 0
-                    && mUnits[Constants.RED, Constants.GRANADIER].Length == 0
-                    && mUnits[Constants.RED, Constants.MINER].Length == 0)
+                if (mGameState.Red.Units.Count == 0)
                 {
                     winner = Constants.Side.Blue;
                 }
-                else if (mUnits[Constants.BLUE, Constants.BOMBER].Length == 0
-                    && mUnits[Constants.BLUE, Constants.FIGHTER].Length == 0
-                    && mUnits[Constants.BLUE, Constants.SOLDIER].Length == 0
-                    && mUnits[Constants.BLUE, Constants.GRANADIER].Length == 0
-                    && mUnits[Constants.BLUE, Constants.MINER].Length == 0)
+                else if (mGameState.Blue.Units.Count == 0)
                 {
                     winner = Constants.Side.Red;
                 }
@@ -760,9 +681,18 @@ namespace Board_Game.Code
         //This will search through the arrays and eliminate the given unit
         internal void RemoveUnit(Units.Unit unit)
         {
-            List<Units.Unit> UnitList = new List<Units.Unit>(mUnits[(int)unit.side, (int)unit.Type]);
-            UnitList.Remove(unit);
-            mUnits[(int)unit.side, (int)unit.Type] = UnitList.ToArray();
+            List<Units.Unit> units;
+
+            if (unit.side == Constants.Side.Blue)
+            {
+                units = mGameState.Blue.Units;
+            }
+            else
+            {
+                units = mGameState.Red.Units;
+            }
+
+            units.Remove(unit);
             unit = null;
         }
 

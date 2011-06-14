@@ -5,6 +5,7 @@ using System.Text;
 
 using Board_Game.Code.Units;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace Board_Game.Code.Logic
 {
@@ -21,6 +22,8 @@ namespace Board_Game.Code.Logic
         private List<Unit> mUnits;
         private GameGrid mGrid;
         private AI mAI;
+
+        public List<Unit> Units { get { return mUnits; } }
 
         public Player(bool isHuman, Constants.Side side, AI AIref)
         {
@@ -57,7 +60,10 @@ namespace Board_Game.Code.Logic
                 {
                     bomber.SetLocation(0, i * 4);
                     fighter.SetLocation(0, (i * 4) + 2);
-                }                
+                }
+
+                mUnits.Add(bomber);
+                mUnits.Add(fighter);
             }
 
             for (int i = 0; i < Constants.GRID_WIDTH / 2; ++i)
@@ -78,11 +84,14 @@ namespace Board_Game.Code.Logic
                     miner.SetLocation(2, ((i % 2) + 1) + (4 * (int)(Math.Floor(i / 2.0f))));
                     grenadier.SetLocation(2, (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
                 }
+
+                mUnits.Add(miner);
+                mUnits.Add(grenadier);
             }
 
             for( var i = 0; i < Constants.GRID_WIDTH; ++i )
             {
-                Units.Deminer soldier = new Deminer(mGrid, mAI, soldierTexture);
+                Units.Soldier soldier = new Soldier(mGrid, mAI, soldierTexture);
                 soldier.side = mSide;
 
                 if (mSide == Constants.Side.Red)
@@ -93,6 +102,16 @@ namespace Board_Game.Code.Logic
                 {
                     soldier.SetLocation(3, i);
                 }
+
+                mUnits.Add(soldier);
+            }
+        }
+
+        public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
+        {
+            foreach (Unit unit in mUnits)
+            {
+                unit.Render(spriteBatch, parentLocation);
             }
         }
     }
