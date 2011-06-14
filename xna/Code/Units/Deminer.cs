@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code.Units
 {
@@ -45,33 +46,28 @@ namespace Board_Game.Code.Units
             double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
 
             //The outer loop goes through the mines
-            for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
+            foreach (Mine mine in grid.mMines)
             {
-                for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
+                //we want to head for mines of the opposite colour
+                if (mine.side.mColour != side.mColour)
                 {
-                    //only gets us mines that have a value
-                    if (i % 2 == j % 2)
-                    {
-                        //we want to head for mines of the opposite colour
-                        if (grid.mMines[i, j].side.mColour != side.mColour)
-                        {
-                            //inner loops checks the mine itself
-                            for (var t = 0; t < 2; ++t)
-                            {
-                                for (var u = 0; u < 2; ++u)
-                                {
-                                    var iCoord = i * 2 + t;
-                                    var jCoord = j * 2 + u;
-                                    var distanceToMineSquare = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+                    Vector2 mineCorner = mine.position;
 
-                                    if (distanceToMineSquare < distanceToNearest
-                                       || nearestMine.Y == -1)
-                                    {
-                                        nearestMine.Y = iCoord;
-                                        nearestMine.X = jCoord;
-                                        distanceToNearest = distanceToMineSquare;
-                                    }
-                                }
+                    //inner loops checks the mine itself
+                    for (var t = 0; t < 2; ++t)
+                    {
+                        for (var u = 0; u < 2; ++u)
+                        {
+                            var iCoord = mineCorner.Y * 2 + t;
+                            var jCoord = mineCorner.X * 2 + u;
+                            var distanceToMineSquare = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+
+                            if (distanceToMineSquare < distanceToNearest
+                               || nearestMine.Y == -1)
+                            {
+                                nearestMine.Y = iCoord;
+                                nearestMine.X = jCoord;
+                                distanceToNearest = distanceToMineSquare;
                             }
                         }
                     }

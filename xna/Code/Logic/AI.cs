@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Board_Game.Code.UI;
 using Board_Game.Code.Util;
+using Board_Game.Code.Logic;
 
 /*
     AI History: MSW
@@ -581,36 +582,28 @@ namespace Board_Game.Code
         //It also checks for any units that are on mines, that shoudl be deleted
         public void CheckMines(int colour)
         {
-            //The outer loop goes through the mines
-            for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
+            foreach(Mine mine in mGrid.mMines)
             {
-                for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
+                //inner loops checks the mine itself
+                for (var t = 0; t < 2; ++t)
                 {
-                    //only gets us mines that have a value
-                    if (i % 2 == j % 2)
+                    for (var u = 0; u < 2; ++u)
                     {
-                        //inner loops checks the mine itself
-                        for (var t = 0; t < 2; ++t)
+                        var square = mGrid.mTiles[(int)mine.position.Y * 2 + t, (int)mine.position.X * 2 + u];
+                        if (square.occupiedUnit != null)
                         {
-                            for (var u = 0; u < 2; ++u)
+                            if (square.occupiedUnit.Type == Constants.UnitType.Miner
+                                && square.side.mColour == colour)
                             {
-                                var square = mGrid.mTiles[i * 2 + t, j * 2 + u];
-                                if (square.occupiedUnit != null)
-                                {
-                                    if (square.occupiedUnit.Type == Constants.UnitType.Miner
-                                        && square.side.mColour == colour)
-                                    {
-                                        mGrid.mMines[i, j].side.ChangeColour(colour);
-                                    }
-                                    else if (square.occupiedUnit.side.mColour != mGrid.mMines[i, j].side.mColour
-                                            && square.occupiedUnit.Type != Constants.UnitType.Miner
-                                            && square.occupiedUnit.CanFly == false)
-                                    {
-                                        RemoveUnit(square.occupiedUnit);
-                                        square.occupied = false;
-                                        square.side.TurnNeutral();
-                                    }
-                                }
+                                mine.side.ChangeColour(colour);
+                            }
+                            else if (square.occupiedUnit.side.mColour != mine.side.mColour
+                                    && square.occupiedUnit.Type != Constants.UnitType.Miner
+                                    && square.occupiedUnit.CanFly == false)
+                            {
+                                RemoveUnit(square.occupiedUnit);
+                                square.occupied = false;
+                                square.side.TurnNeutral();
                             }
                         }
                     }

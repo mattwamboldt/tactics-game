@@ -11,7 +11,7 @@ namespace Board_Game.Code
     class GameGrid
     {
         public Tile[,] mTiles;
-        public Mine[,] mMines;
+        public List<Mine> mMines;
         public Vector2 position;
 
         public GameGrid(int width, int height, Texture2D tileTexture, Texture2D mineTexture)
@@ -26,7 +26,7 @@ namespace Board_Game.Code
                 }
             }
 
-            mMines = new Mine[width / 2, height / 2];
+            mMines = new List<Mine>((width / 4) * (height / 2));
 
             for (int i = 0; i < width / 2; ++i)
             {
@@ -34,22 +34,19 @@ namespace Board_Game.Code
                 {
                     if (i % 2 == j % 2)
                     {
-                        mMines[i, j] = new Mine(mineTexture, j, i);
+                        Mine newMine = new Mine(mineTexture, j, i);
 
                         if (i < 2)
                         {
-                            mMines[i, j].side.TurnBlue();
+                            newMine.side.TurnBlue();
                         }
                         else if (i >= (height / 2) - 2)
                         {
-                            mMines[i, j].side.TurnRed();
+                            newMine.side.TurnRed();
                         }
 
-                        mTiles[i * 2, j * 2].mine = mMines[i, j];
-                    }
-                    else
-                    {
-                        mMines[i, j] = null;
+                        mTiles[i * 2, j * 2].mine = newMine;
+                        mMines.Add(newMine);
                     }
                 }
             }
@@ -65,15 +62,9 @@ namespace Board_Game.Code
                 }
             }
 
-            for (int i = 0; i <= mMines.GetUpperBound(0); ++i)
+            foreach (Mine mine in mMines)
             {
-                for (var j = 0; j <= mMines.GetUpperBound(1); ++j)
-                {
-                    if (mMines[i, j] != null)
-                    {
-                        mMines[i, j].Render(spriteBatch, position);
-                    }
-                }
+                mine.Render(spriteBatch, position);
             }
         }
     }
