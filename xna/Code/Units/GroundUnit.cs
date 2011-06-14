@@ -25,7 +25,7 @@ namespace Board_Game.Code.Units
             }
 
             grid.mTiles[originalI, originalJ].occupied = false;
-            grid.mTiles[originalI, originalJ].side.TurnNeutral();
+            grid.mTiles[originalI, originalJ].side = Constants.Side.Neutral;
             grid.mTiles[originalI, originalJ].occupiedUnit = null;
             SetLocation(newLocationI, newLocationJ);
         }
@@ -38,7 +38,7 @@ namespace Board_Game.Code.Units
         public override void SetLocation(int newLocationI, int newLocationJ)
         {
             grid.mTiles[newLocationI, newLocationJ].occupied = true;
-            grid.mTiles[newLocationI, newLocationJ].side.mColour = side.mColour;
+            grid.mTiles[newLocationI, newLocationJ].side = side;
             grid.mTiles[newLocationI, newLocationJ].occupiedUnit = this;
 
             position.X = newLocationJ * Tile.TILE_SIZE;

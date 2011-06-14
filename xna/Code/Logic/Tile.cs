@@ -13,7 +13,7 @@ namespace Board_Game.Code
         public const float TILE_SIZE = 25;
 
         public bool occupied;
-        public Sides side;
+        public Constants.Side side;
         public Units.Unit occupiedUnit;
         public Mine mine;
 
@@ -23,7 +23,7 @@ namespace Board_Game.Code
         public Tile(Texture2D inTexture, int x, int y)
         {
             occupied = false;
-            side = new Sides();
+            side = Constants.Side.Neutral;
             occupiedUnit = null;
             mine = null;
             position = new Vector2(x, y);

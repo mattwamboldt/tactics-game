@@ -10,7 +10,7 @@ namespace Board_Game.Code
 {
     class Selector
     {
-        public Sides mSide;
+        public Constants.Side mSide;
         public GameGrid mGridRef;
         public AI mAIRef;
 
@@ -28,7 +28,7 @@ namespace Board_Game.Code
             texture = selectorTexture;
             position = new Vector2();
 
-            mSide = new Sides();
+            mSide = Constants.Side.Neutral;
             mGridRef = grid;
             mAIRef = AIRef;
             selectedUnit = null;
@@ -45,11 +45,11 @@ namespace Board_Game.Code
 
             Color color = Color.White;
 
-            if (mSide.mColour == Constants.RED)
+            if (mSide == Constants.Side.Red)
             {
                 color = Color.Red;
             }
-            else if (mSide.mColour == Constants.BLUE)
+            else if (mSide == Constants.Side.Blue)
             {
                 color = Color.Blue;
             }
@@ -103,7 +103,7 @@ namespace Board_Game.Code
             if (mGridRef.mTiles[(int)position.Y, (int)position.X].occupied)
             {
                 Units.Unit unit = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedUnit;
-                if (unit.side.mColour == mSide.mColour)
+                if (unit.side == mSide)
                 {
                     selectedUnit = unit;
                     unit.isSelected = true;
@@ -127,13 +127,13 @@ namespace Board_Game.Code
                     selectedUnit.Move(i, j, true);
                     selectedUnit = null;
 
-                    if (mSide.mColour == Constants.RED)
+                    if (mSide == Constants.Side.Red)
                     {
-                        mAIRef.CheckMines(Constants.BLUE);
+                        mAIRef.CheckMines(Constants.Side.Blue);
                     }
-                    else if (mSide.mColour == Constants.BLUE)
+                    else if (mSide == Constants.Side.Blue)
                     {
-                        mAIRef.CheckMines(Constants.RED);
+                        mAIRef.CheckMines(Constants.Side.Red);
                     }
 
                     mAIRef.CheckVictory();
@@ -145,7 +145,7 @@ namespace Board_Game.Code
                         selectedUnit = null;
                         unit.isSelected = false;
                     }
-                    else if (unit != null && unit.side.mColour == mSide.mColour)
+                    else if (unit != null && unit.side == mSide)
                     {
                         selectedUnit.isSelected = false;
                         selectedUnit = unit;
@@ -160,13 +160,13 @@ namespace Board_Game.Code
                 selectedUnit.Move(i, j, true);
                 selectedUnit = null;
 
-                if (mSide.mColour == Constants.RED)
+                if (mSide == Constants.Side.Red)
                 {
-                    mAIRef.CheckMines(Constants.BLUE);
+                    mAIRef.CheckMines(Constants.Side.Blue);
                 }
-                else if (mSide.mColour == Constants.BLUE)
+                else if (mSide == Constants.Side.Blue)
                 {
-                    mAIRef.CheckMines(Constants.RED);
+                    mAIRef.CheckMines(Constants.Side.Red);
                 }
 
                 mAIRef.CheckVictory();

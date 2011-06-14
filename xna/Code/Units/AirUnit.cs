@@ -25,7 +25,7 @@ namespace Board_Game.Code.Units
 		        for(var j = 0; j < 2; ++j)
 		        {
 			        grid.mTiles[newLocationI + i, newLocationJ + j].occupied = true;
-                    grid.mTiles[newLocationI + i, newLocationJ + j].side.mColour = side.mColour;
+                    grid.mTiles[newLocationI + i, newLocationJ + j].side = side;
                     grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit = this;
 		        }
 	        }
@@ -52,7 +52,7 @@ namespace Board_Game.Code.Units
 		        for(var j = 0; j < 2; ++j)
 		        {
 			        grid.mTiles[originalI + i, originalJ + j].occupied = false;
-			        grid.mTiles[originalI + i, originalJ + j].side.TurnNeutral();
+			        grid.mTiles[originalI + i, originalJ + j].side = Constants.Side.Neutral;
 			        grid.mTiles[originalI + i, originalJ + j].occupiedUnit = null;
 		        }
 	        }

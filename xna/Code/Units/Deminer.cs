@@ -19,7 +19,7 @@ namespace Board_Game.Code.Units
 
         public override bool CheckColour(int i, int j)
         {
-            return grid.mTiles[i, j].side.mColour != side.mColour && !grid.mTiles[i, j].occupied;
+            return grid.mTiles[i, j].side != side && !grid.mTiles[i, j].occupied;
         }
 
         public override void RemoveUnits(int newLocationI, int newLocationJ)
@@ -49,7 +49,7 @@ namespace Board_Game.Code.Units
             foreach (Mine mine in grid.mMines)
             {
                 //we want to head for mines of the opposite colour
-                if (mine.side.mColour != side.mColour)
+                if (mine.side != side)
                 {
                     Vector2 mineCorner = mine.position;
 

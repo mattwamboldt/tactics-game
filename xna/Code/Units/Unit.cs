@@ -24,7 +24,7 @@ namespace Board_Game.Code.Units
         public int originalJ;
 
         //this allows us to set the colour
-        public Sides side;
+        public Constants.Side side;
 
         //This gives the unit an awareness of the other units on the playing field
         //so it can destroy itself or better than that, enemy units
@@ -51,7 +51,7 @@ namespace Board_Game.Code.Units
             originalJ = 0;
             grid = gridRef;
             mAIRef = AIRef;
-            side = new Sides();
+            side = Constants.Side.Neutral;
             Type = Constants.UnitType.Undefined;
             CanFly = false;
             position = new Vector2(0, 0);
@@ -70,11 +70,11 @@ namespace Board_Game.Code.Units
 
             Color color = Color.White;
 
-            if (side.mColour == Constants.RED)
+            if (side == Constants.Side.Red)
             {
                 color = Color.Red;
             }
-            else if (side.mColour == Constants.BLUE)
+            else if (side == Constants.Side.Blue)
             {
                 color = Color.Blue;
             }
@@ -181,7 +181,7 @@ namespace Board_Game.Code.Units
         public virtual bool IsEnemyMine(int i, int j)
         {
             return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
-                && (grid.mTiles[i - i % 2, j - j % 2].mine.side.mColour != side.mColour);
+                && (grid.mTiles[i - i % 2, j - j % 2].mine.side != side);
         }
 
         /*
@@ -192,7 +192,7 @@ namespace Board_Game.Code.Units
         {
             int opposingSide = Constants.RED;
 
-            if (side.mColour == Constants.RED)
+            if (side == Constants.Side.Red)
             {
                 opposingSide = Constants.BLUE;
             }

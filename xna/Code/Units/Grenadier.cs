@@ -23,7 +23,7 @@ namespace Board_Game.Code.Units
 
         public override bool CheckColour(int i, int j)
         {
-	        return grid.mTiles[i, j].side.mColour != side.mColour;
+	        return grid.mTiles[i, j].side != side;
         }
 
         public override void RemoveUnits(int newLocationI, int newLocationJ)
@@ -39,7 +39,7 @@ namespace Board_Game.Code.Units
 			        for(var j = 0; j < 2; ++j)
 			        {
                         grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupied = false;
-                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].side.TurnNeutral();
+                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].side = Constants.Side.Neutral;
                         grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupiedUnit = null;
 			        }
 		        }

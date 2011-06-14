@@ -109,11 +109,12 @@ namespace Board_Game.Code
         bool blueIsHuman = false;
         public int[] unitWorths = { 8, 7, 2, 6, 4 };
         private Random random;
-        private Sides winner;
+        private Constants.Side winner;
 
         private Units.Unit[,][] mUnits;
         public Units.Unit[,][] Units { get { return mUnits; } }
-        private GameGrid mGrid;
+        public GameGrid mGrid;
+        private GameState mGameState;
 
         Texture2D mBomberTexture;
         Texture2D mFighterTexture;
@@ -149,13 +150,22 @@ namespace Board_Game.Code
             mSoldierTexture = soldierTexture;
             mDeminerTexture = deminerTexture;
             mGrenadierTexture = grenadierTexture;
+
             mButton = button;
             mTutorial = tutorial;
             mUnitName = unitName;
             mSelector = new Selector(selectorTexture, mGrid, this);
-            mSelector.mSide.TurnRed();
-            winner = new Sides();
-            winner.TurnNeutral();
+            mSelector.mSide = Constants.Side.Red;
+            winner = Constants.Side.Neutral;
+
+            mGameState = new GameState(this);
+            mGameState.Initialize(
+                bomberTexture,
+                fighterTexture,
+                soldierTexture,
+                deminerTexture,
+                grenadierTexture
+            );
 
             //Here we assign a reference to the main grid for
             //each unit, and set their allegience. This is the only time
@@ -171,19 +181,19 @@ namespace Board_Game.Code
             for( int i = 0; i < Constants.GRID_WIDTH/4; ++i )
             {
                 mUnits[Constants.RED, Constants.BOMBER][i] = new Units.Bomber(mGrid, this, bomberTexture);
-                mUnits[Constants.RED, Constants.BOMBER][i].side.TurnRed();
+                mUnits[Constants.RED, Constants.BOMBER][i].side = Constants.Side.Red;
                 mUnits[Constants.RED, Constants.BOMBER][i].SetLocation((Constants.GRID_HEIGHT - 2), (i * 4) + 2);
 
                 mUnits[Constants.BLUE, Constants.BOMBER][i] = new Units.Bomber(mGrid, this, bomberTexture);
-                mUnits[Constants.BLUE, Constants.BOMBER][i].side.TurnBlue();
+                mUnits[Constants.BLUE, Constants.BOMBER][i].side = Constants.Side.Blue;
                 mUnits[Constants.BLUE, Constants.BOMBER][i].SetLocation(0, i * 4);
 
                 mUnits[Constants.RED, Constants.FIGHTER][i] = new Units.Fighter(mGrid, this, fighterTexture);
-                mUnits[Constants.RED, Constants.FIGHTER][i].side.TurnRed();
+                mUnits[Constants.RED, Constants.FIGHTER][i].side = Constants.Side.Red;
                 mUnits[Constants.RED, Constants.FIGHTER][i].SetLocation((Constants.GRID_HEIGHT - 2), i * 4);
 
                 mUnits[Constants.BLUE, Constants.FIGHTER][i] = new Units.Fighter(mGrid, this, fighterTexture);
-                mUnits[Constants.BLUE, Constants.FIGHTER][i].side.TurnBlue();
+                mUnits[Constants.BLUE, Constants.FIGHTER][i].side = Constants.Side.Blue;
                 mUnits[Constants.BLUE, Constants.FIGHTER][i].SetLocation(0, (i * 4) + 2);
             }
 
@@ -195,19 +205,19 @@ namespace Board_Game.Code
             for( var i = 0; i < Constants.GRID_WIDTH/2; ++i )
             {
                 mUnits[Constants.RED, Constants.MINER][i] = new Units.Deminer(mGrid, this, deminerTexture);
-                mUnits[Constants.RED, Constants.MINER][i].side.TurnRed();
+                mUnits[Constants.RED, Constants.MINER][i].side = Constants.Side.Red;
                 mUnits[Constants.RED, Constants.MINER][i].SetLocation((Constants.GRID_HEIGHT - 3), ((i % 2) + 1) + (int)(4 * Math.Floor(i / 2.0f)));
 
                 mUnits[Constants.BLUE, Constants.MINER][i] = new Units.Deminer(mGrid, this, deminerTexture);
-                mUnits[Constants.BLUE, Constants.MINER][i].side.TurnBlue();
+                mUnits[Constants.BLUE, Constants.MINER][i].side = Constants.Side.Blue;
                 mUnits[Constants.BLUE, Constants.MINER][i].SetLocation(2, ((i % 2) + 1) + (4 * (int)(Math.Floor(i / 2.0f))));
 
                 mUnits[Constants.RED, Constants.GRANADIER][i] = new Units.Grenadier(mGrid, this, grenadierTexture);
-                mUnits[Constants.RED, Constants.GRANADIER][i].side.TurnRed();
+                mUnits[Constants.RED, Constants.GRANADIER][i].side = Constants.Side.Red;
                 mUnits[Constants.RED, Constants.GRANADIER][i].SetLocation((Constants.GRID_HEIGHT - 3), (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
 
                 mUnits[Constants.BLUE, Constants.GRANADIER][i] = new Units.Grenadier(mGrid, this, grenadierTexture);
-                mUnits[Constants.BLUE, Constants.GRANADIER][i].side.TurnBlue();
+                mUnits[Constants.BLUE, Constants.GRANADIER][i].side = Constants.Side.Blue;
                 mUnits[Constants.BLUE, Constants.GRANADIER][i].SetLocation(2, (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
             }
 
@@ -216,11 +226,11 @@ namespace Board_Game.Code
             for( var i = 0; i < Constants.GRID_WIDTH; ++i )
             {
                 mUnits[Constants.RED, Constants.SOLDIER][i] = new Units.Soldier(mGrid, this, soldierTexture);
-                mUnits[Constants.RED, Constants.SOLDIER][i].side.TurnRed();
+                mUnits[Constants.RED, Constants.SOLDIER][i].side = Constants.Side.Red;
                 mUnits[Constants.RED, Constants.SOLDIER][i].SetLocation((Constants.GRID_HEIGHT - 4), i);
 
                 mUnits[Constants.BLUE, Constants.SOLDIER][i] = new Units.Soldier(mGrid, this, soldierTexture);
-                mUnits[Constants.BLUE, Constants.SOLDIER][i].side.TurnBlue();
+                mUnits[Constants.BLUE, Constants.SOLDIER][i].side = Constants.Side.Blue;
                 mUnits[Constants.BLUE, Constants.SOLDIER][i].SetLocation(3, i);
             }
         }
@@ -350,16 +360,16 @@ namespace Board_Game.Code
 
             mSelector.Render(spriteBatch, mGrid.position);
 
-            if (winner.mColour != Constants.NEUTRAL)
+            if (winner != Constants.Side.Neutral)
             {
                 //we have a winner
 
                 string victorString = "";
-                if (winner.mColour == Constants.RED)
+                if (winner == Constants.Side.Red)
                 {
                     victorString = "Red has won!";
                 }
-                else if (winner.mColour == Constants.BLUE)
+                else if (winner == Constants.Side.Blue)
                 {
                     victorString = "Blue has won";
                 }
@@ -402,7 +412,7 @@ namespace Board_Game.Code
         /// <param name="colourToRun">Whether red or blue is going</param>
         public void Update(int colourToRun)
         {
-            if (winner.mColour == Constants.NEUTRAL)
+            if (winner == Constants.Side.Neutral)
             {
                 Move bestMove;
                 bestMove.score = -99;
@@ -446,13 +456,13 @@ namespace Board_Game.Code
                 unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X, true);
 
                 //TODO: move into a gamestate class update
-                if (colourToRun == Constants.BLUE)
+                if (colourToRun == (int)Constants.Side.Blue)
                 {
-                    CheckMines(Constants.RED);
+                    CheckMines(Constants.Side.Red);
                 }
                 else
                 {
-                    CheckMines(Constants.BLUE);
+                    CheckMines(Constants.Side.Blue);
                 }
 
                 CheckVictory();
@@ -482,7 +492,7 @@ namespace Board_Game.Code
                     if (adjacentUnit != null
                        && adjacentUnit.CanFly == false
                        && adjacentUnit.Type != Constants.UnitType.Miner
-                       && adjacentUnit.side.mColour != Unit.side.mColour
+                       && adjacentUnit.side != Unit.side
                        && adjacentUnit != unitAtIJ)
                     {
                         //check if the unit in the adjacent square has this as an attackable unit
@@ -511,7 +521,7 @@ namespace Board_Game.Code
                     var adjacentUnit = mGrid.mTiles[t, v].occupiedUnit;
                     if (adjacentUnit != null
                        && adjacentUnit.CanFly
-                       && adjacentUnit.side.mColour != Unit.side.mColour
+                       && adjacentUnit.side != Unit.side
                        && adjacentUnit != unitAtIJ)
                     {
                         //check if the unit in the adjacent square has this as an attackable unit
@@ -534,15 +544,15 @@ namespace Board_Game.Code
         //determines and sets the winner if a side has won by capturing all the mines.
         public bool MineVictory()
         {
-            winner.mColour = mGrid.mTiles[0, 0].mine.side.mColour;
+            winner = mGrid.mTiles[0, 0].mine.side;
 
             for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
             {
                 for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
                 {
-                    if (i % 2 == j % 2 && winner.mColour != mGrid.mTiles[i * 2, j * 2].mine.side.mColour)
+                    if (i % 2 == j % 2 && winner != mGrid.mTiles[i * 2, j * 2].mine.side)
                     {
-                        winner.TurnNeutral();
+                        winner = Constants.Side.Neutral;
                         return false;
                     }
                 }
@@ -564,7 +574,7 @@ namespace Board_Game.Code
                     && mUnits[Constants.RED, Constants.GRANADIER].Length == 0
                     && mUnits[Constants.RED, Constants.MINER].Length == 0)
                 {
-                    winner.TurnBlue();
+                    winner = Constants.Side.Blue;
                 }
                 else if (mUnits[Constants.BLUE, Constants.BOMBER].Length == 0
                     && mUnits[Constants.BLUE, Constants.FIGHTER].Length == 0
@@ -572,7 +582,7 @@ namespace Board_Game.Code
                     && mUnits[Constants.BLUE, Constants.GRANADIER].Length == 0
                     && mUnits[Constants.BLUE, Constants.MINER].Length == 0)
                 {
-                    winner.TurnRed();
+                    winner = Constants.Side.Red;
                 }
             }
         }
@@ -580,7 +590,7 @@ namespace Board_Game.Code
         //TODO: could be moved to a gamestate class
         //This function Checks to see if mines need to be changed to teh given colour
         //It also checks for any units that are on mines, that shoudl be deleted
-        public void CheckMines(int colour)
+        public void CheckMines(Constants.Side colour)
         {
             foreach(Mine mine in mGrid.mMines)
             {
@@ -593,17 +603,17 @@ namespace Board_Game.Code
                         if (square.occupiedUnit != null)
                         {
                             if (square.occupiedUnit.Type == Constants.UnitType.Miner
-                                && square.side.mColour == colour)
+                                && square.side == colour)
                             {
-                                mine.side.ChangeColour(colour);
+                                mine.side = colour;
                             }
-                            else if (square.occupiedUnit.side.mColour != mine.side.mColour
+                            else if (square.occupiedUnit.side != mine.side
                                     && square.occupiedUnit.Type != Constants.UnitType.Miner
                                     && square.occupiedUnit.CanFly == false)
                             {
                                 RemoveUnit(square.occupiedUnit);
                                 square.occupied = false;
-                                square.side.TurnNeutral();
+                                square.side = Constants.Side.Neutral;
                             }
                         }
                     }
@@ -750,16 +760,16 @@ namespace Board_Game.Code
         //This will search through the arrays and eliminate the given unit
         internal void RemoveUnit(Units.Unit unit)
         {
-            List<Units.Unit> UnitList = new List<Units.Unit>(mUnits[unit.side.mColour, (int)unit.Type]);
+            List<Units.Unit> UnitList = new List<Units.Unit>(mUnits[(int)unit.side, (int)unit.Type]);
             UnitList.Remove(unit);
-            mUnits[unit.side.mColour, (int)unit.Type] = UnitList.ToArray();
+            mUnits[(int)unit.side, (int)unit.Type] = UnitList.ToArray();
             unit = null;
         }
 
         internal void ChangeTurns()
         {
             currentTurn = (currentTurn + 1) % 2;
-            mSelector.mSide.ChangeColour(currentTurn);
+            mSelector.mSide = (Constants.Side)currentTurn;
         }
 
         internal void Update(GameTime gameTime)

@@ -11,14 +11,14 @@ namespace Board_Game.Code.Logic
     {
         public const float MINE_SIZE = 50;
 
-        public Sides side;
+        public Constants.Side side;
 
         public Texture2D texture;
         public Vector2 position;
 
         public Mine(Texture2D inTexture, int x, int y)
         {
-            side = new Sides();
+            side = Constants.Side.Neutral;
             position = new Vector2(x, y);
             texture = inTexture;
         }
@@ -31,11 +31,11 @@ namespace Board_Game.Code.Logic
 
             scale = MINE_SIZE / texture.Width;
 
-            if (side.mColour == Constants.RED)
+            if (side == Constants.Side.Red)
             {
                 color = Color.Red;
             }
-            else if (side.mColour == Constants.BLUE)
+            else if (side == Constants.Side.Blue)
             {
                 color = Color.Blue;
             }

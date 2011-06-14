@@ -34,7 +34,7 @@ namespace Board_Game.Code.Units
 
         public bool CanDestroy(int i, int j)
         {
-            return grid.mTiles[i, j].side.mColour != side.mColour
+            return grid.mTiles[i, j].side != side
                 && (grid.mTiles[i, j].occupiedUnit == null
                 || !grid.mTiles[i, j].occupiedUnit.CanFly);
         }

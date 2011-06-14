@@ -24,6 +24,13 @@ namespace Board_Game.Code
             Miner = 4
         }
 
+        public enum Side
+        {
+            Red = 0,
+            Blue = 1,
+            Neutral = 2
+        }
+
 
         public const int BOMBER = 0;
         public const int FIGHTER = 1;

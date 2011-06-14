@@ -38,11 +38,11 @@ namespace Board_Game.Code
 
                         if (i < 2)
                         {
-                            newMine.side.TurnBlue();
+                            newMine.side = Constants.Side.Blue;
                         }
                         else if (i >= (height / 2) - 2)
                         {
-                            newMine.side.TurnRed();
+                            newMine.side = Constants.Side.Red;
                         }
 
                         mTiles[i * 2, j * 2].mine = newMine;
