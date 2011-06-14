@@ -37,11 +37,6 @@ namespace Board_Game.Code.Units
             return false;
         }
 
-        public override bool IsFriendlyMine(int i, int j)
-        {
-            return false;
-        }
-
         public override Vector2 GetNearestTarget()
         {
             Vector2 originalPoint = new Vector2(GetJ(), GetI());

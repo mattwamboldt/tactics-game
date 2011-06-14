@@ -2,37 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Board_Game.Code.Logic;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Board_Game.Code
+namespace Board_Game.Code.Logic
 {
-    class Tile
+    class Mine
     {
-        public const float TILE_SIZE = 25;
+        public const float MINE_SIZE = 50;
 
-        public bool occupied;
         public Sides side;
-        public Units.Unit occupiedUnit;
-        public Mine mine;
 
         public Texture2D texture;
-        private Vector2 position;
+        public Vector2 position;
 
-        public Tile(Texture2D inTexture, int x, int y)
+        public Mine(Texture2D inTexture, int x, int y)
         {
-            occupied = false;
             side = new Sides();
-            occupiedUnit = null;
-            mine = null;
             position = new Vector2(x, y);
             texture = inTexture;
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
-            Vector2 drawPosition = new Vector2(position.X * TILE_SIZE, position.Y * TILE_SIZE);
+            float scale;
+            Color color = Color.White;
+            Vector2 drawPosition = new Vector2(position.X * MINE_SIZE, position.Y * MINE_SIZE);
+
+            scale = MINE_SIZE / texture.Width;
+
+            if (side.mColour == Constants.RED)
+            {
+                color = Color.Red;
+            }
+            else if (side.mColour == Constants.BLUE)
+            {
+                color = Color.Blue;
+            }
 
             drawPosition.X += parentPosition.X;
             drawPosition.Y += parentPosition.Y;
@@ -41,10 +47,10 @@ namespace Board_Game.Code
                 texture,
                 drawPosition,
                 null,
-                Color.White,
+                color,
                 0f,
                 Vector2.Zero,
-                TILE_SIZE / texture.Width,
+                scale,
                 SpriteEffects.None,
                 0f
             );

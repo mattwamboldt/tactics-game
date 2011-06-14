@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code
 {
     class GameGrid
     {
         public Tile[,] mTiles;
-        public Tile[,] mMines;
+        public Mine[,] mMines;
         public Vector2 position;
 
         public GameGrid(int width, int height, Texture2D tileTexture, Texture2D mineTexture)
@@ -25,7 +26,7 @@ namespace Board_Game.Code
                 }
             }
 
-            mMines = new Tile[width / 2, height / 2];
+            mMines = new Mine[width / 2, height / 2];
 
             for (int i = 0; i < width / 2; ++i)
             {
@@ -33,19 +34,18 @@ namespace Board_Game.Code
                 {
                     if (i % 2 == j % 2)
                     {
-                        mMines[i, j] = new Tile(mineTexture, j, i);
-                        mMines[i, j].isMine = true;
+                        mMines[i, j] = new Mine(mineTexture, j, i);
 
                         if (i < 2)
                         {
-                            mMines[i, j].occupied = true;
                             mMines[i, j].side.TurnBlue();
                         }
                         else if (i >= (height / 2) - 2)
                         {
-                            mMines[i, j].occupied = true;
                             mMines[i, j].side.TurnRed();
                         }
+
+                        mTiles[i * 2, j * 2].mine = mMines[i, j];
                     }
                     else
                     {

@@ -89,6 +89,8 @@
     <Compile Include="Code\Logic\GameGrid.cs" />
     <Compile Include="Code\Input\InputManager.cs" />
     <Compile Include="Code\Input\Selector.cs" />
+    <Compile Include="Code\Logic\GameState.cs" />
+    <Compile Include="Code\Logic\Mine.cs" />
     <Compile Include="Code\Logic\Sides.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
     <Compile Include="Code\UI\Layout.cs" />

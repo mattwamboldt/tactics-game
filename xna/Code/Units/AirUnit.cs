@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code.Units
 {
@@ -75,16 +76,11 @@ namespace Board_Game.Code.Units
 
         public override Vector2 ScreenDimensions()
         {
-            return new Vector2(Tile.MINE_SIZE, Tile.MINE_SIZE);
+            return new Vector2(Mine.MINE_SIZE, Mine.MINE_SIZE);
         }
 
         //flying units ignore mines
         public override bool IsEnemyMine(int i, int j)
-        {
-            return false;
-        }
-
-        public override bool IsFriendlyMine(int i, int j)
         {
             return false;
         }

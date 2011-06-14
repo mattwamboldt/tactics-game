@@ -181,20 +181,12 @@ namespace Board_Game.Code.Units
         public virtual bool IsEnemyMine(int i, int j)
         {
             return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
-                && (grid.mMines[i / 2, j / 2].side.mColour != side.mColour);
-        }
-
-        /*
-            This tells us if a square is a friendly mine location.
-        */
-        public virtual bool IsFriendlyMine(int i, int j)
-        {
-            return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
-                && (grid.mMines[i / 2, j / 2].side.mColour == side.mColour);
+                && (grid.mTiles[i - i % 2, j - j % 2].mine.side.mColour != side.mColour);
         }
 
         /*
             Finds the space that the unit most wants to move into
+         * //TODO: recalculates evey unit to every other unit, every AI update. why am I not caching the distances?
         */
         public virtual Vector2 GetNearestTarget()
         {

@@ -533,13 +533,13 @@ namespace Board_Game.Code
         //determines and sets the winner if a side has won by capturing all the mines.
         public bool MineVictory()
         {
-            winner.mColour = mGrid.mMines[0, 0].side.mColour;
+            winner.mColour = mGrid.mTiles[0, 0].mine.side.mColour;
 
             for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
             {
                 for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
                 {
-                    if (i % 2 == j % 2 && winner.mColour != mGrid.mMines[i, j].side.mColour)
+                    if (i % 2 == j % 2 && winner.mColour != mGrid.mTiles[i * 2, j * 2].mine.side.mColour)
                     {
                         winner.TurnNeutral();
                         return false;
