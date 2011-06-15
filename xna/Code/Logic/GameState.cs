@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Input;
 
 namespace Board_Game.Code.Logic
 {
@@ -100,11 +101,11 @@ namespace Board_Game.Code.Logic
 
         public void HandleInput()
         {
-            if (InputManager.Get().isTriggered(Keys.R))
+            if (InputManager.Get().isTriggered(Button.L1))
             {
                 mRed.mIsHuman = !mRed.mIsHuman;
             }
-            else if (InputManager.Get().isTriggered(Keys.B))
+            else if (InputManager.Get().isTriggered(Button.R1))
             {
                 mBlue.mIsHuman = !mBlue.mIsHuman;
             }

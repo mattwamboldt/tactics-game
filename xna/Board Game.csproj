@@ -84,6 +84,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Input\InputMap.cs" />
+    <Compile Include="Code\Input\InputState.cs" />
     <Compile Include="Code\Logic\AI.cs" />
     <Compile Include="Code\Logic\GameGrid.cs" />
     <Compile Include="Code\Input\InputManager.cs" />

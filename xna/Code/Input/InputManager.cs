@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
+using Board_Game.Code.Input;
 
 namespace Board_Game.Code
 {
     class InputManager
     {
-        KeyboardState previousState;
-        KeyboardState currentState;
+        InputState previousState;
+        InputState currentState;
+        InputMap mInputMap;
 
         private static InputManager mInstance;
 
@@ -18,18 +20,19 @@ namespace Board_Game.Code
 
         private InputManager()
         {
-            currentState = Keyboard.GetState();
+            mInputMap = new InputMap();
+            currentState = mInputMap.GetInGameState(Keyboard.GetState());
         }
 
         public void Update()
         {
             previousState = currentState;
-            currentState = Keyboard.GetState();
+            currentState = mInputMap.GetInGameState(Keyboard.GetState());
         }
 
-        public bool isTriggered(Keys key)
+        public bool isTriggered(Button button)
         {
-            return previousState.IsKeyUp(key) && currentState.IsKeyDown(key);
+            return previousState.IsButtonUp(button) && currentState.IsButtonDown(button);
         }
     }
 }

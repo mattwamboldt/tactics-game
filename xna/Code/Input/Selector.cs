@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Code.Logic;
 using Board_Game.Code.Rendering;
+using Board_Game.Code.Input;
 
 namespace Board_Game.Code
 {
@@ -65,23 +66,23 @@ namespace Board_Game.Code
 
         public void HandleInput()
         {
-            if (InputManager.Get().isTriggered(Keys.Up))
+            if (InputManager.Get().isTriggered(Button.Up))
             {
                 MoveUp();
             }
-            if (InputManager.Get().isTriggered(Keys.Down))
+            if (InputManager.Get().isTriggered(Button.Down))
             {
                 MoveDown();
             }
-            if (InputManager.Get().isTriggered(Keys.Left))
+            if (InputManager.Get().isTriggered(Button.Left))
             {
                 MoveLeft();
             }
-            if (InputManager.Get().isTriggered(Keys.Right))
+            if (InputManager.Get().isTriggered(Button.Right))
             {
                 MoveRight();
             }
-            if (InputManager.Get().isTriggered(Keys.Enter))
+            if (InputManager.Get().isTriggered(Button.Cross))
             {
                 if (selectedUnit != null)
                 {
