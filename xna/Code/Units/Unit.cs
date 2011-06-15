@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code.Units
 {
@@ -15,6 +16,17 @@ namespace Board_Game.Code.Units
         public int bottomCut;
     };
 
+    public enum UnitType
+    {
+        Undefined = -1,
+        Bomber = 0,
+        Fighter = 1,
+        Soldier = 2,
+        Granadier = 3,
+        Miner = 4,
+        NumUnitTypes = 5
+    }
+
     //Contains all the code for a unit.
     class Unit
     {
@@ -24,13 +36,13 @@ namespace Board_Game.Code.Units
         public int originalJ;
 
         //this allows us to set the colour
-        public Constants.Side side;
+        public Side side;
 
         //This gives the unit an awareness of the other units on the playing field
         //so it can destroy itself or better than that, enemy units
         protected GameGrid grid;
 
-        public Constants.UnitType Type;
+        public UnitType Type;
 
         public bool CanFly;
 
@@ -43,7 +55,7 @@ namespace Board_Game.Code.Units
 
         //used to determine which enemies this unit
         //type should attack first
-        public Constants.UnitType[] attackablePriorities;
+        public UnitType[] attackablePriorities;
 
         public Unit(GameGrid gridRef, AI AIRef, Texture2D inTexture)
         {
@@ -51,8 +63,8 @@ namespace Board_Game.Code.Units
             originalJ = 0;
             grid = gridRef;
             mAIRef = AIRef;
-            side = Constants.Side.Neutral;
-            Type = Constants.UnitType.Undefined;
+            side = Side.Neutral;
+            Type = UnitType.Undefined;
             CanFly = false;
             position = new Vector2(0, 0);
             texture = inTexture;
@@ -70,11 +82,11 @@ namespace Board_Game.Code.Units
 
             Color color = Color.White;
 
-            if (side == Constants.Side.Red)
+            if (side == Side.Red)
             {
                 color = Color.Red;
             }
-            else if (side == Constants.Side.Blue)
+            else if (side == Side.Blue)
             {
                 color = Color.Blue;
             }
@@ -122,7 +134,7 @@ namespace Board_Game.Code.Units
             throw new NotImplementedException();
         }
 
-        public virtual bool CanAttack(Constants.UnitType unitType)
+        public virtual bool CanAttack(UnitType unitType)
         {
             throw new NotImplementedException();
         }
@@ -192,7 +204,7 @@ namespace Board_Game.Code.Units
         {
             List<Unit> opposingUnits;
 
-            if (side == Constants.Side.Red)
+            if (side == Side.Red)
             {
                 opposingUnits = mAIRef.State.Blue.Units;
             }

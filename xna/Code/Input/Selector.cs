@@ -5,12 +5,13 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code
 {
     class Selector
     {
-        public Constants.Side mSide;
+        public Side mSide;
         public GameGrid mGridRef;
         public AI mAIRef;
 
@@ -28,7 +29,7 @@ namespace Board_Game.Code
             texture = selectorTexture;
             position = new Vector2();
 
-            mSide = Constants.Side.Neutral;
+            mSide = Side.Neutral;
             mGridRef = grid;
             mAIRef = AIRef;
             selectedUnit = null;
@@ -45,11 +46,11 @@ namespace Board_Game.Code
 
             Color color = Color.White;
 
-            if (mSide == Constants.Side.Red)
+            if (mSide == Side.Red)
             {
                 color = Color.Red;
             }
-            else if (mSide == Constants.Side.Blue)
+            else if (mSide == Side.Blue)
             {
                 color = Color.Blue;
             }
@@ -127,13 +128,13 @@ namespace Board_Game.Code
                     selectedUnit.Move(i, j, true);
                     selectedUnit = null;
 
-                    if (mSide == Constants.Side.Red)
+                    if (mSide == Side.Red)
                     {
-                        mAIRef.CheckMines(Constants.Side.Blue);
+                        mAIRef.CheckMines(Side.Blue);
                     }
-                    else if (mSide == Constants.Side.Blue)
+                    else if (mSide == Side.Blue)
                     {
-                        mAIRef.CheckMines(Constants.Side.Red);
+                        mAIRef.CheckMines(Side.Red);
                     }
 
                     mAIRef.CheckVictory();
@@ -160,13 +161,13 @@ namespace Board_Game.Code
                 selectedUnit.Move(i, j, true);
                 selectedUnit = null;
 
-                if (mSide == Constants.Side.Red)
+                if (mSide == Side.Red)
                 {
-                    mAIRef.CheckMines(Constants.Side.Blue);
+                    mAIRef.CheckMines(Side.Blue);
                 }
-                else if (mSide == Constants.Side.Blue)
+                else if (mSide == Side.Blue)
                 {
-                    mAIRef.CheckMines(Constants.Side.Red);
+                    mAIRef.CheckMines(Side.Red);
                 }
 
                 mAIRef.CheckVictory();
@@ -176,7 +177,7 @@ namespace Board_Game.Code
 #region Moving functions
         private void MoveRight()
         {
-            if (position.X < Constants.GRID_WIDTH - 1)
+            if (position.X < GameState.GRID_WIDTH - 1)
             {
                 position.X += 1;
             }
@@ -200,7 +201,7 @@ namespace Board_Game.Code
 
         private void MoveDown()
         {
-            if (position.Y < Constants.GRID_HEIGHT - 1)
+            if (position.Y < GameState.GRID_HEIGHT - 1)
             {
                 position.Y += 1;
             }

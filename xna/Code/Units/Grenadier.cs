@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code.Units
 {
@@ -11,13 +12,13 @@ namespace Board_Game.Code.Units
         public Grenadier(GameGrid grid, AI AIRef, Texture2D texture)
             : base(grid, AIRef, texture)
         {
-            Type = Constants.UnitType.Granadier;
-            attackablePriorities = new Constants.UnitType[] {
-                Constants.UnitType.Bomber,
-                Constants.UnitType.Granadier,
-                Constants.UnitType.Fighter,
-                Constants.UnitType.Miner,
-                Constants.UnitType.Soldier
+            Type = UnitType.Granadier;
+            attackablePriorities = new UnitType[] {
+                UnitType.Bomber,
+                UnitType.Granadier,
+                UnitType.Fighter,
+                UnitType.Miner,
+                UnitType.Soldier
             };
         }
 
@@ -39,7 +40,7 @@ namespace Board_Game.Code.Units
 			        for(var j = 0; j < 2; ++j)
 			        {
                         grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupied = false;
-                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].side = Constants.Side.Neutral;
+                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].side = Side.Neutral;
                         grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupiedUnit = null;
 			        }
 		        }
@@ -47,15 +48,15 @@ namespace Board_Game.Code.Units
 	        mAIRef.RemoveUnit(unit);
         }
 
-        public override bool CanAttack(Constants.UnitType unitType)
+        public override bool CanAttack(UnitType unitType)
         {
 	        switch(unitType)
 	        {
-		        case Constants.UnitType.Soldier:
-                case Constants.UnitType.Granadier:
-                case Constants.UnitType.Miner:
-                case Constants.UnitType.Bomber:
-                case Constants.UnitType.Fighter:
+		        case UnitType.Soldier:
+                case UnitType.Granadier:
+                case UnitType.Miner:
+                case UnitType.Bomber:
+                case UnitType.Fighter:
 			        return true;
 		        default:
 			        return false;

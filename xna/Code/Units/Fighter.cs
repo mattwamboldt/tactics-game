@@ -11,10 +11,10 @@ namespace Board_Game.Code.Units
         public Fighter(GameGrid grid, AI AIRef, Texture2D texture)
             : base(grid, AIRef, texture)
         {
-            Type = Constants.UnitType.Fighter;
-            attackablePriorities = new Constants.UnitType[] {
-                Constants.UnitType.Bomber,
-                Constants.UnitType.Miner
+            Type = UnitType.Fighter;
+            attackablePriorities = new UnitType[] {
+                UnitType.Bomber,
+                UnitType.Miner
             };
         }
 
@@ -25,12 +25,12 @@ namespace Board_Game.Code.Units
                 && grid.mTiles[i, j].occupiedUnit.CanFly;
         }
 
-        public override bool CanAttack(Constants.UnitType unitType)
+        public override bool CanAttack(UnitType unitType)
         {
 	        switch(unitType)
 	        {
-                case Constants.UnitType.Bomber:
-                case Constants.UnitType.Fighter:
+                case UnitType.Bomber:
+                case UnitType.Fighter:
 			        return true;
 		        default:
 			        return false;

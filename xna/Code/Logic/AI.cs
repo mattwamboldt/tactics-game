@@ -109,7 +109,7 @@ namespace Board_Game.Code
         bool blueIsHuman = false;
         public int[] unitWorths = { 8, 7, 2, 6, 4 };
         private Random random;
-        private Constants.Side winner;
+        private Side winner;
 
         public GameGrid mGrid;
         private GameState mGameState;
@@ -143,7 +143,7 @@ namespace Board_Game.Code
             random = new Random();
 
             //TODO: separate into a gamestate class
-            mGrid = new GameGrid(Constants.GRID_WIDTH, Constants.GRID_HEIGHT, tileTexture, mineTexture);
+            mGrid = new GameGrid(GameState.GRID_WIDTH, GameState.GRID_HEIGHT, tileTexture, mineTexture);
 
             mBomberTexture = bomberTexture;
             mFighterTexture = fighterTexture;
@@ -155,8 +155,8 @@ namespace Board_Game.Code
             mTutorial = tutorial;
             mUnitName = unitName;
             mSelector = new Selector(selectorTexture, mGrid, this);
-            mSelector.mSide = Constants.Side.Red;
-            winner = Constants.Side.Neutral;
+            mSelector.mSide = Side.Red;
+            winner = Side.Neutral;
 
             mGameState = new GameState(this);
             mGameState.Initialize(
@@ -176,23 +176,23 @@ namespace Board_Game.Code
             //draw the UI
             //TODO: Move UI into a tool and class to remove all of these consants and draw calls
             //-draw a box under the grid
-            spriteBatch.Draw(pixel, new Rectangle(0, 0, Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
+            spriteBatch.Draw(pixel, new Rectangle(0, 0, GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
             
             //-draw the box under UNITS
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), Color.Black);
+            spriteBatch.Draw(pixel, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), Color.Black);
 
             //-draw the tutorial text box
-            spriteBatch.Draw(pixel, new Rectangle(0, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30, Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
+            spriteBatch.Draw(pixel, new Rectangle(0, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30, GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
 
             //-draw the unit sidebar box
-            spriteBatch.Draw(pixel, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50, 250, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
+            spriteBatch.Draw(pixel, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50, 250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
 
             //-draw the unit backgrounds
 
             for (int i = 0; i < 5; i++)
             {
                 spriteBatch.Draw(pixel, new Rectangle(
-                Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5,
+                GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5,
                 30 + 20 + 5 + (50 + 15) * i,
                 (int)Tile.TILE_SIZE * 2 + 10,
                 (int)Tile.TILE_SIZE * 2 + 10),
@@ -200,18 +200,18 @@ namespace Board_Game.Code
             }
 
             //-draw the units
-            spriteBatch.Draw(mBomberTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mFighterTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + 50 + 15, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mSoldierTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 2, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mDeminerTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 3, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mGrenadierTexture, new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 4, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mBomberTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mFighterTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + 50 + 15, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mSoldierTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 2, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mDeminerTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 3, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
+            spriteBatch.Draw(mGrenadierTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 4, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
 
             //-draw the buttons
-            spriteBatch.Draw(pixel, new Rectangle(20 - 1, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
-            spriteBatch.Draw(pixel, new Rectangle(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Red);
 
-            spriteBatch.Draw(pixel, new Rectangle(20 - 1 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
-            spriteBatch.Draw(pixel, new Rectangle(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Blue);
+            spriteBatch.Draw(pixel, new Rectangle(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Blue);
 
             //-draw the text
             //--buttons
@@ -222,17 +222,17 @@ namespace Board_Game.Code
                 redString = "AI";
             }
 
-            spriteBatch.DrawString(mButton, redString, Layout.CenterAlign(new Rectangle(20, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
+            spriteBatch.DrawString(mButton, redString, Layout.CenterAlign(new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
 
             if (!blueIsHuman)
             {
                 blueString = "AI";
             }
 
-            spriteBatch.DrawString(mButton, blueString, Layout.CenterAlign(new Rectangle(20 + 200, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, mButton), Color.White);
+            spriteBatch.DrawString(mButton, blueString, Layout.CenterAlign(new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, mButton), Color.White);
             
             //--sidebar header
-            spriteBatch.DrawString(mButton, "UNITS", Layout.CenterAlign(new Rectangle(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), "UNITS", mButton), Color.White);
+            spriteBatch.DrawString(mButton, "UNITS", Layout.CenterAlign(new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), "UNITS", mButton), Color.White);
 
             //--unit descriptions
             string[] titles = new string[] { "BOMBER", "FIGHTER", "SOLDIER", "DE-MINER", "BAZOOKA" };
@@ -250,15 +250,15 @@ namespace Board_Game.Code
                     mTutorial, 
                     titles[i],
                     new Vector2(
-                        Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
+                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
                         30 + 20 + 5 + (50 + 15) * i),
                    Color.White);
 
                 spriteBatch.DrawString(
                     mTutorial,
-                    Layout.WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, descriptions[i]),
+                    Layout.WrapString(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, descriptions[i]),
                     new Vector2(
-                        Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
+                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
                         30 + 20 + 5 + (50 + 15) * i + 15),
                    Color.White);
             }
@@ -271,8 +271,8 @@ namespace Board_Game.Code
 
             spriteBatch.DrawString(
                 mTutorial,
-                Layout.WrapString(Constants.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
-                new Vector2(5, Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30 + 5),
+                Layout.WrapString(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
+                new Vector2(5, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30 + 5),
                 Color.White
             );
 
@@ -285,16 +285,16 @@ namespace Board_Game.Code
 
             mSelector.Render(spriteBatch, mGrid.position);
 
-            if (winner != Constants.Side.Neutral)
+            if (winner != Side.Neutral)
             {
                 //we have a winner
 
                 string victorString = "";
-                if (winner == Constants.Side.Red)
+                if (winner == Side.Red)
                 {
                     victorString = "Red has won!";
                 }
-                else if (winner == Constants.Side.Blue)
+                else if (winner == Side.Blue)
                 {
                     victorString = "Blue has won";
                 }
@@ -308,8 +308,8 @@ namespace Board_Game.Code
                     new Rectangle(
                         (int)mGrid.position.X,
                         (int)mGrid.position.Y,
-                        Constants.GRID_WIDTH * (int)Tile.TILE_SIZE,
-                        Constants.GRID_HEIGHT * (int)Tile.TILE_SIZE),
+                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE,
+                        GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE),
                     backgroundSize);
 
                 Rectangle backgroundRect = new Rectangle(
@@ -337,7 +337,7 @@ namespace Board_Game.Code
         /// <param name="colourToRun">Whether red or blue is going</param>
         public void Update(int colourToRun)
         {
-            if (winner == Constants.Side.Neutral)
+            if (winner == Side.Neutral)
             {
                 Move bestMove;
                 bestMove.score = -99;
@@ -347,7 +347,7 @@ namespace Board_Game.Code
 
                 List<Units.Unit> units;
 
-                if(colourToRun == (int)Constants.Side.Red)
+                if(colourToRun == (int)Side.Red)
                 {
                     units = mGameState.Red.Units;
                 }
@@ -385,13 +385,13 @@ namespace Board_Game.Code
                 unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X, true);
 
                 //TODO: move into a gamestate class update
-                if (colourToRun == (int)Constants.Side.Blue)
+                if (colourToRun == (int)Side.Blue)
                 {
-                    CheckMines(Constants.Side.Red);
+                    CheckMines(Side.Red);
                 }
                 else
                 {
-                    CheckMines(Constants.Side.Blue);
+                    CheckMines(Side.Blue);
                 }
 
                 CheckVictory();
@@ -410,8 +410,8 @@ namespace Board_Game.Code
             var lowerI = Rounding.FloorAtMinimum(i - 1, 0);
             var lowerJ = Rounding.FloorAtMinimum(j - 1, 0);
 
-            var upperI = Rounding.CapAtMaximum(i + Unit.width, Constants.GRID_WIDTH - 1);
-            var upperJ = Rounding.CapAtMaximum(j + Unit.height, Constants.GRID_HEIGHT - 1);
+            var upperI = Rounding.CapAtMaximum(i + Unit.width, GameState.GRID_WIDTH - 1);
+            var upperJ = Rounding.CapAtMaximum(j + Unit.height, GameState.GRID_HEIGHT - 1);
 
             for (var t = lowerI; t <= upperI; ++t)
             {
@@ -420,7 +420,7 @@ namespace Board_Game.Code
                     var adjacentUnit = mGrid.mTiles[t, v].occupiedUnit;
                     if (adjacentUnit != null
                        && adjacentUnit.CanFly == false
-                       && adjacentUnit.Type != Constants.UnitType.Miner
+                       && adjacentUnit.Type != Units.UnitType.Miner
                        && adjacentUnit.side != Unit.side
                        && adjacentUnit != unitAtIJ)
                     {
@@ -438,10 +438,10 @@ namespace Board_Game.Code
 
             //then loop for surrounding air units
             lowerI = Rounding.MakeEven(Rounding.FloorAtMinimum(i - 2, 0));
-            upperI = Rounding.MakeEven(Rounding.CapAtMaximum(i + 2, Constants.GRID_WIDTH - 2));
+            upperI = Rounding.MakeEven(Rounding.CapAtMaximum(i + 2, GameState.GRID_WIDTH - 2));
 
             lowerJ = Rounding.MakeEven(Rounding.FloorAtMinimum(j - 2, 0));
-            upperJ = Rounding.MakeEven(Rounding.CapAtMaximum(j + 2, Constants.GRID_HEIGHT - 2));
+            upperJ = Rounding.MakeEven(Rounding.CapAtMaximum(j + 2, GameState.GRID_HEIGHT - 2));
 
             for (var t = lowerI; t <= upperI; t += 2)
             {
@@ -475,13 +475,13 @@ namespace Board_Game.Code
         {
             winner = mGrid.mTiles[0, 0].mine.side;
 
-            for (var i = 0; i < Constants.GRID_WIDTH / 2; ++i)
+            for (var i = 0; i < GameState.GRID_WIDTH / 2; ++i)
             {
-                for (var j = 0; j < Constants.GRID_HEIGHT / 2; ++j)
+                for (var j = 0; j < GameState.GRID_HEIGHT / 2; ++j)
                 {
                     if (i % 2 == j % 2 && winner != mGrid.mTiles[i * 2, j * 2].mine.side)
                     {
-                        winner = Constants.Side.Neutral;
+                        winner = Side.Neutral;
                         return false;
                     }
                 }
@@ -499,11 +499,11 @@ namespace Board_Game.Code
                 //we need to check for a destruction victory
                 if (mGameState.Red.Units.Count == 0)
                 {
-                    winner = Constants.Side.Blue;
+                    winner = Side.Blue;
                 }
                 else if (mGameState.Blue.Units.Count == 0)
                 {
-                    winner = Constants.Side.Red;
+                    winner = Side.Red;
                 }
             }
         }
@@ -511,7 +511,7 @@ namespace Board_Game.Code
         //TODO: could be moved to a gamestate class
         //This function Checks to see if mines need to be changed to teh given colour
         //It also checks for any units that are on mines, that shoudl be deleted
-        public void CheckMines(Constants.Side colour)
+        public void CheckMines(Side colour)
         {
             foreach(Mine mine in mGrid.mMines)
             {
@@ -523,18 +523,18 @@ namespace Board_Game.Code
                         var square = mGrid.mTiles[(int)mine.position.Y * 2 + t, (int)mine.position.X * 2 + u];
                         if (square.occupiedUnit != null)
                         {
-                            if (square.occupiedUnit.Type == Constants.UnitType.Miner
+                            if (square.occupiedUnit.Type == Units.UnitType.Miner
                                 && square.side == colour)
                             {
                                 mine.side = colour;
                             }
                             else if (square.occupiedUnit.side != mine.side
-                                    && square.occupiedUnit.Type != Constants.UnitType.Miner
+                                    && square.occupiedUnit.Type != Units.UnitType.Miner
                                     && square.occupiedUnit.CanFly == false)
                             {
                                 RemoveUnit(square.occupiedUnit);
                                 square.occupied = false;
-                                square.side = Constants.Side.Neutral;
+                                square.side = Side.Neutral;
                             }
                         }
                     }
@@ -607,7 +607,7 @@ namespace Board_Game.Code
                         }
 
                         //set score to use distance
-                        if(unit.Type == Constants.UnitType.Miner)
+                        if (unit.Type == Units.UnitType.Miner)
                         {
                             newMove.score += (int)((100 / (moveDistance + 1)) / 2);
                         }
@@ -653,7 +653,7 @@ namespace Board_Game.Code
             {
                 if(sourceUnit.attackablePriorities[i] == targetUnit.Type)
                 {
-                    return (Constants.NUM_UNIT_TYPES - i) * 200;
+                    return ((int)Units.UnitType.NumUnitTypes - i) * 200;
                 }
             }
 
@@ -670,12 +670,12 @@ namespace Board_Game.Code
 
         internal float Width()
         {
-            return Constants.GRID_WIDTH * Tile.TILE_SIZE;
+            return GameState.GRID_WIDTH * Tile.TILE_SIZE;
         }
 
         internal float Height()
         {
-            return Constants.GRID_HEIGHT * Tile.TILE_SIZE;
+            return GameState.GRID_HEIGHT * Tile.TILE_SIZE;
         }
 
         //This will search through the arrays and eliminate the given unit
@@ -683,7 +683,7 @@ namespace Board_Game.Code
         {
             List<Units.Unit> units;
 
-            if (unit.side == Constants.Side.Blue)
+            if (unit.side == Side.Blue)
             {
                 units = mGameState.Blue.Units;
             }
@@ -699,15 +699,16 @@ namespace Board_Game.Code
         internal void ChangeTurns()
         {
             currentTurn = (currentTurn + 1) % 2;
-            mSelector.mSide = (Constants.Side)currentTurn;
+            mSelector.mSide = (Side)currentTurn;
         }
 
         internal void Update(GameTime gameTime)
         {
             HandleInput();
 
-            if ((!redIsHuman && currentTurn == Constants.RED)
-                || (!blueIsHuman && currentTurn == Constants.BLUE))
+
+            if ((!redIsHuman && currentTurn == (int)Side.Red)
+                || (!blueIsHuman && currentTurn == (int)Side.Blue))
             {
                 elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 

@@ -6,6 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Board_Game.Code.Logic
 {
+    public enum Side
+    {
+        Red = 0,
+        Blue = 1,
+        Neutral = 2
+    }
+
     /// <summary>
     /// Will eventually house an entire games logical components, the grid and players.
     /// </summary>
@@ -14,14 +21,17 @@ namespace Board_Game.Code.Logic
         Player mRed;
         Player mBlue;
 
+        public const int GRID_WIDTH = 12;
+        public const int GRID_HEIGHT = 12;
+
         public Player Red { get { return mRed; } }
         public Player Blue { get { return mBlue; } }
 
         public GameState(AI AIref)
         {
             //passing in the same AI for now, but could be different later
-            mRed = new Player(true, Constants.Side.Red, AIref);
-            mBlue = new Player(false, Constants.Side.Blue, AIref);
+            mRed = new Player(true, Side.Red, AIref);
+            mBlue = new Player(false, Side.Blue, AIref);
         }
 
         public void Initialize(

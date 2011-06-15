@@ -11,11 +11,11 @@ namespace Board_Game.Code.Units
         public Soldier(GameGrid grid, AI AIRef, Texture2D texture)
             : base(grid, AIRef, texture)
         {
-            Type = Constants.UnitType.Soldier;
-            attackablePriorities = new Constants.UnitType[] {
-                Constants.UnitType.Granadier,
-                Constants.UnitType.Miner,
-                Constants.UnitType.Soldier
+            Type = UnitType.Soldier;
+            attackablePriorities = new UnitType[] {
+                UnitType.Granadier,
+                UnitType.Miner,
+                UnitType.Soldier
             };
         }
 
@@ -31,13 +31,13 @@ namespace Board_Game.Code.Units
             mAIRef.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
         }
 
-        public override bool CanAttack(Constants.UnitType unitType)
+        public override bool CanAttack(UnitType unitType)
         {
 	        switch(unitType)
 	        {
-		        case Constants.UnitType.Soldier:
-                case Constants.UnitType.Granadier:
-                case Constants.UnitType.Miner:
+		        case UnitType.Soldier:
+                case UnitType.Granadier:
+                case UnitType.Miner:
 			        return true;
 		        default:
 			        return false;

@@ -11,21 +11,21 @@ namespace Board_Game.Code.Units
         public Bomber(GameGrid grid, AI AIRef, Texture2D texture)
             : base(grid, AIRef, texture)
         {
-            Type = Constants.UnitType.Bomber;
-            attackablePriorities = new Constants.UnitType[] {
-                Constants.UnitType.Granadier,
-                Constants.UnitType.Miner,
-                Constants.UnitType.Soldier
+            Type = UnitType.Bomber;
+            attackablePriorities = new UnitType[] {
+                UnitType.Granadier,
+                UnitType.Miner,
+                UnitType.Soldier
             };
         }
 
-        public override bool CanAttack(Constants.UnitType unitType)
+        public override bool CanAttack(UnitType unitType)
         {
 	        switch(unitType)
 	        {
-                case Constants.UnitType.Soldier:
-                case Constants.UnitType.Granadier:
-                case Constants.UnitType.Miner:
+                case UnitType.Soldier:
+                case UnitType.Granadier:
+                case UnitType.Miner:
 			        return true;
 		        default:
 			        return false;

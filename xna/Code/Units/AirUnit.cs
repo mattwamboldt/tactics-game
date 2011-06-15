@@ -52,7 +52,7 @@ namespace Board_Game.Code.Units
 		        for(var j = 0; j < 2; ++j)
 		        {
 			        grid.mTiles[originalI + i, originalJ + j].occupied = false;
-			        grid.mTiles[originalI + i, originalJ + j].side = Constants.Side.Neutral;
+			        grid.mTiles[originalI + i, originalJ + j].side = Side.Neutral;
 			        grid.mTiles[originalI + i, originalJ + j].occupiedUnit = null;
 		        }
 	        }

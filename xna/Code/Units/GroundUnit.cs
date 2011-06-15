@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Logic;
 
 namespace Board_Game.Code.Units
 {
@@ -25,7 +26,7 @@ namespace Board_Game.Code.Units
             }
 
             grid.mTiles[originalI, originalJ].occupied = false;
-            grid.mTiles[originalI, originalJ].side = Constants.Side.Neutral;
+            grid.mTiles[originalI, originalJ].side = Side.Neutral;
             grid.mTiles[originalI, originalJ].occupiedUnit = null;
             SetLocation(newLocationI, newLocationJ);
         }

@@ -13,7 +13,7 @@ namespace Board_Game.Code.Units
         public Deminer(GameGrid grid, AI AIRef, Texture2D texture)
             : base(grid, AIRef, texture)
         {
-            Type = Constants.UnitType.Miner;
+            Type = UnitType.Miner;
             attackablePriorities = null;
         }
 
@@ -27,7 +27,7 @@ namespace Board_Game.Code.Units
             mAIRef.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
         }
 
-        public override bool CanAttack(Constants.UnitType unitType)
+        public override bool CanAttack(UnitType unitType)
         {
 	        return false;
         }
