@@ -13,7 +13,7 @@ namespace Board_Game.Code
     {
         public Side mSide;
         public GameGrid mGridRef;
-        public AI mAIRef;
+        public GameState mGameState;
 
         //for drawing
         public Texture2D texture;
@@ -24,14 +24,14 @@ namespace Board_Game.Code
         public Selector(
                 Texture2D selectorTexture,
                 GameGrid grid,
-                AI AIRef)
+                GameState gameState)
         {
             texture = selectorTexture;
             position = new Vector2();
 
             mSide = Side.Neutral;
             mGridRef = grid;
-            mAIRef = AIRef;
+            mGameState = gameState;
             selectedUnit = null;
         }
 
@@ -125,19 +125,12 @@ namespace Board_Game.Code
                 {
                     selectedUnit.isSelected = false;
                     selectedUnit.RemoveUnits(i, j);
-                    selectedUnit.Move(i, j, true);
+                    selectedUnit.Move(i, j);
                     selectedUnit = null;
 
-                    if (mSide == Side.Red)
-                    {
-                        mAIRef.CheckMines(Side.Blue);
-                    }
-                    else if (mSide == Side.Blue)
-                    {
-                        mAIRef.CheckMines(Side.Red);
-                    }
+                    mGameState.EndTurn();
 
-                    mAIRef.CheckVictory();
+                    
                 }
                 else
                 {
@@ -158,19 +151,10 @@ namespace Board_Game.Code
             else
             {
                 selectedUnit.isSelected = false;
-                selectedUnit.Move(i, j, true);
+                selectedUnit.Move(i, j);
                 selectedUnit = null;
 
-                if (mSide == Side.Red)
-                {
-                    mAIRef.CheckMines(Side.Blue);
-                }
-                else if (mSide == Side.Blue)
-                {
-                    mAIRef.CheckMines(Side.Red);
-                }
-
-                mAIRef.CheckVictory();
+                mGameState.EndTurn();
             }
         }
 

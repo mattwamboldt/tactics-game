@@ -98,18 +98,14 @@ namespace Board_Game.Code
 
     class AI
     {
-        int currentTurn = 0;
         //This is a guarunteed amount of time that has to pass
         //between turns before teh AI process is allowed to fire.
         //It prevents the game from running too quickly in AI vs AI matches
         const int TURN_TIME = 250;
         int elapsedTime = 0;
 
-        bool redIsHuman = true;
-        bool blueIsHuman = false;
         public int[] unitWorths = { 8, 7, 2, 6, 4 };
         private Random random;
-        private Side winner;
 
         public GameGrid mGrid;
         private GameState mGameState;
@@ -121,29 +117,25 @@ namespace Board_Game.Code
         Texture2D mSoldierTexture;
         Texture2D mDeminerTexture;
         Texture2D mGrenadierTexture;
-        Selector mSelector;
 
         SpriteFont mButton;
         SpriteFont mTutorial;
         SpriteFont mUnitName;
 
         public void Initialize(
-            Texture2D tileTexture,
-            Texture2D mineTexture,
+            GameState gameState,
             Texture2D bomberTexture,
             Texture2D fighterTexture,
             Texture2D soldierTexture,
             Texture2D deminerTexture,
             Texture2D grenadierTexture,
-            Texture2D selectorTexture,
             SpriteFont button,
             SpriteFont tutorial,
             SpriteFont unitName)
         {
             random = new Random();
 
-            //TODO: separate into a gamestate class
-            mGrid = new GameGrid(GameState.GRID_WIDTH, GameState.GRID_HEIGHT, tileTexture, mineTexture);
+            mGameState = gameState;
 
             mBomberTexture = bomberTexture;
             mFighterTexture = fighterTexture;
@@ -154,11 +146,8 @@ namespace Board_Game.Code
             mButton = button;
             mTutorial = tutorial;
             mUnitName = unitName;
-            mSelector = new Selector(selectorTexture, mGrid, this);
-            mSelector.mSide = Side.Red;
-            winner = Side.Neutral;
+            
 
-            mGameState = new GameState(this);
             mGameState.Initialize(
                 bomberTexture,
                 fighterTexture,
@@ -217,14 +206,14 @@ namespace Board_Game.Code
             //--buttons
             string redString = "HUMAN";
             string blueString = "HUMAN";
-            if (!redIsHuman)
+            if (!mGameState.Red.mIsHuman)
             {
                 redString = "AI";
             }
 
             spriteBatch.DrawString(mButton, redString, Layout.CenterAlign(new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
 
-            if (!blueIsHuman)
+            if (!mGameState.Blue.mIsHuman)
             {
                 blueString = "AI";
             }
@@ -277,24 +266,18 @@ namespace Board_Game.Code
             );
 
             //draw the grid
-            mGrid.Render(spriteBatch);
+            mGameState.Render(spriteBatch, mGrid.position);
 
-            //draw the units
-            mGameState.Blue.Render(spriteBatch, mGrid.position);
-            mGameState.Red.Render(spriteBatch, mGrid.position);
-
-            mSelector.Render(spriteBatch, mGrid.position);
-
-            if (winner != Side.Neutral)
+            if (mGameState.winner != Side.Neutral)
             {
                 //we have a winner
 
                 string victorString = "";
-                if (winner == Side.Red)
+                if (mGameState.winner == Side.Red)
                 {
                     victorString = "Red has won!";
                 }
-                else if (winner == Side.Blue)
+                else if (mGameState.winner == Side.Blue)
                 {
                     victorString = "Blue has won";
                 }
@@ -337,7 +320,7 @@ namespace Board_Game.Code
         /// <param name="colourToRun">Whether red or blue is going</param>
         public void Update(int colourToRun)
         {
-            if (winner == Side.Neutral)
+            if (mGameState.winner == Side.Neutral)
             {
                 Move bestMove;
                 bestMove.score = -99;
@@ -382,19 +365,9 @@ namespace Board_Game.Code
                     unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);
                 }
 
-                unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X, true);
+                unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X);
 
-                //TODO: move into a gamestate class update
-                if (colourToRun == (int)Side.Blue)
-                {
-                    CheckMines(Side.Red);
-                }
-                else
-                {
-                    CheckMines(Side.Blue);
-                }
-
-                CheckVictory();
+                mGameState.EndTurn();
             }
         }
 
@@ -468,45 +441,6 @@ namespace Board_Game.Code
             return false;
         }
         //end
-
-        //TODO: could be moved to a gamestate class
-        //determines and sets the winner if a side has won by capturing all the mines.
-        public bool MineVictory()
-        {
-            winner = mGrid.mTiles[0, 0].mine.side;
-
-            for (var i = 0; i < GameState.GRID_WIDTH / 2; ++i)
-            {
-                for (var j = 0; j < GameState.GRID_HEIGHT / 2; ++j)
-                {
-                    if (i % 2 == j % 2 && winner != mGrid.mTiles[i * 2, j * 2].mine.side)
-                    {
-                        winner = Side.Neutral;
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        //TODO: could be moved to a gamestate class
-        //This checks to see who, if anyone, hsa won
-        public void CheckVictory()
-        {
-            if (!MineVictory())
-            {
-                //we need to check for a destruction victory
-                if (mGameState.Red.Units.Count == 0)
-                {
-                    winner = Side.Blue;
-                }
-                else if (mGameState.Blue.Units.Count == 0)
-                {
-                    winner = Side.Red;
-                }
-            }
-        }
 
         //TODO: could be moved to a gamestate class
         //This function Checks to see if mines need to be changed to teh given colour
@@ -696,43 +630,15 @@ namespace Board_Game.Code
             unit = null;
         }
 
-        internal void ChangeTurns()
-        {
-            currentTurn = (currentTurn + 1) % 2;
-            mSelector.mSide = (Side)currentTurn;
-        }
 
         internal void Update(GameTime gameTime)
         {
-            HandleInput();
+            elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 
-
-            if ((!redIsHuman && currentTurn == (int)Side.Red)
-                || (!blueIsHuman && currentTurn == (int)Side.Blue))
+            if (elapsedTime >= TURN_TIME)
             {
-                elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
-
-                if (elapsedTime >= TURN_TIME)
-                {
-                    Update(currentTurn);
-                    elapsedTime = 0;
-                }
-            }
-            else
-            {
-                mSelector.HandleInput();
-            }
-        }
-
-        public void HandleInput()
-        {
-            if (InputManager.Get().isTriggered(Keys.R))
-            {
-                redIsHuman = !redIsHuman;
-            }
-            else if (InputManager.Get().isTriggered(Keys.B))
-            {
-                blueIsHuman = !blueIsHuman;
+                Update((int)mGameState.mCurrentPlayer.mSide);
+                elapsedTime = 0;
             }
         }
     }

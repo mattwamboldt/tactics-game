@@ -18,13 +18,8 @@ namespace Board_Game.Code.Units
             width = 1;
         }
 
-        public override void Move(int newLocationI, int newLocationJ, bool changeTurns)
+        public override void Move(int newLocationI, int newLocationJ)
         {
-            if (changeTurns == true)
-            {
-                mAIRef.ChangeTurns();
-            }
-
             grid.mTiles[originalI, originalJ].occupied = false;
             grid.mTiles[originalI, originalJ].side = Side.Neutral;
             grid.mTiles[originalI, originalJ].occupiedUnit = null;

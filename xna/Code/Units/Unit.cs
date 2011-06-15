@@ -124,7 +124,7 @@ namespace Board_Game.Code.Units
             throw new NotImplementedException();
         }
 
-        public virtual void Move(int p, int p_2, bool p_3)
+        public virtual void Move(int p, int p_2)
         {
             throw new NotImplementedException();
         }

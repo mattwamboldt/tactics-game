@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Board_Game.Code;
+using Board_Game.Code.Logic;
 
 namespace Board_Game
 {
@@ -22,6 +23,7 @@ namespace Board_Game
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         AI mAI;
+        GameState mGameState;
 
         public Game1()
         {
@@ -53,16 +55,20 @@ namespace Board_Game
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            mAI.Initialize(
+            mGameState = new GameState(
+                mAI,
                 Content.Load<Texture2D>("textures/tiles/single"),
                 Content.Load<Texture2D>("textures/tiles/mine"),
+                Content.Load<Texture2D>("textures/UI/selector"));
+
+            // TODO: use this.Content to load your game content here
+            mAI.Initialize(
+                mGameState,
                 Content.Load<Texture2D>("textures/units/bomber"),
                 Content.Load<Texture2D>("textures/units/fighter"),
                 Content.Load<Texture2D>("textures/units/soldier"),
                 Content.Load<Texture2D>("textures/units/deminer"),
                 Content.Load<Texture2D>("textures/units/grenadier"),
-                Content.Load<Texture2D>("textures/UI/selector"),
                 Content.Load<SpriteFont>("fonts/Button"),
                 Content.Load<SpriteFont>("fonts/Tutorial"),
                 Content.Load<SpriteFont>("fonts/UnitName"));
@@ -90,7 +96,7 @@ namespace Board_Game
                 this.Exit();
 
             InputManager.Get().Update();
-            mAI.Update(gameTime);
+            mGameState.Update(gameTime);
 
             // TODO: Add your update logic here
 

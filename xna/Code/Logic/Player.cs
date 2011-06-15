@@ -21,7 +21,7 @@ namespace Board_Game.Code.Logic
         public Side mSide;
         private List<Unit> mUnits;
         private GameGrid mGrid;
-        private AI mAI;
+        public AI mAI;
 
         public List<Unit> Units { get { return mUnits; } }
 

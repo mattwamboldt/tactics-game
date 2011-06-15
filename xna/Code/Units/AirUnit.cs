@@ -40,13 +40,8 @@ namespace Board_Game.Code.Units
                     || grid.mTiles[i, j + 1].occupied || grid.mTiles[i + 1, j + 1].occupied);
         }
 
-        public override void Move(int newLocationI, int newLocationJ, bool changeTurns)
+        public override void Move(int newLocationI, int newLocationJ)
         {
-	        if(changeTurns == true)
-	        {
-		        mAIRef.ChangeTurns();
-	        }
-
 	        for(var i = 0; i < 2; ++i)
 	        {
 		        for(var j = 0; j < 2; ++j)
