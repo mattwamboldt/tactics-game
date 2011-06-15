@@ -39,7 +39,6 @@ namespace Board_Game.Code.Units
 		        {
 			        for(var j = 0; j < 2; ++j)
 			        {
-                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupied = false;
                         grid.mTiles[UnitLocationI + i, UnitLocationJ + j].side = Side.Neutral;
                         grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupiedUnit = null;
 			        }

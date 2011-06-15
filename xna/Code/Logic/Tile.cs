@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Code.Logic;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Code
 {
@@ -12,42 +13,29 @@ namespace Board_Game.Code
     {
         public const float TILE_SIZE = 25;
 
-        public bool occupied;
         public Side side;
         public Units.Unit occupiedUnit;
         public Mine mine;
 
-        public Texture2D texture;
-        private Vector2 position;
+        public bool Occupied { get { return occupiedUnit != null; } }
+
+        private Sprite mSprite;
 
         public Tile(Texture2D inTexture, int x, int y)
         {
-            occupied = false;
             side = Side.Neutral;
             occupiedUnit = null;
             mine = null;
-            position = new Vector2(x, y);
-            texture = inTexture;
+            mSprite = new Sprite(
+                inTexture,
+                new Vector2(x * TILE_SIZE, y * TILE_SIZE),
+                Color.White,
+                new Vector2(TILE_SIZE,TILE_SIZE));
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
-            Vector2 drawPosition = new Vector2(position.X * TILE_SIZE, position.Y * TILE_SIZE);
-
-            drawPosition.X += parentPosition.X;
-            drawPosition.Y += parentPosition.Y;
-
-            spriteBatch.Draw(
-                texture,
-                drawPosition,
-                null,
-                Color.White,
-                0f,
-                Vector2.Zero,
-                TILE_SIZE / texture.Width,
-                SpriteEffects.None,
-                0f
-            );
+            mSprite.Render(spriteBatch, parentPosition);
         }
     }
 }

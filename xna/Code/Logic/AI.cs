@@ -455,7 +455,7 @@ namespace Board_Game.Code
                     for (var u = 0; u < 2; ++u)
                     {
                         var square = mGrid.mTiles[(int)mine.position.Y * 2 + t, (int)mine.position.X * 2 + u];
-                        if (square.occupiedUnit != null)
+                        if (square.Occupied)
                         {
                             if (square.occupiedUnit.Type == Units.UnitType.Miner
                                 && square.side == colour)
@@ -467,7 +467,7 @@ namespace Board_Game.Code
                                     && square.occupiedUnit.CanFly == false)
                             {
                                 RemoveUnit(square.occupiedUnit);
-                                square.occupied = false;
+                                square.occupiedUnit = null;
                                 square.side = Side.Neutral;
                             }
                         }

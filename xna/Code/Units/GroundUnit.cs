@@ -20,7 +20,6 @@ namespace Board_Game.Code.Units
 
         public override void Move(int newLocationI, int newLocationJ)
         {
-            grid.mTiles[originalI, originalJ].occupied = false;
             grid.mTiles[originalI, originalJ].side = Side.Neutral;
             grid.mTiles[originalI, originalJ].occupiedUnit = null;
             SetLocation(newLocationI, newLocationJ);
@@ -28,12 +27,11 @@ namespace Board_Game.Code.Units
         
         public override bool CheckOccupied(int i, int j)
         {
-            return grid.mTiles[i, j].occupied;
+            return grid.mTiles[i, j].Occupied;
         }
 
         public override void SetLocation(int newLocationI, int newLocationJ)
         {
-            grid.mTiles[newLocationI, newLocationJ].occupied = true;
             grid.mTiles[newLocationI, newLocationJ].side = side;
             grid.mTiles[newLocationI, newLocationJ].occupiedUnit = this;
 

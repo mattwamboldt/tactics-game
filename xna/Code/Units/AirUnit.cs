@@ -24,7 +24,6 @@ namespace Board_Game.Code.Units
 	        {
 		        for(var j = 0; j < 2; ++j)
 		        {
-			        grid.mTiles[newLocationI + i, newLocationJ + j].occupied = true;
                     grid.mTiles[newLocationI + i, newLocationJ + j].side = side;
                     grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit = this;
 		        }
@@ -36,8 +35,8 @@ namespace Board_Game.Code.Units
 
         public override bool CheckOccupied(int i, int j)
         {
-            return (grid.mTiles[i, j].occupied || grid.mTiles[i + 1, j].occupied
-                    || grid.mTiles[i, j + 1].occupied || grid.mTiles[i + 1, j + 1].occupied);
+            return (grid.mTiles[i, j].Occupied || grid.mTiles[i + 1, j].Occupied
+                    || grid.mTiles[i, j + 1].Occupied || grid.mTiles[i + 1, j + 1].Occupied);
         }
 
         public override void Move(int newLocationI, int newLocationJ)
@@ -46,7 +45,6 @@ namespace Board_Game.Code.Units
 	        {
 		        for(var j = 0; j < 2; ++j)
 		        {
-			        grid.mTiles[originalI + i, originalJ + j].occupied = false;
 			        grid.mTiles[originalI + i, originalJ + j].side = Side.Neutral;
 			        grid.mTiles[originalI + i, originalJ + j].occupiedUnit = null;
 		        }
@@ -61,7 +59,7 @@ namespace Board_Game.Code.Units
 	        {
 		        for(var j = 0; j < 2; ++j)
 		        {
-			        if(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit != null)
+                    if (grid.mTiles[newLocationI + i, newLocationJ + j].Occupied)
 			        {
 				        mAIRef.RemoveUnit(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit);
 			        }

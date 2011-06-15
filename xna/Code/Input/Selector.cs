@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Code.Logic;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Code
 {
@@ -16,7 +17,7 @@ namespace Board_Game.Code
         public GameState mGameState;
 
         //for drawing
-        public Texture2D texture;
+        public Sprite mSprite;
         public Vector2 position;
         private Units.Unit selectedUnit;
         private Units.ClampArea unitClamp;
@@ -26,8 +27,14 @@ namespace Board_Game.Code
                 GameGrid grid,
                 GameState gameState)
         {
-            texture = selectorTexture;
             position = new Vector2();
+
+            mSprite = new Sprite(
+                selectorTexture,
+                new Vector2(0, 0),
+                Color.White,
+                new Vector2(Tile.TILE_SIZE, Tile.TILE_SIZE)
+            );
 
             mSide = Side.Neutral;
             mGridRef = grid;
@@ -37,35 +44,23 @@ namespace Board_Game.Code
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
-            float scale = Tile.TILE_SIZE / texture.Width;
-
-            Vector2 renderPosition = new Vector2(
-                parentPosition.X + position.X * Tile.TILE_SIZE,
-                parentPosition.Y + position.Y * Tile.TILE_SIZE
+            mSprite.Position = new Vector2(
+                position.X * Tile.TILE_SIZE,
+                position.Y * Tile.TILE_SIZE
             );
 
-            Color color = Color.White;
+            mSprite.Color = Color.White;
 
             if (mSide == Side.Red)
             {
-                color = Color.Red;
+                mSprite.Color = Color.Red;
             }
             else if (mSide == Side.Blue)
             {
-                color = Color.Blue;
+                mSprite.Color = Color.Blue;
             }
 
-            spriteBatch.Draw(
-                texture,
-                renderPosition,
-                null,
-                color,
-                0f,
-                Vector2.Zero,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
+            mSprite.Render(spriteBatch, parentPosition);
         }
 
         public void HandleInput()
@@ -101,7 +96,7 @@ namespace Board_Game.Code
 
         private void SelectUnit()
         {
-            if (mGridRef.mTiles[(int)position.Y, (int)position.X].occupied)
+            if (mGridRef.mTiles[(int)position.Y, (int)position.X].Occupied)
             {
                 Units.Unit unit = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedUnit;
                 if (unit.side == mSide)

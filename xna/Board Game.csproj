@@ -92,6 +92,7 @@
     <Compile Include="Code\Logic\Mine.cs" />
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
+    <Compile Include="Code\Rendering\Sprite.cs" />
     <Compile Include="Code\UI\Layout.cs" />
     <Compile Include="Code\Units\AirUnit.cs" />
     <Compile Include="Code\Units\Bomber.cs" />

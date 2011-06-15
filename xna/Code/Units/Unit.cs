@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Code.Logic;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Code.Units
 {
@@ -46,12 +47,12 @@ namespace Board_Game.Code.Units
 
         public bool CanFly;
 
-        public Texture2D texture;
         public Vector2 position;
         public int height;
         public int width;
         public AI mAIRef;
         public bool isSelected;
+        private Sprite mSprite;
 
         //used to determine which enemies this unit
         //type should attack first
@@ -67,46 +68,31 @@ namespace Board_Game.Code.Units
             Type = UnitType.Undefined;
             CanFly = false;
             position = new Vector2(0, 0);
-            texture = inTexture;
             isSelected = false;
+
+            mSprite = new Sprite(inTexture, position, Color.White, ScreenDimensions());
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
-            float scale = ScreenDimensions().X / texture.Width;
-
-            Vector2 renderPosition = new Vector2(
-                parentPosition.X + position.X,
-                parentPosition.Y + position.Y
-            );
-
-            Color color = Color.White;
+            mSprite.Position = position;
+            mSprite.Color = Color.White;
 
             if (side == Side.Red)
             {
-                color = Color.Red;
+                mSprite.Color = Color.Red;
             }
             else if (side == Side.Blue)
             {
-                color = Color.Blue;
+                mSprite.Color = Color.Blue;
             }
 
             if (isSelected)
             {
-                color = Color.Yellow;
+                mSprite.Color = Color.Yellow;
             }
 
-            spriteBatch.Draw(
-                texture,
-                renderPosition,
-                null,
-                color,
-                0f,
-                Vector2.Zero,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
+            mSprite.Render(spriteBatch, parentPosition);
         }
 
         public virtual bool CheckOccupied(int i, int j)

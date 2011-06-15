@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Code.Logic
 {
@@ -13,47 +14,34 @@ namespace Board_Game.Code.Logic
 
         public Side side;
 
-        public Texture2D texture;
+        private Sprite mSprite;
         public Vector2 position;
 
         public Mine(Texture2D inTexture, int x, int y)
         {
             side = Side.Neutral;
             position = new Vector2(x, y);
-            texture = inTexture;
+            mSprite = new Sprite(
+                inTexture,
+                new Vector2(position.X * MINE_SIZE, position.Y * MINE_SIZE),
+                Color.White,
+                new Vector2(MINE_SIZE, MINE_SIZE));
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
-            float scale;
-            Color color = Color.White;
-            Vector2 drawPosition = new Vector2(position.X * MINE_SIZE, position.Y * MINE_SIZE);
-
-            scale = MINE_SIZE / texture.Width;
+            mSprite.Color = Color.White;
 
             if (side == Side.Red)
             {
-                color = Color.Red;
+                mSprite.Color = Color.Red;
             }
             else if (side == Side.Blue)
             {
-                color = Color.Blue;
+                mSprite.Color = Color.Blue;
             }
 
-            drawPosition.X += parentPosition.X;
-            drawPosition.Y += parentPosition.Y;
-
-            spriteBatch.Draw(
-                texture,
-                drawPosition,
-                null,
-                color,
-                0f,
-                Vector2.Zero,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
+            mSprite.Render(spriteBatch, parentPosition);
         }
     }
 }

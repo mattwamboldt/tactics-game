@@ -19,7 +19,7 @@ namespace Board_Game.Code.Units
 
         public override bool CheckColour(int i, int j)
         {
-            return grid.mTiles[i, j].side != side && !grid.mTiles[i, j].occupied;
+            return grid.mTiles[i, j].side != side && !grid.mTiles[i, j].Occupied;
         }
 
         public override void RemoveUnits(int newLocationI, int newLocationJ)
