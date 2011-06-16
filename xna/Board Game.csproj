@@ -95,7 +95,10 @@
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
     <Compile Include="Code\Rendering\Sprite.cs" />
+    <Compile Include="Code\UI\FontManager.cs" />
+    <Compile Include="Code\UI\Label.cs" />
     <Compile Include="Code\UI\Layout.cs" />
+    <Compile Include="Code\UI\Screen.cs" />
     <Compile Include="Code\Units\AirUnit.cs" />
     <Compile Include="Code\Units\Bomber.cs" />
     <Compile Include="Code\Units\Deminer.cs" />

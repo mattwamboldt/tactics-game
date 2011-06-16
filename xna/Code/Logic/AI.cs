@@ -112,15 +112,13 @@ namespace Board_Game.Code
 
         public GameState State { get { return mGameState; } }
 
+        Screen mTutorial;
+
         Texture2D mBomberTexture;
         Texture2D mFighterTexture;
         Texture2D mSoldierTexture;
         Texture2D mDeminerTexture;
         Texture2D mGrenadierTexture;
-
-        SpriteFont mButton;
-        SpriteFont mTutorial;
-        SpriteFont mUnitName;
 
         public void Initialize(
             GameState gameState,
@@ -128,10 +126,7 @@ namespace Board_Game.Code
             Texture2D fighterTexture,
             Texture2D soldierTexture,
             Texture2D deminerTexture,
-            Texture2D grenadierTexture,
-            SpriteFont button,
-            SpriteFont tutorial,
-            SpriteFont unitName)
+            Texture2D grenadierTexture)
         {
             random = new Random();
 
@@ -143,11 +138,6 @@ namespace Board_Game.Code
             mDeminerTexture = deminerTexture;
             mGrenadierTexture = grenadierTexture;
 
-            mButton = button;
-            mTutorial = tutorial;
-            mUnitName = unitName;
-            
-
             mGameState.Initialize(
                 bomberTexture,
                 fighterTexture,
@@ -155,6 +145,8 @@ namespace Board_Game.Code
                 deminerTexture,
                 grenadierTexture
             );
+
+            mTutorial = new Screen();
         }
 
         public void Render(SpriteBatch spriteBatch)
@@ -211,59 +203,17 @@ namespace Board_Game.Code
                 redString = "AI";
             }
 
-            spriteBatch.DrawString(mButton, redString, Layout.CenterAlign(new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, mButton), Color.White);
+            spriteBatch.DrawString(FontManager.Get().Find("Button"), redString, Layout.CenterAlign(new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, FontManager.Get().Find("Button")), Color.White);
 
             if (!mGameState.Blue.mIsHuman)
             {
                 blueString = "AI";
             }
 
-            spriteBatch.DrawString(mButton, blueString, Layout.CenterAlign(new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, mButton), Color.White);
-            
-            //--sidebar header
-            spriteBatch.DrawString(mButton, "UNITS", Layout.CenterAlign(new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), "UNITS", mButton), Color.White);
+            spriteBatch.DrawString(FontManager.Get().Find("Button"), blueString, Layout.CenterAlign(new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, FontManager.Get().Find("Button")), Color.White);
 
-            //--unit descriptions
-            string[] titles = new string[] { "BOMBER", "FIGHTER", "SOLDIER", "DE-MINER", "BAZOOKA" };
-            string[] descriptions = new string[] {
-                "Movement: 1 large square\nDestroys ground units.",
-                "Movement: 1 large square\nDestroys air units.",
-                "Movement: 1 square\nDestroys ground units.",
-                "Movement: 1 square\nCaptures mines.",
-                "Movement: 1 square\nDestroys all units."
-            };
-
-            for (int i = 0; i < 5; i++)
-            {
-                spriteBatch.DrawString(
-                    mTutorial, 
-                    titles[i],
-                    new Vector2(
-                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
-                        30 + 20 + 5 + (50 + 15) * i),
-                   Color.White);
-
-                spriteBatch.DrawString(
-                    mTutorial,
-                    Layout.WrapString(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, descriptions[i]),
-                    new Vector2(
-                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
-                        30 + 20 + 5 + (50 + 15) * i + 15),
-                   Color.White);
-            }
-
-            //--tutorial text
-            String tutorialText = "The Objective of the game is to destroy all opponent units, or take control "
-                + "of all mines (squares the are around a diamond). The De-Miner units convert a neutral(grey) "
-                + "or enemy mine to your colour, at which point you can move your other units safely across."
-                + "\n\nFlying units, which are the bomber and fighter, will not be destroyed by mines.";
-
-            spriteBatch.DrawString(
-                mTutorial,
-                Layout.WrapString(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, mTutorial, tutorialText),
-                new Vector2(5, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30 + 5),
-                Color.White
-            );
+            //UItext, will eventually have the whole screen
+            mTutorial.Render(spriteBatch);
 
             //draw the grid
             mGameState.Render(spriteBatch, mGrid.position);
@@ -283,7 +233,7 @@ namespace Board_Game.Code
                 }
 
                 //determine the background size based on the text size
-                Vector2 stringSize = mButton.MeasureString(victorString);
+                Vector2 stringSize = FontManager.Get().Find("Button").MeasureString(victorString);
                 Vector2 backgroundSize = new Vector2(stringSize.X + 20, stringSize.Y + 10);
 
                 //draw the background and string centered to the grid
@@ -305,9 +255,9 @@ namespace Board_Game.Code
                 spriteBatch.Draw(pixel, backgroundRect, Color.Black);
 
                 spriteBatch.DrawString(
-                    mButton,
+                    FontManager.Get().Find("Button"),
                     victorString,
-                    Layout.CenterAlign(backgroundRect, victorString, mButton),
+                    Layout.CenterAlign(backgroundRect, victorString, FontManager.Get().Find("Button")),
                     Color.White
                 );
             }

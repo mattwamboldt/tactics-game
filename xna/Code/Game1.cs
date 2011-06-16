@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Board_Game.Code;
 using Board_Game.Code.Logic;
+using Board_Game.Code.UI;
 
 namespace Board_Game
 {
@@ -55,6 +56,8 @@ namespace Board_Game
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            FontManager.Initialize(Content);
+
             mGameState = new GameState(
                 mAI,
                 Content.Load<Texture2D>("textures/tiles/single"),
@@ -68,10 +71,7 @@ namespace Board_Game
                 Content.Load<Texture2D>("textures/units/fighter"),
                 Content.Load<Texture2D>("textures/units/soldier"),
                 Content.Load<Texture2D>("textures/units/deminer"),
-                Content.Load<Texture2D>("textures/units/grenadier"),
-                Content.Load<SpriteFont>("fonts/Button"),
-                Content.Load<SpriteFont>("fonts/Tutorial"),
-                Content.Load<SpriteFont>("fonts/UnitName"));
+                Content.Load<Texture2D>("textures/units/grenadier"));
 
         }
 
