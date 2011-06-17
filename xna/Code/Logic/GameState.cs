@@ -5,9 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-using Board_Game.Code.Input;
+using Board_Game.Input;
 
-namespace Board_Game.Code.Logic
+namespace Board_Game.Logic
 {
     public enum Side
     {

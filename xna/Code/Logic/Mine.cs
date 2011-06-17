@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Board_Game.Code.Rendering;
+using Board_Game.Rendering;
 
-namespace Board_Game.Code.Logic
+namespace Board_Game.Logic
 {
     class Mine
     {

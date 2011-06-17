@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Board_Game.Code.Rendering
+namespace Board_Game.Rendering
 {
     class Sprite
     {

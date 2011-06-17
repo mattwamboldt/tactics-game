@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Board_Game.Code.UI
+namespace Board_Game.UI
 {
     class Layout
     {

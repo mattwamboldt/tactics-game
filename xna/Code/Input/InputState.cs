@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Board_Game.Code.Input
+namespace Board_Game.Input
 {
     //This is the list of in game supported inputs
     //It matches the PS3 controller for a) funniness

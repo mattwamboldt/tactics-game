@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Board_Game.Logic;
 
-namespace Board_Game.Code.Units
+namespace Board_Game.Units
 {
     class Soldier : GroundUnit
     {

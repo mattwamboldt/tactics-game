@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Board_Game.Code.Util
+namespace Board_Game.Util
 {
     class Rounding
     {

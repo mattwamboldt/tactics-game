@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
-using Board_Game.Code.Input;
+using Board_Game.Input;
 
-namespace Board_Game.Code
+namespace Board_Game.Input
 {
     class InputManager
     {

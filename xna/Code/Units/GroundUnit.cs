@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Board_Game.Code.Logic;
+using Board_Game.Logic;
 
-namespace Board_Game.Code.Units
+namespace Board_Game.Units
 {
     class GroundUnit : Unit
     {

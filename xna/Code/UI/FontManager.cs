@@ -6,7 +6,7 @@ using System.Collections;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Board_Game.Code.UI
+namespace Board_Game.UI
 {
     //controls loading and lookup of fonts
     class FontManager

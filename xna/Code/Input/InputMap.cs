@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 
-namespace Board_Game.Code.Input
+namespace Board_Game.Input
 {
     class InputMap
     {

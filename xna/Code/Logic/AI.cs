@@ -5,9 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Board_Game.Code.UI;
-using Board_Game.Code.Util;
-using Board_Game.Code.Logic;
+using Board_Game.UI;
+using Board_Game.Util;
 
 /*
     AI History: MSW
@@ -88,7 +87,7 @@ using Board_Game.Code.Logic;
     large ai change until someone pro comes along.
 */
 
-namespace Board_Game.Code
+namespace Board_Game.Logic
 {
     struct Move
     {
@@ -112,41 +111,11 @@ namespace Board_Game.Code
 
         public GameState State { get { return mGameState; } }
 
-        Screen mTutorial;
-
-        Texture2D mBomberTexture;
-        Texture2D mFighterTexture;
-        Texture2D mSoldierTexture;
-        Texture2D mDeminerTexture;
-        Texture2D mGrenadierTexture;
-
-        public void Initialize(
-            GameState gameState,
-            Texture2D bomberTexture,
-            Texture2D fighterTexture,
-            Texture2D soldierTexture,
-            Texture2D deminerTexture,
-            Texture2D grenadierTexture)
+        public void Initialize(GameState gameState)
         {
             random = new Random();
 
             mGameState = gameState;
-
-            mBomberTexture = bomberTexture;
-            mFighterTexture = fighterTexture;
-            mSoldierTexture = soldierTexture;
-            mDeminerTexture = deminerTexture;
-            mGrenadierTexture = grenadierTexture;
-
-            mGameState.Initialize(
-                bomberTexture,
-                fighterTexture,
-                soldierTexture,
-                deminerTexture,
-                grenadierTexture
-            );
-
-            mTutorial = new Screen();
         }
 
         public void Render(SpriteBatch spriteBatch)
@@ -154,45 +123,8 @@ namespace Board_Game.Code
             Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData<Color>(new Color[] { Color.White });
 
-            //draw the UI
-            //TODO: Move UI into a tool and class to remove all of these consants and draw calls
-            //-draw a box under the grid
-            spriteBatch.Draw(pixel, new Rectangle(0, 0, GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
-            
-            //-draw the box under UNITS
-            spriteBatch.Draw(pixel, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30), Color.Black);
-
-            //-draw the tutorial text box
-            spriteBatch.Draw(pixel, new Rectangle(0, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30, GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
-
-            //-draw the unit sidebar box
-            spriteBatch.Draw(pixel, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50, 250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
-
-            //-draw the unit backgrounds
-
-            for (int i = 0; i < 5; i++)
-            {
-                spriteBatch.Draw(pixel, new Rectangle(
-                GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5,
-                30 + 20 + 5 + (50 + 15) * i,
-                (int)Tile.TILE_SIZE * 2 + 10,
-                (int)Tile.TILE_SIZE * 2 + 10),
-               Color.DarkGray);
-            }
-
-            //-draw the units
-            spriteBatch.Draw(mBomberTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mFighterTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + 50 + 15, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mSoldierTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 2, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mDeminerTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 3, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-            spriteBatch.Draw(mGrenadierTexture, new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * 4, (int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10), Color.Red);
-
-            //-draw the buttons
-            spriteBatch.Draw(pixel, new Rectangle(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
-            spriteBatch.Draw(pixel, new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Red);
-
-            spriteBatch.Draw(pixel, new Rectangle(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1, 100 + 2, 20 + 2), Color.White);
-            spriteBatch.Draw(pixel, new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), Color.Blue);
+            //TODO: These last elements are dynamic and will have to wait until
+            //I can modify properties of the screen at runtime
 
             //-draw the text
             //--buttons
@@ -211,12 +143,6 @@ namespace Board_Game.Code
             }
 
             spriteBatch.DrawString(FontManager.Get().Find("Button"), blueString, Layout.CenterAlign(new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, FontManager.Get().Find("Button")), Color.White);
-
-            //UItext, will eventually have the whole screen
-            mTutorial.Render(spriteBatch);
-
-            //draw the grid
-            mGameState.Render(spriteBatch, mGrid.position);
 
             if (mGameState.winner != Side.Neutral)
             {

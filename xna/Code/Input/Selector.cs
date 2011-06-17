@@ -5,11 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Board_Game.Code.Logic;
-using Board_Game.Code.Rendering;
-using Board_Game.Code.Input;
 
-namespace Board_Game.Code
+using Board_Game.Rendering;
+using Board_Game.Input;
+
+namespace Board_Game.Logic
 {
     class Selector
     {

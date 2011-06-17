@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
-using Board_Game.Code;
-using Board_Game.Code.Logic;
-using Board_Game.Code.UI;
+using Board_Game.Logic;
+using Board_Game.UI;
+using Board_Game.Input;
 
 namespace Board_Game
 {
@@ -24,7 +24,15 @@ namespace Board_Game
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         AI mAI;
+        Screen mScreen;
         GameState mGameState;
+
+        //for now until a texture manager is set up
+        Texture2D mBomberTexture;
+        Texture2D mFighterTexture;
+        Texture2D mSoldierTexture;
+        Texture2D mDeminerTexture;
+        Texture2D mGrenadierTexture;
 
         public Game1()
         {
@@ -56,6 +64,12 @@ namespace Board_Game
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            mBomberTexture = Content.Load<Texture2D>("textures/units/bomber");
+            mFighterTexture = Content.Load<Texture2D>("textures/units/fighter");
+            mSoldierTexture = Content.Load<Texture2D>("textures/units/soldier");
+            mDeminerTexture = Content.Load<Texture2D>("textures/units/deminer");
+            mGrenadierTexture = Content.Load<Texture2D>("textures/units/grenadier");
+
             FontManager.Initialize(Content);
 
             mGameState = new GameState(
@@ -64,15 +78,24 @@ namespace Board_Game
                 Content.Load<Texture2D>("textures/tiles/mine"),
                 Content.Load<Texture2D>("textures/UI/selector"));
 
-            // TODO: use this.Content to load your game content here
-            mAI.Initialize(
-                mGameState,
-                Content.Load<Texture2D>("textures/units/bomber"),
-                Content.Load<Texture2D>("textures/units/fighter"),
-                Content.Load<Texture2D>("textures/units/soldier"),
-                Content.Load<Texture2D>("textures/units/deminer"),
-                Content.Load<Texture2D>("textures/units/grenadier"));
+            mGameState.Initialize(
+                mBomberTexture,
+                mFighterTexture,
+                mSoldierTexture,
+                mDeminerTexture,
+                mGrenadierTexture
+            );
 
+            // TODO: use this.Content to load your game content here
+            mAI.Initialize(mGameState);
+
+            mScreen = new Screen(GraphicsDevice,
+                mBomberTexture,
+                mFighterTexture,
+                mSoldierTexture,
+                mDeminerTexture,
+                mGrenadierTexture
+            );
         }
 
         /// <summary>
@@ -112,7 +135,9 @@ namespace Board_Game
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin(); 
+            spriteBatch.Begin();
+            mScreen.Render(spriteBatch);
+            mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mAI.Render(spriteBatch);
             spriteBatch.End();
 

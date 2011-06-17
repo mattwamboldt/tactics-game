@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Board_Game.Code.Units;
+using Board_Game.Units;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Board_Game.Code.Logic
+namespace Board_Game.Logic
 {
     /// <summary>
     /// This defines a player, each player has a set of units and a reference
