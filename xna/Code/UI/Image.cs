@@ -20,6 +20,7 @@ namespace Board_Game.UI
         public override void Render(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(mTexture, new Rectangle((int)mPosition.X, (int)mPosition.Y, (int)mSize.X, (int)mSize.Y), mColor);
+            base.Render(spriteBatch);
         }
     }
 }

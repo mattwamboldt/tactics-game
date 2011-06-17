@@ -48,6 +48,8 @@ namespace Board_Game.UI
             }
 
             spriteBatch.DrawString(mFont, text, position, mColor);
+
+            base.Render(spriteBatch);
         }
     }
 }
