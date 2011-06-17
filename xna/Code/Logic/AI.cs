@@ -119,112 +119,6 @@ namespace Board_Game.Logic
             mGameState = gameState;
         }
 
-        public void Render(SpriteBatch spriteBatch)
-        {
-            string redString = "HUMAN";
-            string blueString = "HUMAN";
-            if (!mGameState.Red.mIsHuman)
-            {
-                redString = "AI";
-            }
-
-            Label redText = (Label)mScreen.Root.GetNode("gridBackground.redBGEdge.redBG.redText");
-            redText.Text = redString;
-
-            if (!mGameState.Blue.mIsHuman)
-            {
-                blueString = "AI";
-            }
-
-            Label blueText = (Label)mScreen.Root.GetNode("gridBackground.blueBGEdge.blueBG.blueText");
-            blueText.Text = blueString;
-
-            if (mGameState.winner != Side.Neutral)
-            {
-                //we have a winner
-                string victorString = "";
-                if (mGameState.winner == Side.Red)
-                {
-                    victorString = "Red has won!";
-                }
-                else if (mGameState.winner == Side.Blue)
-                {
-                    victorString = "Blue has won";
-                }
-
-                Shape victor = mScreen.Root.GetNode("gridBackground.victorBGEdge");
-                victor.Visible = true;
-
-                Label victorText = (Label)victor.GetNode("victorBG.victorText");
-                victorText.Text = victorString;
-
-                victor.Width = victorText.Width + 24;
-                victor.GetChild("victorBG").Width = victor.Width - 4;
-
-                victor.CenterAlign();
-                victor.GetChild("victorBG").CenterAlign();
-
-            }
-        }
-        
-        /// <summary>
-        /// Was AIPass in Flash. This decides which unit should move and then
-        /// moves that unit.
-        /// </summary>
-        /// <param name="colourToRun">Whether red or blue is going</param>
-        public void Update(int colourToRun)
-        {
-            if (mGameState.winner == Side.Neutral)
-            {
-                Move bestMove;
-                bestMove.score = -99;
-                bestMove.position.Y = -99;
-                bestMove.position.X = -99;
-                Units.Unit unitToMove = null;
-
-                List<Units.Unit> units;
-
-                if(colourToRun == (int)Side.Red)
-                {
-                    units = mGameState.Red.Units;
-                }
-                else
-                {
-                    units = mGameState.Blue.Units;
-                }
-
-                foreach (Units.Unit unit in units)
-                {
-                    Vector2 target = unit.GetNearestTarget();
-
-                    Stack<Move> possibleMoves = GetMoveList(unit, target);
-
-                    if (possibleMoves.Count == 0)
-                    {
-                        Console.Out.WriteLine("No moves for " + unit.Type + " at " + unit.position);
-                    }
-
-                    foreach (Move move in possibleMoves)
-                    {
-                        if (unitToMove == null || bestMove.score < move.score)
-                        {
-                            bestMove = move;
-                            unitToMove = unit;
-                        }
-                    }
-                }
-
-                if (unitToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
-                {
-                    unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);
-                }
-
-                unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X);
-
-                mGameState.EndTurn();
-            }
-        }
-
         //TODO: Move to the Unit
         /*
             This tells us if a square is adjacent to units that will destroy the passed in units.
@@ -320,7 +214,7 @@ namespace Board_Game.Logic
                                     && square.occupiedUnit.Type != Units.UnitType.Miner
                                     && square.occupiedUnit.CanFly == false)
                             {
-                                RemoveUnit(square.occupiedUnit);
+                                State.RemoveUnit(square.occupiedUnit);
                                 square.occupiedUnit = null;
                                 square.side = Side.Neutral;
                             }
@@ -456,42 +350,62 @@ namespace Board_Game.Logic
             return unitWorths[(int)unit.Type] * 200;
         }
 
-        internal float Width()
-        {
-            return GameState.GRID_WIDTH * Tile.TILE_SIZE;
-        }
-
-        internal float Height()
-        {
-            return GameState.GRID_HEIGHT * Tile.TILE_SIZE;
-        }
-
-        //This will search through the arrays and eliminate the given unit
-        internal void RemoveUnit(Units.Unit unit)
-        {
-            List<Units.Unit> units;
-
-            if (unit.side == Side.Blue)
-            {
-                units = mGameState.Blue.Units;
-            }
-            else
-            {
-                units = mGameState.Red.Units;
-            }
-
-            units.Remove(unit);
-            unit = null;
-        }
-
-
         internal void Update(GameTime gameTime)
         {
             elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 
             if (elapsedTime >= TURN_TIME)
             {
-                Update((int)mGameState.mCurrentPlayer.mSide);
+                if (mGameState.winner == Side.Neutral)
+                {
+                    Move bestMove;
+                    bestMove.score = -99;
+                    bestMove.position.Y = -99;
+                    bestMove.position.X = -99;
+                    Units.Unit unitToMove = null;
+
+                    List<Units.Unit> units;
+
+                    if (mGameState.mCurrentPlayer.mSide == Side.Red)
+                    {
+                        units = mGameState.Red.Units;
+                    }
+                    else
+                    {
+                        units = mGameState.Blue.Units;
+                    }
+
+                    foreach (Units.Unit unit in units)
+                    {
+                        Vector2 target = unit.GetNearestTarget();
+
+                        Stack<Move> possibleMoves = GetMoveList(unit, target);
+
+                        if (possibleMoves.Count == 0)
+                        {
+                            Console.Out.WriteLine("No moves for " + unit.Type + " at " + unit.position);
+                        }
+
+                        foreach (Move move in possibleMoves)
+                        {
+                            if (unitToMove == null || bestMove.score < move.score)
+                            {
+                                bestMove = move;
+                                unitToMove = unit;
+                            }
+                        }
+                    }
+
+                    if (unitToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
+                    {
+                        unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);
+                    }
+
+                    unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X);
+
+                    mGameState.EndTurn();
+                }
+
                 elapsedTime = 0;
             }
         }

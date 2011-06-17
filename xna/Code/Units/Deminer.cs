@@ -24,7 +24,7 @@ namespace Board_Game.Units
 
         public override void RemoveUnits(int newLocationI, int newLocationJ)
         {
-            mAIRef.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
+            mAIRef.State.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
         }
 
         public override bool CanAttack(UnitType unitType)

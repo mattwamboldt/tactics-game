@@ -44,7 +44,8 @@ namespace Board_Game.Units
 			        }
 		        }
 	        }
-	        mAIRef.RemoveUnit(unit);
+
+	        mAIRef.State.RemoveUnit(unit);
         }
 
         public override bool CanAttack(UnitType unitType)

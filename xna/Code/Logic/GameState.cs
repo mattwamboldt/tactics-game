@@ -176,5 +176,17 @@ namespace Board_Game.Logic
             CheckVictory();
             ChangeTurns();
         }
+
+        public void RemoveUnit(Units.Unit unit)
+        {
+            if (unit.side == Side.Blue)
+            {
+                Blue.RemoveUnit(unit);
+            }
+            else
+            {
+                Red.RemoveUnit(unit);
+            }
+        }
     }
 }

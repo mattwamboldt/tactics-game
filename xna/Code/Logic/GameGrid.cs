@@ -66,5 +66,15 @@ namespace Board_Game.Logic
                 mine.Render(spriteBatch, position);
             }
         }
+
+        public float Width()
+        {
+            return GameState.GRID_WIDTH * Tile.TILE_SIZE;
+        }
+
+        public float Height()
+        {
+            return GameState.GRID_HEIGHT * Tile.TILE_SIZE;
+        }
     }
 }

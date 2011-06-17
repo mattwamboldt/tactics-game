@@ -144,11 +144,11 @@ namespace Board_Game.Units
             {
                 returnValue.topCut = (int)(ScreenDimensions().Y / 2);
             }
-            if (returnValue.rightCut + ScreenDimensions().X / 2 > mAIRef.Width())
+            if (returnValue.rightCut + ScreenDimensions().X / 2 > grid.Width())
             {
                 returnValue.rightCut = (int)position.X;
             }
-            if (returnValue.bottomCut + ScreenDimensions().Y / 2 > mAIRef.Height())
+            if (returnValue.bottomCut + ScreenDimensions().Y / 2 > grid.Height())
             {
                 returnValue.bottomCut = (int)position.Y;
             }

@@ -118,6 +118,7 @@ namespace Board_Game
 
             InputManager.Get().Update();
             mGameState.Update(gameTime);
+            mScreen.Update(mGameState);
 
             // TODO: Add your update logic here
 
@@ -132,12 +133,12 @@ namespace Board_Game
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             spriteBatch.Draw(mBackground, new Rectangle(0, 0, 800, 600), Color.White);
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mScreen.Render(spriteBatch);
-            mAI.Render(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

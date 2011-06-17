@@ -61,7 +61,7 @@ namespace Board_Game.Units
 		        {
                     if (grid.mTiles[newLocationI + i, newLocationJ + j].Occupied)
 			        {
-				        mAIRef.RemoveUnit(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit);
+				        mAIRef.State.RemoveUnit(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit);
 			        }
 		        }
 	        }

@@ -107,6 +107,12 @@ namespace Board_Game.Logic
             }
         }
 
+        public void RemoveUnit(Units.Unit unit)
+        {
+            mUnits.Remove(unit);
+            unit = null;
+        }
+
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
         {
             foreach (Unit unit in mUnits)
