@@ -92,7 +92,6 @@
     <Compile Include="Code\Logic\Mine.cs" />
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
-    <Compile Include="Code\Rendering\TextureManager.cs" />
     <Compile Include="Code\UI\FontManager.cs" />
     <Compile Include="Code\UI\Image.cs" />
     <Compile Include="Code\UI\Label.cs" />

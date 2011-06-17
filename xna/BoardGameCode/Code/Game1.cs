@@ -14,6 +14,7 @@ using Board_Game.Logic;
 using Board_Game.UI;
 using Board_Game.Input;
 using Board_Game.Code.Rendering;
+using Board_Game.Rendering;
 
 namespace Board_Game
 {
@@ -70,7 +71,7 @@ namespace Board_Game
             FontManager.Initialize(Content);
             TextureManager.Initialize(Content);
 
-            mGameState = new GameState(mAI);
+            mGameState = new GameState(mAI, Content.Load<Sprite>("xml/Selector"));
             mGameState.Initialize();
             mAI.Initialize(mGameState);
             mScreen = new Screen(GraphicsDevice);

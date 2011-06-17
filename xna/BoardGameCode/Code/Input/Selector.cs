@@ -24,18 +24,13 @@ namespace Board_Game.Logic
         private Units.ClampArea unitClamp;
 
         public Selector(
-                Texture2D selectorTexture,
+                Sprite selectorSprite,
                 GameGrid grid,
                 GameState gameState)
         {
             position = new Vector2();
 
-            mSprite = new Sprite(
-                selectorTexture,
-                new Vector2(0, 0),
-                Color.White,
-                new Vector2(Tile.TILE_SIZE, Tile.TILE_SIZE)
-            );
+            mSprite = selectorSprite;
 
             mSide = Side.Neutral;
             mGridRef = grid;

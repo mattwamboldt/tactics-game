@@ -107,6 +107,7 @@
   <ItemGroup>
     <Compile Include="Input\InputMapWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\SpriteWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BoardGameContent\BoardGameContent.csproj">

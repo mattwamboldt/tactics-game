@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Rendering.Sprite">
+    <TextureName>textures/UI/Selector</TextureName>
+    <Position>0 0</Position>
+    <Color>FFFFFF</Color>
+    <Dimensions>25 25</Dimensions>
+  </Asset>
+</XnaContent>

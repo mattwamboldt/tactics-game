@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Board_Game.Input;
 using Board_Game.Code.Rendering;
+using Board_Game.Rendering;
 
 namespace Board_Game.Logic
 {
@@ -35,7 +36,8 @@ namespace Board_Game.Logic
         public Player Red { get { return mRed; } }
         public Player Blue { get { return mBlue; } }
 
-        public GameState(AI AIref)
+        public GameState(AI AIref,
+                Sprite selectorSprite)
         {
             mGrid = new GameGrid(
                 GameState.GRID_WIDTH,
@@ -52,7 +54,7 @@ namespace Board_Game.Logic
 
             mCurrentPlayer = mRed;
 
-            mSelector = new Selector(TextureManager.Get().Find("textures/UI/Selector"), mGrid, this);
+            mSelector = new Selector(selectorSprite, mGrid, this);
             mSelector.mSide = Side.Red;
 
             winner = Side.Neutral;

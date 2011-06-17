@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Board_Game.Code.Rendering
 {
     //controls loading and lookup of textures
-    class TextureManager
+    public class TextureManager
     {
         Hashtable mTextureCollection;
         ContentManager mContentManager;
