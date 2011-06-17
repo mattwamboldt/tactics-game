@@ -35,7 +35,7 @@ namespace Board_Game.UI
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            Vector2 position = mPosition;
+            Vector2 position = mAbsolutePosition;
             string text = mText;
             if (mMaxWidth != 0)
             {

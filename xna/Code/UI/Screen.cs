@@ -35,12 +35,12 @@ namespace Board_Game.UI
             //-draw the buttons
             Image redBGEdge = new Image(pixel, new Vector2(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
             gridBackground.AddChild(redBGEdge);
-            Image redBG = new Image(pixel, new Vector2(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40), new Vector2(100, 20), Color.Red);
+            Image redBG = new Image(pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Red);
             redBGEdge.AddChild(redBG);
 
             Image blueBGEdge = new Image(pixel, new Vector2(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
             gridBackground.AddChild(blueBGEdge);
-            Image blueBG = new Image(pixel, new Vector2(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40), new Vector2(100, 20), Color.Blue);
+            Image blueBG = new Image(pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Blue);
             blueBGEdge.AddChild(blueBG);
 
 
@@ -77,7 +77,7 @@ namespace Board_Game.UI
                     "Tutorial",
                     false,
                     GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40,
-                    new Vector2(5, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30 + 5),
+                    new Vector2(5, 5),
                     Rectangle.Empty
                 );
 
@@ -106,9 +106,7 @@ namespace Board_Game.UI
             {
                 Image unitBG = new Image(
                     pixel,
-                    new Vector2(
-                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5,
-                        30 + 20 + 5 + (50 + 15) * i),
+                    new Vector2(5, 5 + (50 + 15) * i),
                     new Vector2(
                         (int)Tile.TILE_SIZE * 2 + 10,
                         (int)Tile.TILE_SIZE * 2 + 10),
@@ -119,7 +117,7 @@ namespace Board_Game.UI
 
                 Image unit = new Image(
                     unitTextures[i],
-                    new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5, 30 + 20 + 5 + (50 + 15) * i),
+                    Vector2.Zero,
                     new Vector2((int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10),
                     Color.Red);
 
@@ -130,9 +128,7 @@ namespace Board_Game.UI
                     "Tutorial",
                     false,
                     0,
-                    new Vector2(
-                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
-                        30 + 20 + 5 + (50 + 15) * i),
+                    new Vector2((int)Tile.TILE_SIZE * 2 + 10 + 5, 0),
                     Rectangle.Empty
                 );
 
@@ -143,9 +139,7 @@ namespace Board_Game.UI
                     "Tutorial",
                     false,
                     GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40,
-                    new Vector2(
-                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20 + 5 + (int)Tile.TILE_SIZE * 2 + 10 + 5,
-                        30 + 20 + 5 + (50 + 15) * i + 15),
+                    new Vector2((int)Tile.TILE_SIZE * 2 + 10 + 5, 15),
                     Rectangle.Empty
                 );
 
