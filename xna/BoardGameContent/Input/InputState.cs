@@ -8,7 +8,7 @@ namespace Board_Game.Input
     //This is the list of in game supported inputs
     //It matches the PS3 controller for a) funniness
     //and b) I can't remember the face buttons on anything else
-    enum Button
+    public enum Button
     {
         Up = 0,
         Down = 1,
@@ -30,7 +30,7 @@ namespace Board_Game.Input
         NumButtons = 17
     }
 
-    class InputState 
+    public class InputState 
     {
         private bool[] mStates;
 

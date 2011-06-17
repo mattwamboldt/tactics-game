@@ -46,8 +46,6 @@ namespace Board_Game
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            InputManager.Initialize();
-
             base.Initialize();
         }
 
@@ -57,6 +55,8 @@ namespace Board_Game
         /// </summary>
         protected override void LoadContent()
         {
+            InputManager.Initialize(Content.Load<InputMap>("xml/InputMap"));
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 

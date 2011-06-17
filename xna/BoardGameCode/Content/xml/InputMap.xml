@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Input.InputMap">
+    <KeyboardMap>
+      <Item>Up</Item>
+      <Item>Down</Item>
+      <Item>Left</Item>
+      <Item>Right</Item>
+      <Item>Space</Item>
+      <Item>LeftShift</Item>
+      <Item>S</Item>
+      <Item>A</Item>
+      <Item>W</Item>
+      <Item>D</Item>
+      <Item>Q</Item>
+      <Item>Z</Item>
+      <Item>T</Item>
+      <Item>E</Item>
+      <Item>C</Item>
+      <Item>Y</Item>
+      <Item>Escape</Item>
+    </KeyboardMap>
+    <PadMap>
+      <Item>DPadUp</Item>
+      <Item>DPadDown</Item>
+      <Item>DPadLeft</Item>
+      <Item>DPadRight</Item>
+      <Item>Start</Item>
+      <Item>Back</Item>
+      <Item>A</Item>
+      <Item>X</Item>
+      <Item>Y</Item>
+      <Item>B</Item>
+      <Item>LeftShoulder</Item>
+      <Item>LeftTrigger</Item>
+      <Item>LeftStick</Item>
+      <Item>RightShoulder</Item>
+      <Item>RightTrigger</Item>
+      <Item>RightStick</Item>
+      <Item>BigButton</Item>
+    </PadMap>
+  </Asset>
+</XnaContent>

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Board_Game.Rendering
 {
-    class Sprite
+    public class Sprite
     {
         Texture2D mTexture;
         Vector2 mPosition;

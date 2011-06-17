@@ -84,8 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Input\InputMap.cs" />
-    <Compile Include="Code\Input\InputState.cs" />
     <Compile Include="Code\Logic\AI.cs" />
     <Compile Include="Code\Logic\GameGrid.cs" />
     <Compile Include="Code\Input\InputManager.cs" />
@@ -94,7 +92,6 @@
     <Compile Include="Code\Logic\Mine.cs" />
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
-    <Compile Include="Code\Rendering\Sprite.cs" />
     <Compile Include="Code\Rendering\TextureManager.cs" />
     <Compile Include="Code\UI\FontManager.cs" />
     <Compile Include="Code\UI\Image.cs" />
@@ -161,6 +158,12 @@
       <ProductName>Microsoft XNA Framework Redistributable 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BoardGameContent\BoardGameContent.csproj">
+      <Project>{1CE1279E-9D0C-4E6E-AA78-6EC7FBBFF4AC}</Project>
+      <Name>BoardGameContent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

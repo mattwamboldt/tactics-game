@@ -112,7 +112,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="xml\" />
+    <Compile Include="xml\InputMap.xml">
+      <Name>InputMap</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BoardGameContentBuilders\BoardGameContentBuilders.csproj">
+      <Project>{FDF9BD94-4555-45A9-9BAD-A1C38ABEDD18}</Project>
+      <Name>BoardGameContentBuilders</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

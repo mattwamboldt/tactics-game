@@ -124,9 +124,7 @@ namespace Board_Game.Logic
                     selectedUnit.Move(i, j);
                     selectedUnit = null;
 
-                    mGameState.EndTurn();
-
-                    
+                    mGameState.EndTurn(); 
                 }
                 else
                 {

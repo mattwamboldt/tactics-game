@@ -15,12 +15,12 @@ namespace Board_Game.Input
 
         private static InputManager mInstance;
 
-        public static void Initialize() { mInstance = new InputManager(); }
+        public static void Initialize(InputMap map) { mInstance = new InputManager(map); }
         public static InputManager Get() { return mInstance; }
 
-        private InputManager()
+        private InputManager(InputMap map)
         {
-            mInputMap = new InputMap();
+            mInputMap = map;
             currentState = mInputMap.GetInGameState(Keyboard.GetState());
         }
 
