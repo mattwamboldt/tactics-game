@@ -26,6 +26,7 @@ namespace Board_Game.UI
         protected Hashtable mChildren;//the items under this in the tree
 
         protected Vector2 mSize;
+
         protected Color mColor;
         public Color Color { get { return mColor; } set { mColor = value; } }
 

@@ -14,6 +14,25 @@ namespace Board_Game.UI
 
         public Shape Root { get { return mRoot; } }
 
+        /// <summary>
+        /// A utility function for getting a shape at a given path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Shape GetNode(string path)
+        {
+            //start at the root
+            Shape node = mRoot;
+
+            string[] names = path.Split(new char[] { '.' });
+            foreach (string childName in names)
+            {
+                node = node.GetChild(childName);
+            }
+
+            return node;
+        }
+
         public Screen(
             GraphicsDevice device,
             Texture2D bomberTexture,
@@ -39,13 +58,33 @@ namespace Board_Game.UI
             gridBackground.AddChild(redBGEdge);
             Image redBG = new Image("redBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Red);
             redBGEdge.AddChild(redBG);
+            Label redText = new Label(
+                "redText",
+                "DUMMY",
+                "Button",
+                true,
+                0,
+                Vector2.Zero,
+                new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20)
+            );
+
+            redBG.AddChild(redText);
 
             Image blueBGEdge = new Image("blueBGEdge", pixel, new Vector2(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
             gridBackground.AddChild(blueBGEdge);
             Image blueBG = new Image("blueBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Blue);
             blueBGEdge.AddChild(blueBG);
+            Label blueText = new Label(
+                "blueText",
+                "DUMMY",
+                "Button",
+                true,
+                0,
+                Vector2.Zero,
+                new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20)
+            );
 
-
+            blueBG.AddChild(blueText);
 
             //-draw title
             Image titleBackground = new Image("titleBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), new Vector2(250, 30), Color.Black);

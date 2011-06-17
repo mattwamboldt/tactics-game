@@ -11,6 +11,8 @@ namespace Board_Game.UI
     class Label : Shape
     {
         private string mText;
+        public string Text { get { return mText; } set { mText = value; } }
+
         private SpriteFont mFont;
         private float mMaxWidth;
         private bool mIsCentred;

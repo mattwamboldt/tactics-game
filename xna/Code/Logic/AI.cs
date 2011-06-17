@@ -110,6 +110,7 @@ namespace Board_Game.Logic
         private GameState mGameState;
 
         public GameState State { get { return mGameState; } }
+        public Screen mScreen;
 
         public void Initialize(GameState gameState)
         {
@@ -123,11 +124,6 @@ namespace Board_Game.Logic
             Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
             pixel.SetData<Color>(new Color[] { Color.White });
 
-            //TODO: These last elements are dynamic and will have to wait until
-            //I can modify properties of the screen at runtime
-
-            //-draw the text
-            //--buttons
             string redString = "HUMAN";
             string blueString = "HUMAN";
             if (!mGameState.Red.mIsHuman)
@@ -135,15 +131,18 @@ namespace Board_Game.Logic
                 redString = "AI";
             }
 
-            spriteBatch.DrawString(FontManager.Get().Find("Button"), redString, Layout.CenterAlign(new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), redString, FontManager.Get().Find("Button")), Color.White);
+            Label redText = (Label)mScreen.GetNode("gridBackground.redBGEdge.redBG.redText");
+            redText.Text = redString;
 
             if (!mGameState.Blue.mIsHuman)
             {
                 blueString = "AI";
             }
 
-            spriteBatch.DrawString(FontManager.Get().Find("Button"), blueString, Layout.CenterAlign(new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20), blueString, FontManager.Get().Find("Button")), Color.White);
+            Label blueText = (Label)mScreen.GetNode("gridBackground.blueBGEdge.blueBG.blueText");
+            blueText.Text = blueString;
 
+            //TODO: change this once I implement visibility
             if (mGameState.winner != Side.Neutral)
             {
                 //we have a winner

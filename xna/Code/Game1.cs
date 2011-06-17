@@ -96,6 +96,8 @@ namespace Board_Game
                 mDeminerTexture,
                 mGrenadierTexture
             );
+
+            mAI.mScreen = mScreen;
         }
 
         /// <summary>
