@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Board_Game.Input;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Logic
 {
@@ -34,10 +35,15 @@ namespace Board_Game.Logic
         public Player Red { get { return mRed; } }
         public Player Blue { get { return mBlue; } }
 
-        public GameState(AI AIref, Texture2D tileTexture,
-            Texture2D mineTexture, Texture2D selectorTexture)
+        public GameState(AI AIref)
         {
-            mGrid = new GameGrid(GameState.GRID_WIDTH, GameState.GRID_HEIGHT, tileTexture, mineTexture);
+            mGrid = new GameGrid(
+                GameState.GRID_WIDTH,
+                GameState.GRID_HEIGHT,
+                TextureManager.Get().Find("textures/tiles/single"),
+                TextureManager.Get().Find("textures/tiles/mine")
+            );
+            
             AIref.mGrid = mGrid;
             
             //passing in the same AI for now, but could be different later
@@ -46,34 +52,28 @@ namespace Board_Game.Logic
 
             mCurrentPlayer = mRed;
 
-            mSelector = new Selector(selectorTexture, mGrid, this);
+            mSelector = new Selector(TextureManager.Get().Find("textures/UI/Selector"), mGrid, this);
             mSelector.mSide = Side.Red;
 
             winner = Side.Neutral;
         }
 
-        public void Initialize(
-            Texture2D bomberTexture,
-            Texture2D fighterTexture,
-            Texture2D soldierTexture,
-            Texture2D deminerTexture,
-            Texture2D grenadierTexture
-            )
+        public void Initialize()
         {
             mRed.CreateUnits(
-                bomberTexture,
-                fighterTexture,
-                soldierTexture,
-                deminerTexture,
-                grenadierTexture
+                TextureManager.Get().Find("textures/units/bomber"),
+                TextureManager.Get().Find("textures/units/fighter"),
+                TextureManager.Get().Find("textures/units/soldier"),
+                TextureManager.Get().Find("textures/units/deminer"),
+                TextureManager.Get().Find("textures/units/grenadier")
             );
 
             mBlue.CreateUnits(
-                bomberTexture,
-                fighterTexture,
-                soldierTexture,
-                deminerTexture,
-                grenadierTexture
+                TextureManager.Get().Find("textures/units/bomber"),
+                TextureManager.Get().Find("textures/units/fighter"),
+                TextureManager.Get().Find("textures/units/soldier"),
+                TextureManager.Get().Find("textures/units/deminer"),
+                TextureManager.Get().Find("textures/units/grenadier")
             );
         }
 

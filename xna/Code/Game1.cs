@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Storage;
 using Board_Game.Logic;
 using Board_Game.UI;
 using Board_Game.Input;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game
 {
@@ -67,32 +68,12 @@ namespace Board_Game
             mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
 
             FontManager.Initialize(Content);
+            TextureManager.Initialize(Content);
 
-            mGameState = new GameState(
-                mAI,
-                Content.Load<Texture2D>("textures/tiles/single"),
-                Content.Load<Texture2D>("textures/tiles/mine"),
-                Content.Load<Texture2D>("textures/UI/selector"));
-
-            mGameState.Initialize(
-                mBomberTexture,
-                mFighterTexture,
-                mSoldierTexture,
-                mDeminerTexture,
-                mGrenadierTexture
-            );
-
-            // TODO: use this.Content to load your game content here
+            mGameState = new GameState(mAI);
+            mGameState.Initialize();
             mAI.Initialize(mGameState);
-
-            mScreen = new Screen(GraphicsDevice,
-                mBomberTexture,
-                mFighterTexture,
-                mSoldierTexture,
-                mDeminerTexture,
-                mGrenadierTexture
-            );
-
+            mScreen = new Screen(GraphicsDevice);
             mAI.mScreen = mScreen;
         }
 

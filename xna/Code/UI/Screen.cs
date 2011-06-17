@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 using Microsoft.Xna.Framework.Graphics;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.UI
 {
@@ -14,13 +15,7 @@ namespace Board_Game.UI
 
         public Shape Root { get { return mRoot; } }
 
-        public Screen(
-            GraphicsDevice device,
-            Texture2D bomberTexture,
-            Texture2D fighterTexture,
-            Texture2D soldierTexture,
-            Texture2D deminerTexture,
-            Texture2D grenadierTexture)
+        public Screen(GraphicsDevice device)
         {
             mRoot = new Shape(ShapeType.Clip, "root", Color.White, Vector2.Zero, Vector2.Zero, true);
 
@@ -29,7 +24,7 @@ namespace Board_Game.UI
 
             //eventually this will be in the Content pipeline
             //draw the UI
-            //TODO: Move UI into a tool and class to remove all of these consants and draw calls
+            //TODO: Move UI into a tool toremove all of these consants and draw calls
             //-draw a box under the grid
             Shape gridBackground = new Shape(ShapeType.Clip, "gridBackground", Color.Black, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), new Vector2(0, 0), true);
             mRoot.AddChild(gridBackground);
@@ -114,7 +109,14 @@ namespace Board_Game.UI
             Image sidebarBackground = new Image("sidebarBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50), new Vector2(250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black, true);
             mRoot.AddChild(sidebarBackground);
 
-            Texture2D[] unitTextures = new Texture2D[] { bomberTexture, fighterTexture, soldierTexture, deminerTexture, grenadierTexture };
+            Texture2D[] unitTextures = new Texture2D[] {
+                TextureManager.Get().Find("textures/units/bomber"),
+                TextureManager.Get().Find("textures/units/fighter"),
+                TextureManager.Get().Find("textures/units/soldier"),
+                TextureManager.Get().Find("textures/units/deminer"),
+                TextureManager.Get().Find("textures/units/grenadier")
+            };
+
             //--unit descriptions
             string[] titles = new string[] { "BOMBER", "FIGHTER", "SOLDIER", "DE-MINER", "BAZOOKA" };
             string[] descriptions = new string[] {
