@@ -37,15 +37,5 @@ namespace Board_Game.UI
 
             return builder.ToString();
         }
-
-        public static Vector2 CenterAlign(Rectangle parentRectangle, string text, SpriteFont font)
-        {
-            return CenterAlign(parentRectangle, font.MeasureString(text));
-        }
-
-        public static Vector2 CenterAlign(Rectangle parentRectangle, Vector2 dimensions)
-        {
-            return new Vector2(parentRectangle.Center.X - (int)(dimensions.X / 2), parentRectangle.Center.Y - (int)(dimensions.Y / 2));
-        }
     }
 }

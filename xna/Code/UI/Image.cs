@@ -11,16 +11,19 @@ namespace Board_Game.UI
     {
         Texture2D mTexture;
 
-        public Image(String name, Texture2D texture, Vector2 position, Vector2 size, Color color)
-            : base(ShapeType.Image, name, color, size, position)
+        public Image(String name, Texture2D texture, Vector2 position, Vector2 size, Color color, bool visibility)
+            : base(ShapeType.Image, name, color, size, position, visibility)
         {
             mTexture = texture;
         }
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(mTexture, new Rectangle((int)mAbsolutePosition.X, (int)mAbsolutePosition.Y, (int)mSize.X, (int)mSize.Y), mColor);
-            base.Render(spriteBatch);
+            if (mVisibility)
+            {
+                spriteBatch.Draw(mTexture, new Rectangle((int)mAbsolutePosition.X, (int)mAbsolutePosition.Y, (int)mSize.X, (int)mSize.Y), mColor);
+                base.Render(spriteBatch);
+            }
         }
     }
 }

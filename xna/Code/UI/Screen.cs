@@ -14,25 +14,6 @@ namespace Board_Game.UI
 
         public Shape Root { get { return mRoot; } }
 
-        /// <summary>
-        /// A utility function for getting a shape at a given path.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public Shape GetNode(string path)
-        {
-            //start at the root
-            Shape node = mRoot;
-
-            string[] names = path.Split(new char[] { '.' });
-            foreach (string childName in names)
-            {
-                node = node.GetChild(childName);
-            }
-
-            return node;
-        }
-
         public Screen(
             GraphicsDevice device,
             Texture2D bomberTexture,
@@ -41,7 +22,7 @@ namespace Board_Game.UI
             Texture2D deminerTexture,
             Texture2D grenadierTexture)
         {
-            mRoot = new Shape(ShapeType.Clip, "root", Color.White, Vector2.Zero, Vector2.Zero);
+            mRoot = new Shape(ShapeType.Clip, "root", Color.White, Vector2.Zero, Vector2.Zero, true);
 
             Texture2D pixel = new Texture2D(device, 1, 1);
             pixel.SetData<Color>(new Color[] { Color.White });
@@ -50,44 +31,44 @@ namespace Board_Game.UI
             //draw the UI
             //TODO: Move UI into a tool and class to remove all of these consants and draw calls
             //-draw a box under the grid
-            Image gridBackground = new Image("gridBackground", pixel, new Vector2(0, 0), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
+            Shape gridBackground = new Shape(ShapeType.Clip, "gridBackground", Color.Black, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), new Vector2(0, 0), true);
             mRoot.AddChild(gridBackground);
 
             //-draw the buttons
-            Image redBGEdge = new Image("redBGEdge", pixel, new Vector2(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
+            Image redBGEdge = new Image("redBGEdge", pixel, new Vector2(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White, true);
             gridBackground.AddChild(redBGEdge);
-            Image redBG = new Image("redBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Red);
+            Image redBG = new Image("redBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Red, true);
             redBGEdge.AddChild(redBG);
             Label redText = new Label(
                 "redText",
                 "DUMMY",
                 "Button",
                 true,
+                true,
                 0,
-                Vector2.Zero,
-                new Rectangle(20, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20)
+                Vector2.Zero
             );
 
             redBG.AddChild(redText);
 
-            Image blueBGEdge = new Image("blueBGEdge", pixel, new Vector2(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
+            Image blueBGEdge = new Image("blueBGEdge", pixel, new Vector2(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White, true);
             gridBackground.AddChild(blueBGEdge);
-            Image blueBG = new Image("blueBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Blue);
+            Image blueBG = new Image("blueBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Blue, true);
             blueBGEdge.AddChild(blueBG);
             Label blueText = new Label(
                 "blueText",
                 "DUMMY",
                 "Button",
                 true,
+                true,
                 0,
-                Vector2.Zero,
-                new Rectangle(20 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40, 100, 20)
+                Vector2.Zero
             );
 
             blueBG.AddChild(blueText);
 
             //-draw title
-            Image titleBackground = new Image("titleBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), new Vector2(250, 30), Color.Black);
+            Image titleBackground = new Image("titleBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), new Vector2(250, 30), Color.Black, true);
             mRoot.AddChild(titleBackground);
 
             Label sideHeader = new Label(
@@ -95,9 +76,9 @@ namespace Board_Game.UI
                     "UNITS",
                     "Button",
                     true,
+                    true,
                     0,
-                    new Vector2(0, 0),
-                    new Rectangle(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0, 250, 30)
+                    new Vector2(0, 0)
                 );
 
             titleBackground.AddChild(sideHeader);
@@ -105,7 +86,7 @@ namespace Board_Game.UI
 
 
             //-draw tutorial
-            Image tutorialBackground = new Image("tutorialBackground", pixel, new Vector2(0, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
+            Image tutorialBackground = new Image("tutorialBackground", pixel, new Vector2(0, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black, true);
             mRoot.AddChild(tutorialBackground);
 
             //--tutorial text
@@ -118,10 +99,10 @@ namespace Board_Game.UI
                     "tutorial",
                     tutorialText,
                     "Tutorial",
+                    true,
                     false,
                     GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40,
-                    new Vector2(5, 5),
-                    Rectangle.Empty
+                    new Vector2(5, 5)
                 );
 
             tutorialBackground.AddChild(tutorial);
@@ -130,7 +111,7 @@ namespace Board_Game.UI
 
 
             //-draw the unit sidebar box
-            Image sidebarBackground = new Image("sidebarBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50), new Vector2(250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
+            Image sidebarBackground = new Image("sidebarBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50), new Vector2(250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black, true);
             mRoot.AddChild(sidebarBackground);
 
             Texture2D[] unitTextures = new Texture2D[] { bomberTexture, fighterTexture, soldierTexture, deminerTexture, grenadierTexture };
@@ -154,7 +135,8 @@ namespace Board_Game.UI
                     new Vector2(
                         (int)Tile.TILE_SIZE * 2 + 10,
                         (int)Tile.TILE_SIZE * 2 + 10),
-                    Color.DarkGray
+                    Color.DarkGray,
+                    true
                 );
 
                 sidebarBackground.AddChild(unitBG);
@@ -164,7 +146,8 @@ namespace Board_Game.UI
                     unitTextures[i],
                     Vector2.Zero,
                     new Vector2((int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10),
-                    Color.Red);
+                    Color.Red,
+                    true);
 
                 unitBG.AddChild(unit);
 
@@ -172,10 +155,10 @@ namespace Board_Game.UI
                     "unitTitle" + i,
                     titles[i],
                     "Tutorial",
+                    true,
                     false,
                     0,
-                    new Vector2((int)Tile.TILE_SIZE * 2 + 10 + 5, 0),
-                    Rectangle.Empty
+                    new Vector2((int)Tile.TILE_SIZE * 2 + 10 + 5, 0)
                 );
 
                 unitBG.AddChild(unitTitle);
@@ -184,14 +167,35 @@ namespace Board_Game.UI
                     "unitDesc" + i,
                     descriptions[i],
                     "Tutorial",
+                    true,
                     false,
                     GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40,
-                    new Vector2((int)Tile.TILE_SIZE * 2 + 10 + 5, 15),
-                    Rectangle.Empty
+                    new Vector2((int)Tile.TILE_SIZE * 2 + 10 + 5, 15)
                 );
 
                 unitBG.AddChild(unitDesc);
             }
+
+            //popup
+            Label victorText = new Label(
+                "victorText",
+                "DUMMY",
+                "Button",
+                true,
+                true,
+                0,
+                Vector2.Zero
+            );
+
+            Image victorBGEdge = new Image("victorBGEdge", pixel, new Vector2(-2, -2), new Vector2(104, 34), Color.White, false);
+            Image victorBG = new Image("victorBG", pixel, new Vector2(-2, -2), new Vector2(100, 30), Color.Black, true);
+
+            gridBackground.AddChild(victorBGEdge);
+            victorBGEdge.AddChild(victorBG);
+            victorBG.AddChild(victorText);
+
+            victorBGEdge.CenterAlign();
+            victorBG.CenterAlign();
         }
 
         public void Render(SpriteBatch spriteBatch)

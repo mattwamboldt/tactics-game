@@ -26,11 +26,16 @@ namespace Board_Game.UI
         protected Hashtable mChildren;//the items under this in the tree
 
         protected Vector2 mSize;
+        public float Width { get { return mSize.X; } set { mSize.X = value; } }
+
+        protected bool mVisibility;
+        public bool Visible { get { return mVisibility; } set { mVisibility = value; } }
 
         protected Color mColor;
         public Color Color { get { return mColor; } set { mColor = value; } }
+        protected Shape mParent;
 
-        public Shape(ShapeType type, string name, Color color, Vector2 size, Vector2 position)
+        public Shape(ShapeType type, string name, Color color, Vector2 size, Vector2 position, bool visibility)
         {
             mType = type;
             mColor = color;
@@ -38,6 +43,8 @@ namespace Board_Game.UI
             mPosition = position;
             mChildren = new Hashtable();
             mName = name;
+            mVisibility = visibility;
+            mParent = null;
         }
 
         public void SetPosition(Vector2 newPosition, bool isRelative)
@@ -56,7 +63,7 @@ namespace Board_Game.UI
                 mAbsolutePosition.Y = newPosition.Y + mPosition.Y;
             }
 
-            foreach (Shape child in mChildren)
+            foreach (Shape child in mChildren.Values)
             {
                 child.SetPosition(mAbsolutePosition, false);
             }
@@ -65,6 +72,7 @@ namespace Board_Game.UI
         public void AddChild(Shape child)
         {
             mChildren.Add(child.mName, child);
+            child.mParent = this;
             child.SetPosition(mAbsolutePosition, false);
         }
 
@@ -73,11 +81,43 @@ namespace Board_Game.UI
             return (Shape)mChildren[name];
         }
 
+        /// <summary>
+        /// A utility function for getting a shape at a given path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Shape GetNode(string path)
+        {
+            //start at the root
+            Shape node = this;
+
+            string[] names = path.Split(new char[] { '.' });
+            foreach (string childName in names)
+            {
+                node = node.GetChild(childName);
+            }
+
+            if (node == this)
+            {
+                return null;
+            }
+
+            return node;
+        }
+
+        public void CenterAlign()
+        {
+            SetPosition(new Vector2(mParent.mSize.X / 2 - (int)(mSize.X / 2),mParent.mSize.Y / 2 - (int)(mSize.Y / 2)) , true);
+        }
+
         public virtual void Render(SpriteBatch spriteBatch)
         {
-            foreach (Shape child in mChildren.Values)
+            if(mVisibility)
             {
-                child.Render(spriteBatch);
+                foreach (Shape child in mChildren.Values)
+                {
+                    child.Render(spriteBatch);
+                }
             }
         }
     }

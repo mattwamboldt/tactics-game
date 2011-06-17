@@ -121,9 +121,6 @@ namespace Board_Game.Logic
 
         public void Render(SpriteBatch spriteBatch)
         {
-            Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            pixel.SetData<Color>(new Color[] { Color.White });
-
             string redString = "HUMAN";
             string blueString = "HUMAN";
             if (!mGameState.Red.mIsHuman)
@@ -131,7 +128,7 @@ namespace Board_Game.Logic
                 redString = "AI";
             }
 
-            Label redText = (Label)mScreen.GetNode("gridBackground.redBGEdge.redBG.redText");
+            Label redText = (Label)mScreen.Root.GetNode("gridBackground.redBGEdge.redBG.redText");
             redText.Text = redString;
 
             if (!mGameState.Blue.mIsHuman)
@@ -139,14 +136,12 @@ namespace Board_Game.Logic
                 blueString = "AI";
             }
 
-            Label blueText = (Label)mScreen.GetNode("gridBackground.blueBGEdge.blueBG.blueText");
+            Label blueText = (Label)mScreen.Root.GetNode("gridBackground.blueBGEdge.blueBG.blueText");
             blueText.Text = blueString;
 
-            //TODO: change this once I implement visibility
             if (mGameState.winner != Side.Neutral)
             {
                 //we have a winner
-
                 string victorString = "";
                 if (mGameState.winner == Side.Red)
                 {
@@ -157,34 +152,18 @@ namespace Board_Game.Logic
                     victorString = "Blue has won";
                 }
 
-                //determine the background size based on the text size
-                Vector2 stringSize = FontManager.Get().Find("Button").MeasureString(victorString);
-                Vector2 backgroundSize = new Vector2(stringSize.X + 20, stringSize.Y + 10);
+                Shape victor = mScreen.Root.GetNode("gridBackground.victorBGEdge");
+                victor.Visible = true;
 
-                //draw the background and string centered to the grid
-                Vector2 backgroundLocation = Layout.CenterAlign(
-                    new Rectangle(
-                        (int)mGrid.position.X,
-                        (int)mGrid.position.Y,
-                        GameState.GRID_WIDTH * (int)Tile.TILE_SIZE,
-                        GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE),
-                    backgroundSize);
+                Label victorText = (Label)victor.GetNode("victorBG.victorText");
+                victorText.Text = victorString;
 
-                Rectangle backgroundRect = new Rectangle(
-                    (int)backgroundLocation.X,
-                    (int)backgroundLocation.Y,
-                    (int)backgroundSize.X,
-                    (int)backgroundSize.Y);
+                victor.Width = victorText.Width + 24;
+                victor.GetChild("victorBG").Width = victor.Width - 4;
 
-                spriteBatch.Draw(pixel, new Rectangle(backgroundRect.X - 2, backgroundRect.Y - 2, backgroundRect.Width + 4, backgroundRect.Height + 4), Color.White);
-                spriteBatch.Draw(pixel, backgroundRect, Color.Black);
+                victor.CenterAlign();
+                victor.GetChild("victorBG").CenterAlign();
 
-                spriteBatch.DrawString(
-                    FontManager.Get().Find("Button"),
-                    victorString,
-                    Layout.CenterAlign(backgroundRect, victorString, FontManager.Get().Find("Button")),
-                    Color.White
-                );
             }
         }
         

@@ -138,8 +138,8 @@ namespace Board_Game
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            mScreen.Render(spriteBatch);
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
+            mScreen.Render(spriteBatch);
             mAI.Render(spriteBatch);
             spriteBatch.End();
 
