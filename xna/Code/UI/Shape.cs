@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections;
 
 namespace Board_Game.UI
 {
@@ -17,21 +18,25 @@ namespace Board_Game.UI
     class Shape
     {
         protected ShapeType mType;
+
+        protected string mName;
         
         protected Vector2 mPosition; //Defines position as an offset from the parent
         protected Vector2 mAbsolutePosition; //Defines screen space position
-        protected List<Shape> mChildren;//the items under this in the tree
+        protected Hashtable mChildren;//the items under this in the tree
 
         protected Vector2 mSize;
         protected Color mColor;
+        public Color Color { get { return mColor; } set { mColor = value; } }
 
-        public Shape(ShapeType type, Color color, Vector2 size, Vector2 position)
+        public Shape(ShapeType type, string name, Color color, Vector2 size, Vector2 position)
         {
             mType = type;
             mColor = color;
             mSize = size;
             mPosition = position;
-            mChildren = new List<Shape>();
+            mChildren = new Hashtable();
+            mName = name;
         }
 
         public void SetPosition(Vector2 newPosition, bool isRelative)
@@ -58,13 +63,18 @@ namespace Board_Game.UI
 
         public void AddChild(Shape child)
         {
-            mChildren.Add(child);
+            mChildren.Add(child.mName, child);
             child.SetPosition(mAbsolutePosition, false);
+        }
+
+        public Shape GetChild(string name)
+        {
+            return (Shape)mChildren[name];
         }
 
         public virtual void Render(SpriteBatch spriteBatch)
         {
-            foreach (Shape child in mChildren)
+            foreach (Shape child in mChildren.Values)
             {
                 child.Render(spriteBatch);
             }

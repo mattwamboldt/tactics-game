@@ -17,13 +17,15 @@ namespace Board_Game.UI
         private Rectangle mParentContainer;
 
         public Label(
+            string name,
             string text,
             string fontName,
             bool centreAlign,
             float maxWidth,
             Vector2 position,
             Rectangle parentRect
-            ) : base(ShapeType.Label, Color.White, new Vector2 (0,0), position)
+            )
+            : base(ShapeType.Label, name, Color.White, new Vector2(0, 0), position)
         {
             mText = text;
             mFont = FontManager.Get().Find(fontName);

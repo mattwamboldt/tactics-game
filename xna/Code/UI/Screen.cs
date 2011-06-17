@@ -12,6 +12,8 @@ namespace Board_Game.UI
     {
         Shape mRoot;
 
+        public Shape Root { get { return mRoot; } }
+
         public Screen(
             GraphicsDevice device,
             Texture2D bomberTexture,
@@ -20,7 +22,7 @@ namespace Board_Game.UI
             Texture2D deminerTexture,
             Texture2D grenadierTexture)
         {
-            mRoot = new Shape(ShapeType.Clip, Color.White, Vector2.Zero, Vector2.Zero);
+            mRoot = new Shape(ShapeType.Clip, "root", Color.White, Vector2.Zero, Vector2.Zero);
 
             Texture2D pixel = new Texture2D(device, 1, 1);
             pixel.SetData<Color>(new Color[] { Color.White });
@@ -29,27 +31,28 @@ namespace Board_Game.UI
             //draw the UI
             //TODO: Move UI into a tool and class to remove all of these consants and draw calls
             //-draw a box under the grid
-            Image gridBackground = new Image(pixel, new Vector2(0, 0), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
+            Image gridBackground = new Image("gridBackground", pixel, new Vector2(0, 0), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 30), Color.Black);
             mRoot.AddChild(gridBackground);
 
             //-draw the buttons
-            Image redBGEdge = new Image(pixel, new Vector2(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
+            Image redBGEdge = new Image("redBGEdge", pixel, new Vector2(20 - 1, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
             gridBackground.AddChild(redBGEdge);
-            Image redBG = new Image(pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Red);
+            Image redBG = new Image("redBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Red);
             redBGEdge.AddChild(redBG);
 
-            Image blueBGEdge = new Image(pixel, new Vector2(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
+            Image blueBGEdge = new Image("blueBGEdge", pixel, new Vector2(20 - 1 + 200, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 - 1), new Vector2(100 + 2, 20 + 2), Color.White);
             gridBackground.AddChild(blueBGEdge);
-            Image blueBG = new Image(pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Blue);
+            Image blueBG = new Image("blueBG", pixel, new Vector2(1, 1), new Vector2(100, 20), Color.Blue);
             blueBGEdge.AddChild(blueBG);
 
 
 
             //-draw title
-            Image titleBackground = new Image(pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), new Vector2(250, 30), Color.Black);
+            Image titleBackground = new Image("titleBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 0), new Vector2(250, 30), Color.Black);
             mRoot.AddChild(titleBackground);
 
             Label sideHeader = new Label(
+                    "sideHeader",
                     "UNITS",
                     "Button",
                     true,
@@ -63,7 +66,7 @@ namespace Board_Game.UI
 
 
             //-draw tutorial
-            Image tutorialBackground = new Image(pixel, new Vector2(0, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
+            Image tutorialBackground = new Image("tutorialBackground", pixel, new Vector2(0, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 40 + 20 + 30), new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40, 200), Color.Black);
             mRoot.AddChild(tutorialBackground);
 
             //--tutorial text
@@ -73,6 +76,7 @@ namespace Board_Game.UI
                 + "\n\nFlying units, which are the bomber and fighter, will not be destroyed by mines.";
 
             Label tutorial = new Label(
+                    "tutorial",
                     tutorialText,
                     "Tutorial",
                     false,
@@ -87,7 +91,7 @@ namespace Board_Game.UI
 
 
             //-draw the unit sidebar box
-            Image sidebarBackground = new Image(pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50), new Vector2(250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
+            Image sidebarBackground = new Image("sidebarBackground", pixel, new Vector2(GameState.GRID_WIDTH * (int)Tile.TILE_SIZE + 40 + 20, 50), new Vector2(250, GameState.GRID_HEIGHT * (int)Tile.TILE_SIZE + 240), Color.Black);
             mRoot.AddChild(sidebarBackground);
 
             Texture2D[] unitTextures = new Texture2D[] { bomberTexture, fighterTexture, soldierTexture, deminerTexture, grenadierTexture };
@@ -105,6 +109,7 @@ namespace Board_Game.UI
             for (int i = 0; i < 5; i++)
             {
                 Image unitBG = new Image(
+                    "unitBG" + i,
                     pixel,
                     new Vector2(5, 5 + (50 + 15) * i),
                     new Vector2(
@@ -116,6 +121,7 @@ namespace Board_Game.UI
                 sidebarBackground.AddChild(unitBG);
 
                 Image unit = new Image(
+                    "unit" + i,
                     unitTextures[i],
                     Vector2.Zero,
                     new Vector2((int)Tile.TILE_SIZE * 2 + 10, (int)Tile.TILE_SIZE * 2 + 10),
@@ -124,6 +130,7 @@ namespace Board_Game.UI
                 unitBG.AddChild(unit);
 
                 Label unitTitle = new Label(
+                    "unitTitle" + i,
                     titles[i],
                     "Tutorial",
                     false,
@@ -135,6 +142,7 @@ namespace Board_Game.UI
                 unitBG.AddChild(unitTitle);
 
                 Label unitDesc = new Label(
+                    "unitDesc" + i,
                     descriptions[i],
                     "Tutorial",
                     false,

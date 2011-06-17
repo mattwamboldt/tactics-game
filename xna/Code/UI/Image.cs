@@ -11,8 +11,8 @@ namespace Board_Game.UI
     {
         Texture2D mTexture;
 
-        public Image(Texture2D texture, Vector2 position, Vector2 size, Color color)
-            : base(ShapeType.Image, color, size, position)
+        public Image(String name, Texture2D texture, Vector2 position, Vector2 size, Color color)
+            : base(ShapeType.Image, name, color, size, position)
         {
             mTexture = texture;
         }
