@@ -27,12 +27,7 @@ namespace Board_Game
         Screen mScreen;
         GameState mGameState;
 
-        //for now until a texture manager is set up
-        Texture2D mBomberTexture;
-        Texture2D mFighterTexture;
-        Texture2D mSoldierTexture;
-        Texture2D mDeminerTexture;
-        Texture2D mGrenadierTexture;
+        Texture2D mBackground;
 
         public Game1()
         {
@@ -64,11 +59,12 @@ namespace Board_Game
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mBomberTexture = Content.Load<Texture2D>("textures/units/bomber");
-            mFighterTexture = Content.Load<Texture2D>("textures/units/fighter");
-            mSoldierTexture = Content.Load<Texture2D>("textures/units/soldier");
-            mDeminerTexture = Content.Load<Texture2D>("textures/units/deminer");
-            mGrenadierTexture = Content.Load<Texture2D>("textures/units/grenadier");
+            Texture2D mBomberTexture = Content.Load<Texture2D>("textures/units/bomber");
+            Texture2D mFighterTexture = Content.Load<Texture2D>("textures/units/fighter");
+            Texture2D mSoldierTexture = Content.Load<Texture2D>("textures/units/soldier");
+            Texture2D mDeminerTexture = Content.Load<Texture2D>("textures/units/deminer");
+            Texture2D mGrenadierTexture = Content.Load<Texture2D>("textures/units/grenadier");
+            mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
 
             FontManager.Initialize(Content);
 
@@ -138,6 +134,7 @@ namespace Board_Game
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(mBackground, new Rectangle(0, 0, 800, 600), Color.White);
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mScreen.Render(spriteBatch);
             mAI.Render(spriteBatch);
