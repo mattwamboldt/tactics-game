@@ -30,12 +30,6 @@ namespace Board_Game.Creatures
             position.Y = newLocationI * Tile.TILE_SIZE;
         }
 
-        public override bool CheckOccupied(int i, int j)
-        {
-            return (grid.mTiles[i, j].Occupied || grid.mTiles[i + 1, j].Occupied
-                    || grid.mTiles[i, j + 1].Occupied || grid.mTiles[i + 1, j + 1].Occupied);
-        }
-
         public override void Move(int newLocationI, int newLocationJ)
         {
 	        for(var i = 0; i < 2; ++i)
@@ -62,11 +56,6 @@ namespace Board_Game.Creatures
 			        }
 		        }
 	        }
-        }
-
-        public override Vector2 ScreenDimensions()
-        {
-            return new Vector2(Mine.MINE_SIZE, Mine.MINE_SIZE);
         }
 
         //flying Creatures ignore mines

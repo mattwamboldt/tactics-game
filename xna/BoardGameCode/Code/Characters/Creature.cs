@@ -77,9 +77,20 @@ namespace Board_Game.Creatures
             mSprite.Render(spriteBatch, parentPosition);
         }
 
-        public virtual bool CheckOccupied(int i, int j)
+        public bool CheckOccupied(int i, int j)
         {
-            throw new NotImplementedException();
+            for (int y = i; y < i + mCreatureDesc.SizeInSpaces.Y; y++)
+            {
+                for (int x = j; x < j + mCreatureDesc.SizeInSpaces.X; x++)
+                {
+                    if (grid.mTiles[y, x].Occupied)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public virtual void SetLocation(int newLocationI, int newLocationJ)
@@ -143,9 +154,9 @@ namespace Board_Game.Creatures
             return (int)(position.X / Tile.TILE_SIZE);
         }
 
-        public virtual Vector2 ScreenDimensions()
+        public Vector2 ScreenDimensions()
         {
-            throw new NotImplementedException();
+            return new Vector2(mCreatureDesc.SizeInSpaces.X * Tile.TILE_SIZE, mCreatureDesc.SizeInSpaces.Y * Tile.TILE_SIZE);
         }
 
         /*

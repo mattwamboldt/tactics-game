@@ -21,11 +21,6 @@ namespace Board_Game.Creatures
             grid.mTiles[originalI, originalJ].occupiedCreature = null;
             SetLocation(newLocationI, newLocationJ);
         }
-        
-        public override bool CheckOccupied(int i, int j)
-        {
-            return grid.mTiles[i, j].Occupied;
-        }
 
         public override void SetLocation(int newLocationI, int newLocationJ)
         {
@@ -34,11 +29,6 @@ namespace Board_Game.Creatures
 
             position.X = newLocationJ * Tile.TILE_SIZE;
             position.Y = newLocationI * Tile.TILE_SIZE;
-        }
-
-        public override Vector2 ScreenDimensions()
-        {
-            return new Vector2(Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
     }
 }
