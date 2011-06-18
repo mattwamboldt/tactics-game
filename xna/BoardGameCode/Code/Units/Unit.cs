@@ -138,11 +138,11 @@ namespace Board_Game.Units
             //Clamp the area so that it fits within the board.
             if (returnValue.leftCut < 0)
             {
-                returnValue.leftCut = (int)(ScreenDimensions().X / 2);
+                returnValue.leftCut = 0;
             }
             if (returnValue.topCut < 0)
             {
-                returnValue.topCut = (int)(ScreenDimensions().Y / 2);
+                returnValue.topCut = 0;
             }
             if (returnValue.rightCut + ScreenDimensions().X / 2 > grid.Width())
             {

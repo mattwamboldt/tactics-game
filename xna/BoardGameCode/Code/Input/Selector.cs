@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 
 using Board_Game.Rendering;
 using Board_Game.Input;
+using Board_Game.Units;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Logic
 {
@@ -180,5 +182,24 @@ namespace Board_Game.Logic
             }
         }
 #endregion
+
+        internal void RenderUnitRadius(SpriteBatch spriteBatch, Vector2 parentRactangle)
+        {
+            if (selectedUnit != null)
+            {
+                //draw a rectangle under that unit in it's clamp area
+                ClampArea unitArea = selectedUnit.GetClampArea();
+                Rectangle areaMovable = new Rectangle(
+                    (int)(unitArea.leftCut + parentRactangle.X),
+                    (int)(unitArea.topCut + parentRactangle.Y),
+                    (int)((unitArea.rightCut - unitArea.leftCut + selectedUnit.ScreenDimensions().X)),
+                    (int)((unitArea.bottomCut - unitArea.topCut + selectedUnit.ScreenDimensions().Y))
+                );
+
+                Texture2D texture = TextureManager.Get().Find("RAW");
+
+                spriteBatch.Draw(texture, areaMovable, new Color(0,255,0,130));
+            }
+        }
     }
 }

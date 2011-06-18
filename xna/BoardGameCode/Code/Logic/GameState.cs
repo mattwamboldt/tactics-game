@@ -82,6 +82,7 @@ namespace Board_Game.Logic
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
         {
             mGrid.Render(spriteBatch);
+            mSelector.RenderUnitRadius(spriteBatch, mGrid.position);
             Blue.Render(spriteBatch, mGrid.position);
             Red.Render(spriteBatch, mGrid.position);
             mSelector.Render(spriteBatch, mGrid.position);
