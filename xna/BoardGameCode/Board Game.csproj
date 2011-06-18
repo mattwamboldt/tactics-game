@@ -14,6 +14,7 @@
     <XnaCrossPlatformGroupID>3f100424-f8d8-4a63-aae2-db8a5ac4a045</XnaCrossPlatformGroupID>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -93,14 +93,14 @@
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
     <Compile Include="Code\UI\Screen.cs" />
-    <Compile Include="Code\Units\AirUnit.cs" />
-    <Compile Include="Code\Units\Bomber.cs" />
-    <Compile Include="Code\Units\Deminer.cs" />
-    <Compile Include="Code\Units\Fighter.cs" />
-    <Compile Include="Code\Units\Grenadier.cs" />
-    <Compile Include="Code\Units\GroundUnit.cs" />
-    <Compile Include="Code\Units\Soldier.cs" />
-    <Compile Include="Code\Units\Creature.cs" />
+    <Compile Include="Code\Characters\AirUnit.cs" />
+    <Compile Include="Code\Characters\Bomber.cs" />
+    <Compile Include="Code\Characters\Deminer.cs" />
+    <Compile Include="Code\Characters\Fighter.cs" />
+    <Compile Include="Code\Characters\Grenadier.cs" />
+    <Compile Include="Code\Characters\GroundUnit.cs" />
+    <Compile Include="Code\Characters\Soldier.cs" />
+    <Compile Include="Code\Characters\Creature.cs" />
     <Compile Include="Code\Util\Rounding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Program.cs" />
