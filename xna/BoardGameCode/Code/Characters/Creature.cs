@@ -93,9 +93,19 @@ namespace Board_Game.Creatures
             return false;
         }
 
-        public virtual void SetLocation(int newLocationI, int newLocationJ)
+        public void SetLocation(int newLocationI, int newLocationJ)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            {
+                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                {
+                    grid.mTiles[newLocationI + i, newLocationJ + j].side = side;
+                    grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature = this;
+                }
+            }
+
+            position.X = newLocationJ * Tile.TILE_SIZE;
+            position.Y = newLocationI * Tile.TILE_SIZE;
         }
 
         public virtual void RemoveCreatures(int p, int p_2)
@@ -103,9 +113,18 @@ namespace Board_Game.Creatures
             throw new NotImplementedException();
         }
 
-        public virtual void Move(int p, int p_2)
+        public void Move(int newLocationI, int newLocationJ)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            {
+                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                {
+                    grid.mTiles[originalI + i, originalJ + j].side = Side.Neutral;
+                    grid.mTiles[originalI + i, originalJ + j].occupiedCreature = null;
+                }
+            }
+
+            SetLocation(newLocationI, newLocationJ);
         }
 
         public virtual bool CheckColour(int i, int j)
@@ -160,12 +179,15 @@ namespace Board_Game.Creatures
         }
 
         /*
-            This tells us if a square is actually an enemy mine location. If the
-            Creature in question is a deminer it returns false since they can move accross
-            those just fine.
+            This tells us if a square is actually an enemy mine location.
         */
-        public virtual bool IsEnemyMine(int i, int j)
+        public bool IsEnemyMine(int i, int j)
         {
+            if (mCreatureDesc.CanFly || mCreatureDesc.Type == CreatureType.Miner)
+            {
+                return false;
+            }
+
             return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
                 && (grid.mTiles[i - i % 2, j - j % 2].mine.side != side);
         }

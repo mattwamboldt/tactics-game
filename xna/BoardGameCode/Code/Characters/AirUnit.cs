@@ -15,35 +15,6 @@ namespace Board_Game.Creatures
         {
         }
 
-        public override void SetLocation(int newLocationI, int newLocationJ)
-        {
-	        for(var i = 0; i < 2; ++i)
-	        {
-		        for(var j = 0; j < 2; ++j)
-		        {
-                    grid.mTiles[newLocationI + i, newLocationJ + j].side = side;
-                    grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature = this;
-		        }
-	        }
-
-            position.X = newLocationJ * Tile.TILE_SIZE;
-            position.Y = newLocationI * Tile.TILE_SIZE;
-        }
-
-        public override void Move(int newLocationI, int newLocationJ)
-        {
-	        for(var i = 0; i < 2; ++i)
-	        {
-		        for(var j = 0; j < 2; ++j)
-		        {
-			        grid.mTiles[originalI + i, originalJ + j].side = Side.Neutral;
-			        grid.mTiles[originalI + i, originalJ + j].occupiedCreature = null;
-		        }
-	        }
-        	
-	        SetLocation(newLocationI, newLocationJ);
-        }
-
         public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
 	        for(var i = 0; i < 2; ++i)
@@ -56,12 +27,6 @@ namespace Board_Game.Creatures
 			        }
 		        }
 	        }
-        }
-
-        //flying Creatures ignore mines
-        public override bool IsEnemyMine(int i, int j)
-        {
-            return false;
         }
     }
 }

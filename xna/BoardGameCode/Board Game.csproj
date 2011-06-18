@@ -98,7 +98,6 @@
     <Compile Include="Code\Characters\Deminer.cs" />
     <Compile Include="Code\Characters\Fighter.cs" />
     <Compile Include="Code\Characters\Grenadier.cs" />
-    <Compile Include="Code\Characters\GroundUnit.cs" />
     <Compile Include="Code\Characters\Soldier.cs" />
     <Compile Include="Code\Characters\Creature.cs" />
     <Compile Include="Code\Util\Rounding.cs" />

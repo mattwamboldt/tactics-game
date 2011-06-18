@@ -7,7 +7,7 @@ using Board_Game.Logic;
 
 namespace Board_Game.Creatures
 {
-    class Grenadier : GroundCreature
+    class Grenadier : Creature
     {
         public Grenadier(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
             : base(grid, AIRef, CreatureDesc)

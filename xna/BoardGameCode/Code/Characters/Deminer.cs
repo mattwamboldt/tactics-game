@@ -8,7 +8,7 @@ using Board_Game.Logic;
 
 namespace Board_Game.Creatures
 {
-    class Deminer : GroundCreature
+    class Deminer : Creature
     {
         public Deminer(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
             : base(grid, AIRef, CreatureDesc)
@@ -23,12 +23,6 @@ namespace Board_Game.Creatures
         public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
             mAIRef.State.RemoveCreature(grid.mTiles[newLocationI, newLocationJ].occupiedCreature);
-        }
-
-        //sides don't matter to miners since they convert
-        public override bool IsEnemyMine(int i, int j)
-        {
-            return false;
         }
 
         public override Vector2 GetNearestTarget()
