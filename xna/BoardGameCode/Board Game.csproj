@@ -93,11 +93,8 @@
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
     <Compile Include="Code\UI\Screen.cs" />
-    <Compile Include="Code\Characters\Bomber.cs" />
     <Compile Include="Code\Characters\Deminer.cs" />
-    <Compile Include="Code\Characters\Fighter.cs" />
     <Compile Include="Code\Characters\Grenadier.cs" />
-    <Compile Include="Code\Characters\Soldier.cs" />
     <Compile Include="Code\Characters\Creature.cs" />
     <Compile Include="Code\Util\Rounding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -257,7 +257,7 @@ namespace Board_Game.Logic
                         //factor in if the move will take another Creature
                         if(Creature.CheckOccupied(i, j))
                         {
-                            if(Creature.CheckColour(i,j))
+                            if (Creature.CanDestroyAllUnits(i, j))
                             {
                                 var damageScore = GetDestructionScore(Creature, i, j);
                                 if(damageScore == 0)

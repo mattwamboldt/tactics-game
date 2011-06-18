@@ -45,8 +45,8 @@ namespace Board_Game.Logic
 
             for( int i = 0; i < GameState.GRID_WIDTH/4; ++i )
             {
-                Bomber bomber = new Bomber(mGrid, mAI, bomberDesc);
-                Fighter fighter = new Fighter(mGrid, mAI, fighterDesc);
+                Creature bomber = new Creature(mGrid, mAI, bomberDesc);
+                Creature fighter = new Creature(mGrid, mAI, fighterDesc);
 
                 bomber.side = mSide;
                 fighter.side = mSide;
@@ -91,7 +91,7 @@ namespace Board_Game.Logic
 
             for( var i = 0; i < GameState.GRID_WIDTH; ++i )
             {
-                Creatures.Soldier soldier = new Soldier(mGrid, mAI, soldierDesc);
+                Creature soldier = new Creature(mGrid, mAI, soldierDesc);
                 soldier.side = mSide;
 
                 if (mSide == Side.Red)

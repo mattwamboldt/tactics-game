@@ -152,7 +152,7 @@ namespace Board_Game.Logic
                     Deselect();
                 }
                 //destroy Creatures in your move radius
-                else if (isInCreatureClampArea() && selectedCreature.CheckColour(i, j))
+                else if (isInCreatureClampArea() && selectedCreature.CanDestroyAllUnits(i, j))
                 {
                     selectedCreature.isSelected = false;
                     selectedCreature.RemoveCreatures(i, j);

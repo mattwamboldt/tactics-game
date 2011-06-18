@@ -14,11 +14,6 @@ namespace Board_Game.Creatures
         {
         }
 
-        public override bool CheckColour(int i, int j)
-        {
-	        return grid.mTiles[i, j].side != side;
-        }
-
         public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
 	        var Creature = grid.mTiles[newLocationI, newLocationJ].occupiedCreature;

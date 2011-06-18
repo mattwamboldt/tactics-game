@@ -137,9 +137,23 @@ namespace Board_Game.Creatures
             SetLocation(newLocationI, newLocationJ);
         }
 
-        public virtual bool CheckColour(int i, int j)
+        public bool CanDestroyAllUnits(int newI, int newJ)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            {
+                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                {
+                    Tile tile = grid.mTiles[newI + i, newJ + j];
+
+                    if ( tile.side == side //Cant attack friendlies
+                      || ( tile.Occupied && mCreatureDesc.CanAttack(tile.occupiedCreature.mCreatureDesc.Type) == false))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public ClampArea GetClampArea()

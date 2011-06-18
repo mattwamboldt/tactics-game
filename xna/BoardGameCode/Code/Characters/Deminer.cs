@@ -15,11 +15,6 @@ namespace Board_Game.Creatures
         {
         }
 
-        public override bool CheckColour(int i, int j)
-        {
-            return grid.mTiles[i, j].side != side && !grid.mTiles[i, j].Occupied;
-        }
-
         public override Vector2 GetNearestTarget()
         {
             Vector2 originalPoint = new Vector2(GetJ(), GetI());
