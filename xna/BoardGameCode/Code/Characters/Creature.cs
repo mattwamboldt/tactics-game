@@ -104,13 +104,24 @@ namespace Board_Game.Creatures
                 }
             }
 
+            originalI = newLocationI;
+            originalJ = newLocationJ;
             position.X = newLocationJ * Tile.TILE_SIZE;
             position.Y = newLocationI * Tile.TILE_SIZE;
         }
 
-        public virtual void RemoveCreatures(int p, int p_2)
+        public virtual void RemoveCreatures(int newLocationI, int newLocationJ)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            {
+                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                {
+                    if (grid.mTiles[newLocationI + i, newLocationJ + j].Occupied)
+                    {
+                        mAIRef.State.RemoveCreature(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature);
+                    }
+                }
+            }
         }
 
         public void Move(int newLocationI, int newLocationJ)
@@ -123,7 +134,6 @@ namespace Board_Game.Creatures
                     grid.mTiles[originalI + i, originalJ + j].occupiedCreature = null;
                 }
             }
-
             SetLocation(newLocationI, newLocationJ);
         }
 

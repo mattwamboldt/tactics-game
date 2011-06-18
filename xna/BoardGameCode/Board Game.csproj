@@ -93,7 +93,6 @@
     <Compile Include="Code\Logic\Player.cs" />
     <Compile Include="Code\Logic\Tile.cs" />
     <Compile Include="Code\UI\Screen.cs" />
-    <Compile Include="Code\Characters\AirUnit.cs" />
     <Compile Include="Code\Characters\Bomber.cs" />
     <Compile Include="Code\Characters\Deminer.cs" />
     <Compile Include="Code\Characters\Fighter.cs" />

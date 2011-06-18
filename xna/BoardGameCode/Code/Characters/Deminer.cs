@@ -20,11 +20,6 @@ namespace Board_Game.Creatures
             return grid.mTiles[i, j].side != side && !grid.mTiles[i, j].Occupied;
         }
 
-        public override void RemoveCreatures(int newLocationI, int newLocationJ)
-        {
-            mAIRef.State.RemoveCreature(grid.mTiles[newLocationI, newLocationJ].occupiedCreature);
-        }
-
         public override Vector2 GetNearestTarget()
         {
             Vector2 originalPoint = new Vector2(GetJ(), GetI());

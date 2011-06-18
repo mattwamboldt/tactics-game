@@ -7,7 +7,7 @@ using Board_Game.Logic;
 
 namespace Board_Game.Creatures
 {
-    class Bomber : AirCreature
+    class Bomber : Creature
     {
         public Bomber(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
             : base(grid, AIRef, CreatureDesc)

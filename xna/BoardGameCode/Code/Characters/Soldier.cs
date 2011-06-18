@@ -20,10 +20,5 @@ namespace Board_Game.Creatures
                 && grid.mTiles[i, j].Occupied
                 && !grid.mTiles[i, j].occupiedCreature.mCreatureDesc.CanFly;
         }
-
-        public override void RemoveCreatures(int newLocationI, int newLocationJ)
-        {
-            mAIRef.State.RemoveCreature(grid.mTiles[newLocationI, newLocationJ].occupiedCreature);
-        }
     }
 }
