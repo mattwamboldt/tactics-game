@@ -33,6 +33,7 @@ namespace Board_Game
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
             mAI = new AI();
         }
@@ -93,11 +94,19 @@ namespace Board_Game
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
             InputManager.Get().Update();
+            
+            // Allows the game to exit
+            if (InputManager.Get().isTriggered(Button.Home))
+            {
+                this.Exit();
+            }
+
+            if (InputManager.Get().isTriggered(Button.Triangle))
+            {
+                graphics.ToggleFullScreen();
+            }
+            
             mGameState.Update(gameTime);
             mScreen.Update(mGameState);
 
