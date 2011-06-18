@@ -131,8 +131,8 @@ namespace Board_Game.Logic
             var lowerI = Rounding.FloorAtMinimum(i - 1, 0);
             var lowerJ = Rounding.FloorAtMinimum(j - 1, 0);
 
-            var upperI = Rounding.CapAtMaximum(i + Unit.width, GameState.GRID_WIDTH - 1);
-            var upperJ = Rounding.CapAtMaximum(j + Unit.height, GameState.GRID_HEIGHT - 1);
+            var upperI = Rounding.CapAtMaximum(i + Unit.mUnitDesc.width, GameState.GRID_WIDTH - 1);
+            var upperJ = Rounding.CapAtMaximum(j + Unit.mUnitDesc.height, GameState.GRID_HEIGHT - 1);
 
             for (var t = lowerI; t <= upperI; ++t)
             {
@@ -140,15 +140,15 @@ namespace Board_Game.Logic
                 {
                     var adjacentUnit = mGrid.mTiles[t, v].occupiedUnit;
                     if (adjacentUnit != null
-                       && adjacentUnit.CanFly == false
-                       && adjacentUnit.Type != Units.UnitType.Miner
+                       && adjacentUnit.mUnitDesc.CanFly == false
+                       && adjacentUnit.mUnitDesc.Type != Units.UnitType.Miner
                        && adjacentUnit.side != Unit.side
                        && adjacentUnit != unitAtIJ)
                     {
                         //check if the unit in the adjacent square has this as an attackable unit
-                        for (var priority = 0; priority < adjacentUnit.attackablePriorities.Length; priority++)
+                        for (var priority = 0; priority < adjacentUnit.mUnitDesc.attackablePriorities.Length; priority++)
                         {
-                            if (adjacentUnit.attackablePriorities[priority] == Unit.Type)
+                            if (adjacentUnit.mUnitDesc.attackablePriorities[priority] == Unit.mUnitDesc.Type)
                             {
                                 return true;
                             }
@@ -170,14 +170,14 @@ namespace Board_Game.Logic
                 {
                     var adjacentUnit = mGrid.mTiles[t, v].occupiedUnit;
                     if (adjacentUnit != null
-                       && adjacentUnit.CanFly
+                       && adjacentUnit.mUnitDesc.CanFly
                        && adjacentUnit.side != Unit.side
                        && adjacentUnit != unitAtIJ)
                     {
                         //check if the unit in the adjacent square has this as an attackable unit
-                        for (var priority = 0; priority < adjacentUnit.attackablePriorities.Length; priority++)
+                        for (var priority = 0; priority < adjacentUnit.mUnitDesc.attackablePriorities.Length; priority++)
                         {
-                            if (adjacentUnit.attackablePriorities[priority] == Unit.Type)
+                            if (adjacentUnit.mUnitDesc.attackablePriorities[priority] == Unit.mUnitDesc.Type)
                             {
                                 return true;
                             }
@@ -205,14 +205,14 @@ namespace Board_Game.Logic
                         var square = mGrid.mTiles[(int)mine.position.Y * 2 + t, (int)mine.position.X * 2 + u];
                         if (square.Occupied)
                         {
-                            if (square.occupiedUnit.Type == Units.UnitType.Miner
+                            if (square.occupiedUnit.mUnitDesc.Type == Units.UnitType.Miner
                                 && square.side == colour)
                             {
                                 mine.side = colour;
                             }
                             else if (square.occupiedUnit.side != mine.side
-                                    && square.occupiedUnit.Type != Units.UnitType.Miner
-                                    && square.occupiedUnit.CanFly == false)
+                                    && square.occupiedUnit.mUnitDesc.Type != Units.UnitType.Miner
+                                    && square.occupiedUnit.mUnitDesc.CanFly == false)
                             {
                                 State.RemoveUnit(square.occupiedUnit);
                                 square.occupiedUnit = null;
@@ -241,9 +241,9 @@ namespace Board_Game.Logic
 
             var currentDistance = GetDistanceToCoordinates(target, unit.GetI(), unit.GetJ());
 
-            for(int i = UnitTopBound; i <= UnitBottomBound; i += unit.width)
+            for (int i = UnitTopBound; i <= UnitBottomBound; i += unit.mUnitDesc.width)
             {
-                for( int j = UnitLeftBound; j <= UnitRightBound; j += unit.height)
+                for (int j = UnitLeftBound; j <= UnitRightBound; j += unit.mUnitDesc.height)
                 {
                     //staying place is the only invalid move right now
                     if(i != unit.GetI() || j != unit.GetJ())
@@ -289,7 +289,7 @@ namespace Board_Game.Logic
                         }
 
                         //set score to use distance
-                        if (unit.Type == Units.UnitType.Miner)
+                        if (unit.mUnitDesc.Type == Units.UnitType.Miner)
                         {
                             newMove.score += (int)((100 / (moveDistance + 1)) / 2);
                         }
@@ -331,9 +331,9 @@ namespace Board_Game.Logic
         */
         public int GetDestructionScore(Units.Unit sourceUnit, Units.Unit targetUnit)
         {
-            for(var i = 0; i < sourceUnit.attackablePriorities.Length; i++)
+            for (var i = 0; i < sourceUnit.mUnitDesc.attackablePriorities.Length; i++)
             {
-                if(sourceUnit.attackablePriorities[i] == targetUnit.Type)
+                if (sourceUnit.mUnitDesc.attackablePriorities[i] == targetUnit.mUnitDesc.Type)
                 {
                     return ((int)Units.UnitType.NumUnitTypes - i) * 200;
                 }
@@ -347,7 +347,7 @@ namespace Board_Game.Logic
         */
         public int GetUnitValue(Units.Unit unit)
         {
-            return unitWorths[(int)unit.Type] * 200;
+            return unitWorths[(int)unit.mUnitDesc.Type] * 200;
         }
 
         internal void Update(GameTime gameTime)
@@ -383,7 +383,7 @@ namespace Board_Game.Logic
 
                         if (possibleMoves.Count == 0)
                         {
-                            Console.Out.WriteLine("No moves for " + unit.Type + " at " + unit.position);
+                            Console.Out.WriteLine("No moves for " + unit.mUnitDesc.Type + " at " + unit.position);
                         }
 
                         foreach (Move move in possibleMoves)

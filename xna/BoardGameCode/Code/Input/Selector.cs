@@ -139,8 +139,8 @@ namespace Board_Game.Logic
 
         private void SelectSquare()
         {
-            int j = ((int)position.X - (int)position.X % selectedUnit.width);
-            int i = ((int)position.Y - (int)position.Y % selectedUnit.height);
+            int j = ((int)position.X - (int)position.X % selectedUnit.mUnitDesc.width);
+            int i = ((int)position.Y - (int)position.Y % selectedUnit.mUnitDesc.height);
 
             if (selectedUnit.CheckOccupied(i, j))
             {

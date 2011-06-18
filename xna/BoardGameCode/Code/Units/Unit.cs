@@ -17,17 +17,6 @@ namespace Board_Game.Units
         public int bottomCut;
     };
 
-    public enum UnitType
-    {
-        Undefined = -1,
-        Bomber = 0,
-        Fighter = 1,
-        Soldier = 2,
-        Granadier = 3,
-        Miner = 4,
-        NumUnitTypes = 5
-    }
-
     //Contains all the code for a unit.
     class Unit
     {
@@ -43,34 +32,27 @@ namespace Board_Game.Units
         //so it can destroy itself or better than that, enemy units
         protected GameGrid grid;
 
-        public UnitType Type;
-
-        public bool CanFly;
+        public UnitDescription mUnitDesc;
 
         public Vector2 position;
-        public int height;
-        public int width;
+
         public AI mAIRef;
         public bool isSelected;
+
         private Sprite mSprite;
 
-        //used to determine which enemies this unit
-        //type should attack first
-        public UnitType[] attackablePriorities;
-
-        public Unit(GameGrid gridRef, AI AIRef, Texture2D inTexture)
+        public Unit(GameGrid gridRef, AI AIRef, UnitDescription unitDesc)
         {
+            mUnitDesc = unitDesc;
             originalI = 0;
             originalJ = 0;
             grid = gridRef;
             mAIRef = AIRef;
             side = Side.Neutral;
-            Type = UnitType.Undefined;
-            CanFly = false;
             position = new Vector2(0, 0);
             isSelected = false;
 
-            mSprite = new Sprite(inTexture, position, Color.White, ScreenDimensions());
+            mSprite = new Sprite(mUnitDesc.texture, position, Color.White, ScreenDimensions());
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
@@ -116,11 +98,6 @@ namespace Board_Game.Units
         }
 
         public virtual bool CheckColour(int i, int j)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual bool CanAttack(UnitType unitType)
         {
             throw new NotImplementedException();
         }
@@ -206,7 +183,7 @@ namespace Board_Game.Units
 
             foreach (Unit unit in opposingUnits)
             {
-                if (CanAttack(unit.Type))
+                if (mUnitDesc.CanAttack(unit.mUnitDesc.Type))
                 {
                     var iCoord = unit.GetI();
                     var jCoord = unit.GetJ();

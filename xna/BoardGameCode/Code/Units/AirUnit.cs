@@ -10,12 +10,9 @@ namespace Board_Game.Units
 {
     class AirUnit : Unit
     {
-        public AirUnit(GameGrid grid, AI AIRef, Texture2D texture)
-            : base(grid, AIRef, texture)
+        public AirUnit(GameGrid grid, AI AIRef, UnitDescription unitDesc)
+            : base(grid, AIRef, unitDesc)
         {
-            CanFly = true;
-            height = 2;
-            width = 2;
         }
 
         public override void SetLocation(int newLocationI, int newLocationJ)

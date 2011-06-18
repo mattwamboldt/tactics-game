@@ -10,11 +10,9 @@ namespace Board_Game.Units
 {
     class Deminer : GroundUnit
     {
-        public Deminer(GameGrid grid, AI AIRef, Texture2D texture)
-            : base(grid, AIRef, texture)
+        public Deminer(GameGrid grid, AI AIRef, UnitDescription unitDesc)
+            : base(grid, AIRef, unitDesc)
         {
-            Type = UnitType.Miner;
-            attackablePriorities = null;
         }
 
         public override bool CheckColour(int i, int j)
@@ -25,11 +23,6 @@ namespace Board_Game.Units
         public override void RemoveUnits(int newLocationI, int newLocationJ)
         {
             mAIRef.State.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
-        }
-
-        public override bool CanAttack(UnitType unitType)
-        {
-	        return false;
         }
 
         //sides don't matter to miners since they convert

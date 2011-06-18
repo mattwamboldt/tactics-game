@@ -10,12 +10,9 @@ namespace Board_Game.Units
 {
     class GroundUnit : Unit
     {
-        public GroundUnit(GameGrid grid, AI AIRef, Texture2D texture)
-            : base(grid, AIRef, texture)
+        public GroundUnit(GameGrid grid, AI AIRef, UnitDescription unitDesc)
+            : base(grid, AIRef, unitDesc)
         {
-            CanFly = false;
-            height = 1;
-            width = 1;
         }
 
         public override void Move(int newLocationI, int newLocationJ)

@@ -41,12 +41,74 @@ namespace Board_Game.Logic
             Texture2D grenadierTexture
             )
         {
+            //TODO: Move to content pipeline
+            UnitDescription bomberDesc = new UnitDescription();
+            bomberDesc.CanFly = true;
+            bomberDesc.height = 2;
+            bomberDesc.width = 2;
+            bomberDesc.Type = UnitType.Bomber;
+            bomberDesc.attackablePriorities = new UnitType[] {
+                UnitType.Granadier,
+                UnitType.Miner,
+                UnitType.Soldier
+            };
+
+            bomberDesc.texture = bomberTexture;
+
+            UnitDescription fighterDesc = new UnitDescription();
+            fighterDesc.CanFly = true;
+            fighterDesc.height = 2;
+            fighterDesc.width = 2;
+            fighterDesc.Type = UnitType.Fighter;
+            fighterDesc.attackablePriorities = new UnitType[] {
+                UnitType.Bomber
+            };
+
+            fighterDesc.texture = fighterTexture;
+
+            UnitDescription minerDesc = new UnitDescription();
+            minerDesc.CanFly = false;
+            minerDesc.height = 1;
+            minerDesc.width = 1;
+            minerDesc.Type = UnitType.Miner;
+            minerDesc.attackablePriorities = null;
+
+            minerDesc.texture = deminerTexture;
+
+            UnitDescription grenadierDesc = new UnitDescription();
+            grenadierDesc.CanFly = false;
+            grenadierDesc.height = 1;
+            grenadierDesc.width = 1;
+            grenadierDesc.Type = UnitType.Granadier;
+            grenadierDesc.attackablePriorities = new UnitType[] {
+                UnitType.Bomber,
+                UnitType.Granadier,
+                UnitType.Fighter,
+                UnitType.Miner,
+                UnitType.Soldier
+            };
+
+            grenadierDesc.texture = grenadierTexture;
+
+            UnitDescription soldierDesc = new UnitDescription();
+            soldierDesc.CanFly = false;
+            soldierDesc.height = 1;
+            soldierDesc.width = 1;
+            soldierDesc.Type = UnitType.Soldier;
+            soldierDesc.attackablePriorities = new UnitType[] {
+                UnitType.Granadier,
+                UnitType.Miner,
+                UnitType.Soldier
+            };
+
+            soldierDesc.texture = soldierTexture;
+
             mUnits = new List<Unit>(GameState.GRID_WIDTH / 2 + GameState.GRID_WIDTH * 2);
 
             for( int i = 0; i < GameState.GRID_WIDTH/4; ++i )
             {
-                Bomber bomber = new Bomber(mGrid, mAI, bomberTexture);
-                Fighter fighter = new Fighter(mGrid, mAI, fighterTexture);
+                Bomber bomber = new Bomber(mGrid, mAI, bomberDesc);
+                Fighter fighter = new Fighter(mGrid, mAI, fighterDesc);
 
                 bomber.side = mSide;
                 fighter.side = mSide;
@@ -68,8 +130,8 @@ namespace Board_Game.Logic
 
             for (int i = 0; i < GameState.GRID_WIDTH / 2; ++i)
             {
-                Units.Deminer miner = new Deminer(mGrid, mAI, deminerTexture);
-                Units.Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierTexture);
+                Units.Deminer miner = new Deminer(mGrid, mAI, minerDesc);
+                Units.Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierDesc);
 
                 miner.side = mSide;
                 grenadier.side = mSide;
@@ -91,7 +153,7 @@ namespace Board_Game.Logic
 
             for( var i = 0; i < GameState.GRID_WIDTH; ++i )
             {
-                Units.Soldier soldier = new Soldier(mGrid, mAI, soldierTexture);
+                Units.Soldier soldier = new Soldier(mGrid, mAI, soldierDesc);
                 soldier.side = mSide;
 
                 if (mSide == Side.Red)

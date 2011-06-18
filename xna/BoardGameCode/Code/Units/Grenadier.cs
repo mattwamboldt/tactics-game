@@ -9,17 +9,9 @@ namespace Board_Game.Units
 {
     class Grenadier : GroundUnit
     {
-        public Grenadier(GameGrid grid, AI AIRef, Texture2D texture)
-            : base(grid, AIRef, texture)
+        public Grenadier(GameGrid grid, AI AIRef, UnitDescription unitDesc)
+            : base(grid, AIRef, unitDesc)
         {
-            Type = UnitType.Granadier;
-            attackablePriorities = new UnitType[] {
-                UnitType.Bomber,
-                UnitType.Granadier,
-                UnitType.Fighter,
-                UnitType.Miner,
-                UnitType.Soldier
-            };
         }
 
         public override bool CheckColour(int i, int j)
@@ -32,8 +24,8 @@ namespace Board_Game.Units
 	        var unit = grid.mTiles[newLocationI, newLocationJ].occupiedUnit;
             int UnitLocationI = (int)((unit.position.Y - unit.position.Y % unit.ScreenDimensions().Y) / Tile.TILE_SIZE);
             int UnitLocationJ = (int)((unit.position.X - unit.position.X % unit.ScreenDimensions().X) / Tile.TILE_SIZE);
-        	
-	        if(unit.CanFly)
+
+            if (unit.mUnitDesc.CanFly)
 	        {
 		        for(var i = 0; i < 2; ++i)
 		        {
@@ -46,21 +38,6 @@ namespace Board_Game.Units
 	        }
 
 	        mAIRef.State.RemoveUnit(unit);
-        }
-
-        public override bool CanAttack(UnitType unitType)
-        {
-	        switch(unitType)
-	        {
-		        case UnitType.Soldier:
-                case UnitType.Granadier:
-                case UnitType.Miner:
-                case UnitType.Bomber:
-                case UnitType.Fighter:
-			        return true;
-		        default:
-			        return false;
-	        }
         }
     }
 }
