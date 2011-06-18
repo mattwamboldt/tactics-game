@@ -106,6 +106,15 @@ namespace Board_Game.Logic
             }
         }
 
+        private bool isInUnitClampArea()
+        {
+            ClampArea unitArea = selectedUnit.GetClampArea();
+            return position.X * Tile.TILE_SIZE >= unitArea.leftCut
+                && position.Y * Tile.TILE_SIZE >= unitArea.topCut
+                && position.X * Tile.TILE_SIZE <= unitArea.rightCut
+                && position.Y * Tile.TILE_SIZE <= unitArea.bottomCut;
+        }
+
         private void SelectSquare()
         {
             int j = ((int)position.X - (int)position.X % selectedUnit.width);
@@ -114,7 +123,15 @@ namespace Board_Game.Logic
             if (selectedUnit.CheckOccupied(i, j))
             {
                 Units.Unit unit = mGridRef.mTiles[i, j].occupiedUnit;
-                if (selectedUnit.CheckColour(i, j))
+
+                //toggle selection of the current unit
+                if (selectedUnit == unit)
+                {
+                    selectedUnit = null;
+                    unit.isSelected = false;
+                }
+                //destroy units in your move radius
+                else if (isInUnitClampArea() && selectedUnit.CheckColour(i, j))
                 {
                     selectedUnit.isSelected = false;
                     selectedUnit.RemoveUnits(i, j);
@@ -123,23 +140,16 @@ namespace Board_Game.Logic
 
                     mGameState.EndTurn(); 
                 }
-                else
+                //switch to friendly units
+                else if (unit != null && unit.side == mSide)
                 {
-                    if (selectedUnit == unit)
-                    {
-                        selectedUnit = null;
-                        unit.isSelected = false;
-                    }
-                    else if (unit != null && unit.side == mSide)
-                    {
-                        selectedUnit.isSelected = false;
-                        selectedUnit = unit;
-                        unit.isSelected = true;
-                        unitClamp = selectedUnit.GetClampArea();
-                    }
+                    selectedUnit.isSelected = false;
+                    selectedUnit = unit;
+                    unit.isSelected = true;
+                    unitClamp = selectedUnit.GetClampArea();
                 }
             }
-            else
+            else if(isInUnitClampArea())
             {
                 selectedUnit.isSelected = false;
                 selectedUnit.Move(i, j);

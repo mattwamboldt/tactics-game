@@ -28,9 +28,7 @@ namespace Board_Game
         AI mAI;
         Screen mScreen;
         GameState mGameState;
-
         Texture2D mBackground;
-        Shape testShape;
 
         public Game1()
         {
