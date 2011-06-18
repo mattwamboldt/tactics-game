@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Board_Game.UI
 {
     //controls loading and lookup of fonts
-    class FontManager
+    public class FontManager
     {
         Hashtable mFontCollection;
 

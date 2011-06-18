@@ -16,13 +16,23 @@ namespace Board_Game.Code.Rendering
 
         private static TextureManager mInstance;
 
-        public static void Initialize(ContentManager content) { mInstance = new TextureManager(content); }
+        public static void Initialize(
+            ContentManager content,
+            GraphicsDevice device)
+        {
+            mInstance = new TextureManager(content, device);
+        }
+
         public static TextureManager Get() { return mInstance; }
 
-        public TextureManager(ContentManager content)
+        public TextureManager(ContentManager content, GraphicsDevice device)
         {
             mContentManager = content;
             mTextureCollection = new Hashtable();
+
+            Texture2D pixel = new Texture2D(device, 1, 1);
+            pixel.SetData<Color>(new Color[] { Color.White });
+            mTextureCollection.Add("RAW", pixel);
         }
 
         public Texture2D Find(string textureName)

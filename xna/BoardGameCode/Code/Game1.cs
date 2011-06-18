@@ -30,6 +30,7 @@ namespace Board_Game
         GameState mGameState;
 
         Texture2D mBackground;
+        Shape testShape;
 
         public Game1()
         {
@@ -69,12 +70,12 @@ namespace Board_Game
             mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
 
             FontManager.Initialize(Content);
-            TextureManager.Initialize(Content);
+            TextureManager.Initialize(Content, GraphicsDevice);
 
             mGameState = new GameState(mAI, Content.Load<Sprite>("xml/Selector"));
             mGameState.Initialize();
             mAI.Initialize(mGameState);
-            mScreen = new Screen(GraphicsDevice);
+            mScreen = new Screen(GraphicsDevice, Content);
             mAI.mScreen = mScreen;
         }
 
@@ -120,7 +121,6 @@ namespace Board_Game
             spriteBatch.Draw(mBackground, new Rectangle(0, 0, 800, 600), Color.White);
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mScreen.Render(spriteBatch);
-
             spriteBatch.End();
 
             base.Draw(gameTime);

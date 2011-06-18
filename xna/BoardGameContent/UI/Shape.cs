@@ -5,35 +5,51 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
+using Microsoft.Xna.Framework.Content;
 
 namespace Board_Game.UI
 {
-    enum ShapeType
+    public enum ShapeType
     {
         Clip,
         Image,
         Label
     }
 
-    class Shape
+    public class Shape
     {
         protected ShapeType mType;
 
         protected string mName;
+        public string Name { get { return mName; } set { mName = value; } }
         
         protected Vector2 mPosition; //Defines position as an offset from the parent
+        public Vector2 Position { get { return mPosition; } set { mPosition = value; } }
+
         protected Vector2 mAbsolutePosition; //Defines screen space position
-        protected Hashtable mChildren;//the items under this in the tree
 
         protected Vector2 mSize;
-        public float Width { get { return mSize.X; } set { mSize.X = value; } }
+        public Vector2 Size { get { return mSize; } set { mSize = value; } }
 
         protected bool mVisibility;
         public bool Visible { get { return mVisibility; } set { mVisibility = value; } }
 
         protected Color mColor;
         public Color Color { get { return mColor; } set { mColor = value; } }
+
+        protected List<Shape> mChildren;//the items under this in the tree
+        public List<Shape> Children { get { return mChildren; } set { mChildren = value; } }
+
+        [ContentSerializerIgnore]
+        public float Width { get { return mSize.X; } set { mSize.X = value; } }
+
         protected Shape mParent;
+
+        public Shape()
+        {
+            mType = ShapeType.Clip;
+            mParent = null;
+        }
 
         public Shape(ShapeType type, string name, Color color, Vector2 size, Vector2 position, bool visibility)
         {
@@ -41,7 +57,7 @@ namespace Board_Game.UI
             mColor = color;
             mSize = size;
             mPosition = position;
-            mChildren = new Hashtable();
+            mChildren = new List<Shape>();
             mName = name;
             mVisibility = visibility;
             mParent = null;
@@ -63,7 +79,7 @@ namespace Board_Game.UI
                 mAbsolutePosition.Y = newPosition.Y + mPosition.Y;
             }
 
-            foreach (Shape child in mChildren.Values)
+            foreach (Shape child in mChildren)
             {
                 child.SetPosition(mAbsolutePosition, false);
             }
@@ -71,14 +87,29 @@ namespace Board_Game.UI
 
         public void AddChild(Shape child)
         {
-            mChildren.Add(child.mName, child);
+            mChildren.Add(child);
+            SetAsParent(child);
+        }
+
+        //this is split out for the content pipeline so that
+        //children aren't added infinitely
+        public void SetAsParent(Shape child)
+        {
             child.mParent = this;
             child.SetPosition(mAbsolutePosition, false);
         }
 
         public Shape GetChild(string name)
         {
-            return (Shape)mChildren[name];
+            foreach (Shape child in mChildren)
+            {
+                if (child.Name == name)
+                {
+                    return child;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -114,11 +145,37 @@ namespace Board_Game.UI
         {
             if(mVisibility)
             {
-                foreach (Shape child in mChildren.Values)
+                foreach (Shape child in mChildren)
                 {
                     child.Render(spriteBatch);
                 }
             }
+        }
+    }
+
+    public class ShapeReader : ContentTypeReader<Shape>
+    {
+        protected override Shape Read(ContentReader input, Shape existingInstance)
+        {
+            Shape shape = existingInstance;
+            if (shape == null)
+            {
+                shape = new Shape();
+            }
+
+            shape.Name = input.ReadString();
+            shape.Position = input.ReadVector2();
+            shape.Size = input.ReadVector2();
+            shape.Visible = input.ReadBoolean();
+            shape.Color = input.ReadColor();
+            shape.Children = input.ReadObject<List<Shape>>();
+
+            foreach (Shape child in shape.Children)
+            {
+                shape.SetAsParent(child);
+            }
+
+            return shape;
         }
     }
 }

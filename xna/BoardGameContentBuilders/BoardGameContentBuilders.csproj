@@ -107,6 +107,9 @@
   <ItemGroup>
     <Compile Include="Input\InputMapWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\LabelWriter.cs" />
+    <Compile Include="UI\ImageWriter.cs" />
+    <Compile Include="UI\ShapeWriter.cs" />
     <Compile Include="Rendering\SpriteWriter.cs" />
   </ItemGroup>
   <ItemGroup>
