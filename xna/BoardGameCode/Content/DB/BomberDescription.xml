@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Creatures.CreatureDescription">
+    <CanFly>true</CanFly>
+    <Type>Bomber</Type>
+    <SizeInSpaces>2 2</SizeInSpaces>
+    <TextureName>textures/Creatures/bomber</TextureName>
+    <AttackPriorities>
+      <Item>Granadier</Item>
+      <Item>Miner</Item>
+      <Item>Soldier</Item>
+    </AttackPriorities>
+  </Asset>
+</XnaContent>

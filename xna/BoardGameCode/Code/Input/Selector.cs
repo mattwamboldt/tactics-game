@@ -139,8 +139,8 @@ namespace Board_Game.Logic
 
         private void SelectSquare()
         {
-            int j = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.width);
-            int i = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.height);
+            int j = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.SizeInSpaces.X);
+            int i = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.SizeInSpaces.Y);
 
             if (selectedCreature.CheckOccupied(i, j))
             {
@@ -159,15 +159,20 @@ namespace Board_Game.Logic
                     selectedCreature.Move(i, j);
                     selectedCreature = null;
 
-                    mGameState.EndTurn(); 
+                    mGameState.EndTurn();
                 }
                 //switch to friendly Creatures
-                else if (Creature != null && Creature.side == mSide)
+                else
                 {
-                    selectedCreature.isSelected = false;
-                    selectedCreature = Creature;
-                    Creature.isSelected = true;
-                    CreatureClamp = selectedCreature.GetClampArea();
+                    Creature = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedCreature;
+
+                    if (Creature != null && Creature.side == mSide)
+                    {
+                        selectedCreature.isSelected = false;
+                        selectedCreature = Creature;
+                        Creature.isSelected = true;
+                        CreatureClamp = selectedCreature.GetClampArea();
+                    }
                 }
             }
             else if(isInCreatureClampArea())

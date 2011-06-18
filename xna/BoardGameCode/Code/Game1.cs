@@ -72,7 +72,7 @@ namespace Board_Game
             TextureManager.Initialize(Content, GraphicsDevice);
 
             mGameState = new GameState(mAI, Content.Load<Sprite>("xml/Selector"));
-            mGameState.Initialize();
+            mGameState.Initialize(Content);
             mAI.Initialize(mGameState);
             mScreen = new Screen(GraphicsDevice, Content);
             mAI.mScreen = mScreen;

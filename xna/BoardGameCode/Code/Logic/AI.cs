@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Board_Game.UI;
 using Board_Game.Util;
+using Board_Game.Creatures;
 
 /*
     AI History: MSW
@@ -131,8 +132,8 @@ namespace Board_Game.Logic
             var lowerI = Rounding.FloorAtMinimum(i - 1, 0);
             var lowerJ = Rounding.FloorAtMinimum(j - 1, 0);
 
-            var upperI = Rounding.CapAtMaximum(i + Creature.mCreatureDesc.width, GameState.GRID_WIDTH - 1);
-            var upperJ = Rounding.CapAtMaximum(j + Creature.mCreatureDesc.height, GameState.GRID_HEIGHT - 1);
+            var upperI = Rounding.CapAtMaximum(i + Creature.mCreatureDesc.SizeInSpaces.X, GameState.GRID_WIDTH - 1);
+            var upperJ = Rounding.CapAtMaximum(j + Creature.mCreatureDesc.SizeInSpaces.Y, GameState.GRID_HEIGHT - 1);
 
             for (var t = lowerI; t <= upperI; ++t)
             {
@@ -146,9 +147,9 @@ namespace Board_Game.Logic
                        && adjacentCreature != CreatureAtIJ)
                     {
                         //check if the Creature in the adjacent square has this as an attackable Creature
-                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.attackablePriorities.Length; priority++)
+                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.AttackPriorities.Length; priority++)
                         {
-                            if (adjacentCreature.mCreatureDesc.attackablePriorities[priority] == Creature.mCreatureDesc.Type)
+                            if (adjacentCreature.mCreatureDesc.AttackPriorities[priority] == Creature.mCreatureDesc.Type)
                             {
                                 return true;
                             }
@@ -175,9 +176,9 @@ namespace Board_Game.Logic
                        && adjacentCreature != CreatureAtIJ)
                     {
                         //check if the Creature in the adjacent square has this as an attackable Creature
-                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.attackablePriorities.Length; priority++)
+                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.AttackPriorities.Length; priority++)
                         {
-                            if (adjacentCreature.mCreatureDesc.attackablePriorities[priority] == Creature.mCreatureDesc.Type)
+                            if (adjacentCreature.mCreatureDesc.AttackPriorities[priority] == Creature.mCreatureDesc.Type)
                             {
                                 return true;
                             }
@@ -241,9 +242,9 @@ namespace Board_Game.Logic
 
             var currentDistance = GetDistanceToCoordinates(target, Creature.GetI(), Creature.GetJ());
 
-            for (int i = CreatureTopBound; i <= CreatureBottomBound; i += Creature.mCreatureDesc.width)
+            for (int i = CreatureTopBound; i <= CreatureBottomBound; i += Creature.mCreatureDesc.SizeInSpaces.X)
             {
-                for (int j = CreatureLeftBound; j <= CreatureRightBound; j += Creature.mCreatureDesc.height)
+                for (int j = CreatureLeftBound; j <= CreatureRightBound; j += Creature.mCreatureDesc.SizeInSpaces.Y)
                 {
                     //staying place is the only invalid move right now
                     if(i != Creature.GetI() || j != Creature.GetJ())
@@ -258,7 +259,7 @@ namespace Board_Game.Logic
                         {
                             if(Creature.CheckColour(i,j))
                             {
-                                var damageScore = GetDestructionScore(Creature, mGrid.mTiles[i, j].occupiedCreature);
+                                var damageScore = GetDestructionScore(Creature, i, j);
                                 if(damageScore == 0)
                                 {
                                     //cant move into the space of an unattackable Creature
@@ -329,17 +330,41 @@ namespace Board_Game.Logic
         /*
             This rates the destruction of the targetCreature given the sourceCreature's priorities
         */
-        public int GetDestructionScore(Creatures.Creature sourceCreature, Creatures.Creature targetCreature)
+        public int GetDestructionScore(Creatures.Creature sourceCreature, int desiredI, int desiredJ)
         {
-            for (var i = 0; i < sourceCreature.mCreatureDesc.attackablePriorities.Length; i++)
+            int score = 0;
+            //check the sqaures we're moving into, if they contain a unit we can't
+            //attack then return zero, otherwise tally up the destruction
+
+            for(int i = 0; i < sourceCreature.mCreatureDesc.SizeInSpaces.Y; i++)
             {
-                if (sourceCreature.mCreatureDesc.attackablePriorities[i] == targetCreature.mCreatureDesc.Type)
+                for (int j = 0; j < sourceCreature.mCreatureDesc.SizeInSpaces.X; j++ )
                 {
-                    return ((int)Creatures.CreatureType.NumCreatureTypes - i) * 200;
+                    if (mGrid.mTiles[i + desiredI, j + desiredJ].Occupied)
+                    {
+                        Creature targetCreature = mGrid.mTiles[i + desiredI, j + desiredJ].occupiedCreature;
+                        if (targetCreature != null)
+                        {
+                            if (sourceCreature.mCreatureDesc.CanAttack(targetCreature.mCreatureDesc.Type))
+                            {
+                                for (var p = 0; p < sourceCreature.mCreatureDesc.AttackPriorities.Length; p++)
+                                {
+                                    if (sourceCreature.mCreatureDesc.AttackPriorities[p] == targetCreature.mCreatureDesc.Type)
+                                    {
+                                        score += ((int)Creatures.CreatureType.NumCreatureTypes - p) * 200;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        }
+                    }
                 }
             }
 
-            return 0;
+            return score;
         }
 
         /*

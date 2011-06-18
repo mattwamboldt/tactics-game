@@ -52,7 +52,7 @@ namespace Board_Game.Creatures
             position = new Vector2(0, 0);
             isSelected = false;
 
-            mSprite = new Sprite(mCreatureDesc.texture, position, Color.White, ScreenDimensions());
+            mSprite = new Sprite(mCreatureDesc.Texture, position, Color.White, ScreenDimensions());
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)

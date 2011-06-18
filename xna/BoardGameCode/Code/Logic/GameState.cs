@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Board_Game.Input;
 using Board_Game.Code.Rendering;
 using Board_Game.Rendering;
+using Microsoft.Xna.Framework.Content;
+using Board_Game.Creatures;
 
 namespace Board_Game.Logic
 {
@@ -60,22 +62,28 @@ namespace Board_Game.Logic
             winner = Side.Neutral;
         }
 
-        public void Initialize()
+        public void Initialize(ContentManager content)
         {
+            CreatureDescription bomberDesc = content.Load<CreatureDescription>("DB/BomberDescription");
+            CreatureDescription fighterDesc = content.Load<CreatureDescription>("DB/FighterDescription");
+            CreatureDescription minerDesc = content.Load<CreatureDescription>("DB/MinerDescription");
+            CreatureDescription grenadierDesc = content.Load<CreatureDescription>("DB/GrenadierDescription");
+            CreatureDescription soldierDesc = content.Load<CreatureDescription>("DB/SoldierDescription");
+
             mRed.CreateCreatures(
-                TextureManager.Get().Find("textures/Creatures/bomber"),
-                TextureManager.Get().Find("textures/Creatures/fighter"),
-                TextureManager.Get().Find("textures/Creatures/soldier"),
-                TextureManager.Get().Find("textures/Creatures/deminer"),
-                TextureManager.Get().Find("textures/Creatures/grenadier")
+                bomberDesc,
+                fighterDesc,
+                minerDesc,
+                grenadierDesc,
+                soldierDesc
             );
 
             mBlue.CreateCreatures(
-                TextureManager.Get().Find("textures/Creatures/bomber"),
-                TextureManager.Get().Find("textures/Creatures/fighter"),
-                TextureManager.Get().Find("textures/Creatures/soldier"),
-                TextureManager.Get().Find("textures/Creatures/deminer"),
-                TextureManager.Get().Find("textures/Creatures/grenadier")
+                bomberDesc,
+                fighterDesc,
+                minerDesc,
+                grenadierDesc,
+                soldierDesc
             );
         }
 

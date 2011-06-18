@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Creatures.CreatureDescription">
+    <CanFly>false</CanFly>
+    <Type>Soldier</Type>
+    <SizeInSpaces>1 1</SizeInSpaces>
+    <TextureName>textures/Creatures/soldier</TextureName>
+    <AttackPriorities>
+      <Item>Granadier</Item>
+      <Item>Miner</Item>
+      <Item>Soldier</Item>
+    </AttackPriorities>
+  </Asset>
+</XnaContent>

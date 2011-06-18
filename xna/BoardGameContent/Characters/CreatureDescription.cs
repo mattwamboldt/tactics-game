@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Board_Game.Code.Rendering;
 
 namespace Board_Game.Creatures
 {
@@ -25,21 +28,80 @@ namespace Board_Game.Creatures
     /// </summary>
     public class CreatureDescription
     {
-        public bool CanFly;
-        public CreatureType Type;
-        public int height;
-        public int width;
-        public string textureName;
-        public Texture2D texture;
+        private bool mCanFly;
+        public bool CanFly
+        {
+            set { mCanFly = value; }
+            get { return mCanFly; }
+        }
+
+        private CreatureType mType;
+        public CreatureType Type
+        {
+            set { mType = value; }
+            get { return mType; }
+        }
+
+        private Point mSize;
+        public Point SizeInSpaces
+        {
+            set { mSize = value; }
+            get { return mSize; }
+        }
+
+        private string mTextureName;
+        public string TextureName
+        {
+            set { mTextureName = value; }
+            get { return mTextureName; }
+        }
 
         //used to determine which enemies this Creature
         //will attack and in what order
-        public CreatureType[] attackablePriorities;
+        private CreatureType[] mAttackPriorities;
+        public CreatureType[] AttackPriorities
+        {
+            set { mAttackPriorities = value; }
+            get { return mAttackPriorities; }
+        }
+        
+        private Texture2D mTexture;
+
+        [ContentSerializerIgnore]
+        public Texture2D Texture
+        {
+            get { return mTexture; }
+        }
+
+        public void LoadTexture()
+        {
+            if (mTexture == null)
+            {
+                mTexture = TextureManager.Get().Find(mTextureName);
+            }
+        }
 
         public bool CanAttack(CreatureType CreatureType)
         {
-            return attackablePriorities != null
-                && attackablePriorities.Contains(CreatureType);
+            return mAttackPriorities != null
+                && mAttackPriorities.Contains(CreatureType);
+        }
+    }
+
+    public class CreatureDescriptionReader : ContentTypeReader<CreatureDescription>
+    {
+        protected override CreatureDescription Read(
+            ContentReader input,
+            CreatureDescription existingInstance)
+        {
+            CreatureDescription desc = new CreatureDescription();
+            desc.CanFly = input.ReadBoolean();
+            desc.Type = input.ReadObject<CreatureType>();
+            desc.SizeInSpaces = input.ReadObject<Point>();
+            desc.TextureName = input.ReadString();
+            desc.AttackPriorities = input.ReadObject<CreatureType[]>();
+            desc.LoadTexture();
+            return desc;
         }
     }
 }

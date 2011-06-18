@@ -100,8 +100,7 @@
     <Compile Include="Code\Units\Grenadier.cs" />
     <Compile Include="Code\Units\GroundUnit.cs" />
     <Compile Include="Code\Units\Soldier.cs" />
-    <Compile Include="Code\Units\Unit.cs" />
-    <Compile Include="Code\Units\UnitDexription.cs" />
+    <Compile Include="Code\Units\Creature.cs" />
     <Compile Include="Code\Util\Rounding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Program.cs" />

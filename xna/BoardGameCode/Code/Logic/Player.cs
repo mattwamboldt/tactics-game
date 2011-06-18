@@ -34,75 +34,13 @@ namespace Board_Game.Logic
         }
 
         public void CreateCreatures(
-            Texture2D bomberTexture,
-            Texture2D fighterTexture,
-            Texture2D soldierTexture,
-            Texture2D deminerTexture,
-            Texture2D grenadierTexture
+            CreatureDescription bomberDesc,
+            CreatureDescription fighterDesc,
+            CreatureDescription minerDesc,
+            CreatureDescription grenadierDesc,
+            CreatureDescription soldierDesc
             )
         {
-            //TODO: Move to content pipeline
-            CreatureDescription bomberDesc = new CreatureDescription();
-            bomberDesc.CanFly = true;
-            bomberDesc.height = 2;
-            bomberDesc.width = 2;
-            bomberDesc.Type = CreatureType.Bomber;
-            bomberDesc.attackablePriorities = new CreatureType[] {
-                CreatureType.Granadier,
-                CreatureType.Miner,
-                CreatureType.Soldier
-            };
-
-            bomberDesc.texture = bomberTexture;
-
-            CreatureDescription fighterDesc = new CreatureDescription();
-            fighterDesc.CanFly = true;
-            fighterDesc.height = 2;
-            fighterDesc.width = 2;
-            fighterDesc.Type = CreatureType.Fighter;
-            fighterDesc.attackablePriorities = new CreatureType[] {
-                CreatureType.Bomber
-            };
-
-            fighterDesc.texture = fighterTexture;
-
-            CreatureDescription minerDesc = new CreatureDescription();
-            minerDesc.CanFly = false;
-            minerDesc.height = 1;
-            minerDesc.width = 1;
-            minerDesc.Type = CreatureType.Miner;
-            minerDesc.attackablePriorities = null;
-
-            minerDesc.texture = deminerTexture;
-
-            CreatureDescription grenadierDesc = new CreatureDescription();
-            grenadierDesc.CanFly = false;
-            grenadierDesc.height = 1;
-            grenadierDesc.width = 1;
-            grenadierDesc.Type = CreatureType.Granadier;
-            grenadierDesc.attackablePriorities = new CreatureType[] {
-                CreatureType.Bomber,
-                CreatureType.Granadier,
-                CreatureType.Fighter,
-                CreatureType.Miner,
-                CreatureType.Soldier
-            };
-
-            grenadierDesc.texture = grenadierTexture;
-
-            CreatureDescription soldierDesc = new CreatureDescription();
-            soldierDesc.CanFly = false;
-            soldierDesc.height = 1;
-            soldierDesc.width = 1;
-            soldierDesc.Type = CreatureType.Soldier;
-            soldierDesc.attackablePriorities = new CreatureType[] {
-                CreatureType.Granadier,
-                CreatureType.Miner,
-                CreatureType.Soldier
-            };
-
-            soldierDesc.texture = soldierTexture;
-
             mCreatures = new List<Creature>(GameState.GRID_WIDTH / 2 + GameState.GRID_WIDTH * 2);
 
             for( int i = 0; i < GameState.GRID_WIDTH/4; ++i )
