@@ -15,70 +15,6 @@
           <Color>FF000000</Color>
           <Children>
             <Item Type="Board_Game.UI.Image">
-                <Name>redBGEdge</Name>
-                <Position>19 339</Position>
-                <Size>102 22</Size>
-                <Visible>true</Visible>
-                <Color>FFFFFFFF</Color>
-                <Children>
-                  <Item Type="Board_Game.UI.Image">
-                      <Name>redBG</Name>
-                      <Position>1 1</Position>
-                      <Size>100 20</Size>
-                      <Visible>true</Visible>
-                      <Color>FFFF0000</Color>
-                      <Children>
-                        <Item Type="Board_Game.UI.Label">
-                            <Name>redText</Name>
-                            <Position>0 0</Position>
-                            <Size>0 0</Size>
-                            <Visible>true</Visible>
-                            <Color>FFFFFFFF</Color>
-                            <Children></Children>
-                            <Font>Button</Font>
-                            <Text>DUMMY</Text>
-                            <WrapWidth>0</WrapWidth>
-                            <Centered>true</Centered>
-                        </Item>
-                      </Children>
-                      <TextureName>RAW</TextureName>
-                  </Item>
-                </Children>
-                <TextureName>RAW</TextureName>
-            </Item>
-            <Item Type="Board_Game.UI.Image">
-              <Name>blueBGEdge</Name>
-              <Position>219 339</Position>
-              <Size>102 22</Size>
-              <Visible>true</Visible>
-              <Color>FFFFFFFF</Color>
-              <Children>
-                <Item Type="Board_Game.UI.Image">
-                  <Name>blueBG</Name>
-                  <Position>1 1</Position>
-                  <Size>100 20</Size>
-                  <Visible>true</Visible>
-                  <Color>FF0000FF</Color>
-                  <Children>
-                    <Item Type="Board_Game.UI.Label">
-                      <Name>blueText</Name>
-                      <Position>0 0</Position>
-                      <Size>0 0</Size>
-                      <Visible>true</Visible>
-                      <Color>FFFFFFFF</Color>
-                      <Children></Children>
-                      <Font>Button</Font>
-                      <Text>DUMMY</Text>
-                      <WrapWidth>0</WrapWidth>
-                      <Centered>true</Centered>
-                    </Item>
-                  </Children>
-                  <TextureName>RAW</TextureName>
-                </Item>
-              </Children>
-              <TextureName>RAW</TextureName>
-            </Item>
-            <Item Type="Board_Game.UI.Image">
               <Name>victorBGEdge</Name>
               <Position>-2 -2</Position>
               <Size>104 34</Size>
@@ -114,8 +50,8 @@
       </Item>
       <Item Type="Board_Game.UI.Image">
         <Name>tutorialBackground</Name>
-        <Position>30 420</Position>
-        <Size>440 150</Size>
+        <Position>30 445</Position>
+        <Size>440 125</Size>
         <Visible>true</Visible>
         <Color>FF000000</Color>
         <Children>
@@ -127,11 +63,75 @@
             <Color>FFFFFFFF</Color>
             <Children></Children>
             <Font>Tutorial</Font>
-            <Text>The Objective is to destroy all opponent Units, or take control of all Mines (squares the are around a diamond). The Miners convert a neutral(grey) or enemy mine to your colour, at which point you can move your other units safely across.
+            <Text>Destroy all opponent units, or take control of all mines (squares that are around a diamond). Miners convert neutral or enemy mines to your colour, making them safe to move across.
 
-Flying unit will not be destroyed by mines.</Text>
+Flying units will not be destroyed by mines.</Text>
             <WrapWidth>430</WrapWidth>
             <Centered>false</Centered>
+          </Item>
+          <Item Type="Board_Game.UI.Image">
+            <Name>redBGEdge</Name>
+            <Position>470 0</Position>
+            <Size>102 22</Size>
+            <Visible>true</Visible>
+            <Color>FFFFFFFF</Color>
+            <Children>
+              <Item Type="Board_Game.UI.Image">
+                <Name>redBG</Name>
+                <Position>1 1</Position>
+                <Size>100 20</Size>
+                <Visible>true</Visible>
+                <Color>FFFF0000</Color>
+                <Children>
+                  <Item Type="Board_Game.UI.Label">
+                    <Name>redText</Name>
+                    <Position>0 0</Position>
+                    <Size>0 0</Size>
+                    <Visible>true</Visible>
+                    <Color>FFFFFFFF</Color>
+                    <Children></Children>
+                    <Font>Button</Font>
+                    <Text>DUMMY</Text>
+                    <WrapWidth>0</WrapWidth>
+                    <Centered>true</Centered>
+                  </Item>
+                </Children>
+                <TextureName>RAW</TextureName>
+              </Item>
+            </Children>
+            <TextureName>RAW</TextureName>
+          </Item>
+          <Item Type="Board_Game.UI.Image">
+            <Name>blueBGEdge</Name>
+            <Position>470 28</Position>
+            <Size>102 22</Size>
+            <Visible>true</Visible>
+            <Color>FFFFFFFF</Color>
+            <Children>
+              <Item Type="Board_Game.UI.Image">
+                <Name>blueBG</Name>
+                <Position>1 1</Position>
+                <Size>100 20</Size>
+                <Visible>true</Visible>
+                <Color>FF0000FF</Color>
+                <Children>
+                  <Item Type="Board_Game.UI.Label">
+                    <Name>blueText</Name>
+                    <Position>0 0</Position>
+                    <Size>0 0</Size>
+                    <Visible>true</Visible>
+                    <Color>FFFFFFFF</Color>
+                    <Children></Children>
+                    <Font>Button</Font>
+                    <Text>DUMMY</Text>
+                    <WrapWidth>0</WrapWidth>
+                    <Centered>true</Centered>
+                  </Item>
+                </Children>
+                <TextureName>RAW</TextureName>
+              </Item>
+            </Children>
+            <TextureName>RAW</TextureName>
           </Item>
         </Children>
         <TextureName>RAW</TextureName>

@@ -35,7 +35,7 @@ namespace Board_Game.UI
                 redString = "AI";
             }
 
-            Label redText = (Label)Root.GetNode("gridBackground.redBGEdge.redBG.redText");
+            Label redText = (Label)Root.GetNode("tutorialBackground.redBGEdge.redBG.redText");
             redText.Text = redString;
 
             if (!gameState.Blue.mIsHuman)
@@ -43,7 +43,7 @@ namespace Board_Game.UI
                 blueString = "AI";
             }
 
-            Label blueText = (Label)Root.GetNode("gridBackground.blueBGEdge.blueBG.blueText");
+            Label blueText = (Label)Root.GetNode("tutorialBackground.blueBGEdge.blueBG.blueText");
             blueText.Text = blueString;
 
             //shows and hides the info box

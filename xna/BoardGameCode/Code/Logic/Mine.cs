@@ -10,8 +10,6 @@ namespace Board_Game.Logic
 {
     class Mine
     {
-        public const float MINE_SIZE = 50;
-
         public Side side;
 
         private Sprite mSprite;
@@ -23,9 +21,9 @@ namespace Board_Game.Logic
             position = new Vector2(x, y);
             mSprite = new Sprite(
                 inTexture,
-                new Vector2(position.X * MINE_SIZE, position.Y * MINE_SIZE),
+                new Vector2(position.X * Tile.TILE_SIZE * 2, position.Y * Tile.TILE_SIZE * 2),
                 Color.White,
-                new Vector2(MINE_SIZE, MINE_SIZE));
+                new Vector2(Tile.TILE_SIZE * 2, Tile.TILE_SIZE * 2));
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)

@@ -15,7 +15,7 @@ namespace Board_Game.Logic
 
         public GameGrid(int width, int height, Texture2D tileTexture, Texture2D mineTexture)
         {
-            position = new Vector2(20, 20);
+            position = new Vector2(0, 0);
             mTiles = new Tile[width, height];
             for (int i = 0; i < width; ++i)
             {
