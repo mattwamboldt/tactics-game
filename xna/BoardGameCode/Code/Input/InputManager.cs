@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Board_Game.Input;
+using Microsoft.Xna.Framework;
 
 namespace Board_Game.Input
 {
@@ -21,13 +22,29 @@ namespace Board_Game.Input
         private InputManager(InputMap map)
         {
             mInputMap = map;
-            currentState = mInputMap.GetInGameState(Keyboard.GetState());
+            GamePadState padState = GamePad.GetState(PlayerIndex.One);
+            if (padState.IsConnected)
+            {
+                currentState = mInputMap.GetInGameState(padState);
+            }
+            else
+            {
+                currentState = mInputMap.GetInGameState(Keyboard.GetState());
+            }
         }
 
         public void Update()
         {
             previousState = currentState;
-            currentState = mInputMap.GetInGameState(Keyboard.GetState());
+            GamePadState padState = GamePad.GetState(PlayerIndex.One);
+            if (padState.IsConnected)
+            {
+                currentState = mInputMap.GetInGameState(padState);
+            }
+            else
+            {
+                currentState = mInputMap.GetInGameState(Keyboard.GetState());
+            }
         }
 
         public bool isTriggered(Button button)

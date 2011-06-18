@@ -15,7 +15,20 @@ namespace Board_Game.Logic
 {
     class Selector
     {
-        public Side mSide;
+        private Side mSide;
+        public Side Side 
+        {
+            get { return mSide; }
+            set
+            {
+                if (mSide != value)
+                {
+                    mSide = value;
+                    Deselect();
+                }
+            }
+        }
+
         public GameGrid mGridRef;
         public GameState mGameState;
 
@@ -92,6 +105,15 @@ namespace Board_Game.Logic
             }
         }
 
+        private void Deselect()
+        {
+            if (selectedUnit != null)
+            {
+                selectedUnit.isSelected = false;
+                selectedUnit = null;
+            }
+        }
+
         private void SelectUnit()
         {
             if (mGridRef.mTiles[(int)position.Y, (int)position.X].Occupied)
@@ -127,8 +149,7 @@ namespace Board_Game.Logic
                 //toggle selection of the current unit
                 if (selectedUnit == unit)
                 {
-                    selectedUnit = null;
-                    unit.isSelected = false;
+                    Deselect();
                 }
                 //destroy units in your move radius
                 else if (isInUnitClampArea() && selectedUnit.CheckColour(i, j))

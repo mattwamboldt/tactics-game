@@ -55,7 +55,7 @@ namespace Board_Game.Logic
             mCurrentPlayer = mRed;
 
             mSelector = new Selector(selectorSprite, mGrid, this);
-            mSelector.mSide = Side.Red;
+            mSelector.Side = Side.Red;
 
             winner = Side.Neutral;
         }
@@ -125,7 +125,7 @@ namespace Board_Game.Logic
                 mCurrentPlayer = mRed;
             }
 
-            mSelector.mSide = mCurrentPlayer.mSide;
+            mSelector.Side = mCurrentPlayer.mSide;
         }
 
         //determines and sets the winner if a side has won by capturing all the mines.
