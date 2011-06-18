@@ -14,17 +14,17 @@ namespace Board_Game.Logic
         public const float TILE_SIZE = 25;
 
         public Side side;
-        public Units.Unit occupiedUnit;
+        public Creatures.Creature occupiedCreature;
         public Mine mine;
 
-        public bool Occupied { get { return occupiedUnit != null; } }
+        public bool Occupied { get { return occupiedCreature != null; } }
 
         private Sprite mSprite;
 
         public Tile(Texture2D inTexture, int x, int y)
         {
             side = Side.Neutral;
-            occupiedUnit = null;
+            occupiedCreature = null;
             mine = null;
             mSprite = new Sprite(
                 inTexture,

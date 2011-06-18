@@ -24,7 +24,7 @@ namespace Board_Game.UI
 
             mFontCollection.Add("Button", content.Load<SpriteFont>("fonts/Button"));
             mFontCollection.Add("Tutorial", content.Load<SpriteFont>("fonts/Tutorial"));
-            mFontCollection.Add("UnitName", content.Load<SpriteFont>("fonts/UnitName"));
+            mFontCollection.Add("CreatureName", content.Load<SpriteFont>("fonts/CreatureName"));
         }
 
         public SpriteFont Find(string fontName)

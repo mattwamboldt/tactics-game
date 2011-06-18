@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
-    class Deminer : GroundUnit
+    class Deminer : GroundCreature
     {
-        public Deminer(GameGrid grid, AI AIRef, UnitDescription unitDesc)
-            : base(grid, AIRef, unitDesc)
+        public Deminer(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
+            : base(grid, AIRef, CreatureDesc)
         {
         }
 
@@ -20,9 +20,9 @@ namespace Board_Game.Units
             return grid.mTiles[i, j].side != side && !grid.mTiles[i, j].Occupied;
         }
 
-        public override void RemoveUnits(int newLocationI, int newLocationJ)
+        public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
-            mAIRef.State.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
+            mAIRef.State.RemoveCreature(grid.mTiles[newLocationI, newLocationJ].occupiedCreature);
         }
 
         //sides don't matter to miners since they convert

@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Board_Game.Units;
+using Board_Game.Creatures;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 namespace Board_Game.Logic
 {
     /// <summary>
-    /// This defines a player, each player has a set of units and a reference
-    /// to the board. This pulls unit creation away from the AI, and makes it possible
-    /// for each side to have a different number and types of units. Even the possibility of
+    /// This defines a player, each player has a set of Creatures and a reference
+    /// to the board. This pulls Creature creation away from the AI, and makes it possible
+    /// for each side to have a different number and types of Creatures. Even the possibility of
     /// differently tuned AI's to face off for testing.
     /// </summary>
     class Player
     {
         public bool mIsHuman;
         public Side mSide;
-        private List<Unit> mUnits;
+        private List<Creature> mCreatures;
         private GameGrid mGrid;
         public AI mAI;
 
-        public List<Unit> Units { get { return mUnits; } }
+        public List<Creature> Creatures { get { return mCreatures; } }
 
         public Player(bool isHuman, Side side, AI AIref)
         {
@@ -33,7 +33,7 @@ namespace Board_Game.Logic
             mGrid = AIref.mGrid;
         }
 
-        public void CreateUnits(
+        public void CreateCreatures(
             Texture2D bomberTexture,
             Texture2D fighterTexture,
             Texture2D soldierTexture,
@@ -42,68 +42,68 @@ namespace Board_Game.Logic
             )
         {
             //TODO: Move to content pipeline
-            UnitDescription bomberDesc = new UnitDescription();
+            CreatureDescription bomberDesc = new CreatureDescription();
             bomberDesc.CanFly = true;
             bomberDesc.height = 2;
             bomberDesc.width = 2;
-            bomberDesc.Type = UnitType.Bomber;
-            bomberDesc.attackablePriorities = new UnitType[] {
-                UnitType.Granadier,
-                UnitType.Miner,
-                UnitType.Soldier
+            bomberDesc.Type = CreatureType.Bomber;
+            bomberDesc.attackablePriorities = new CreatureType[] {
+                CreatureType.Granadier,
+                CreatureType.Miner,
+                CreatureType.Soldier
             };
 
             bomberDesc.texture = bomberTexture;
 
-            UnitDescription fighterDesc = new UnitDescription();
+            CreatureDescription fighterDesc = new CreatureDescription();
             fighterDesc.CanFly = true;
             fighterDesc.height = 2;
             fighterDesc.width = 2;
-            fighterDesc.Type = UnitType.Fighter;
-            fighterDesc.attackablePriorities = new UnitType[] {
-                UnitType.Bomber
+            fighterDesc.Type = CreatureType.Fighter;
+            fighterDesc.attackablePriorities = new CreatureType[] {
+                CreatureType.Bomber
             };
 
             fighterDesc.texture = fighterTexture;
 
-            UnitDescription minerDesc = new UnitDescription();
+            CreatureDescription minerDesc = new CreatureDescription();
             minerDesc.CanFly = false;
             minerDesc.height = 1;
             minerDesc.width = 1;
-            minerDesc.Type = UnitType.Miner;
+            minerDesc.Type = CreatureType.Miner;
             minerDesc.attackablePriorities = null;
 
             minerDesc.texture = deminerTexture;
 
-            UnitDescription grenadierDesc = new UnitDescription();
+            CreatureDescription grenadierDesc = new CreatureDescription();
             grenadierDesc.CanFly = false;
             grenadierDesc.height = 1;
             grenadierDesc.width = 1;
-            grenadierDesc.Type = UnitType.Granadier;
-            grenadierDesc.attackablePriorities = new UnitType[] {
-                UnitType.Bomber,
-                UnitType.Granadier,
-                UnitType.Fighter,
-                UnitType.Miner,
-                UnitType.Soldier
+            grenadierDesc.Type = CreatureType.Granadier;
+            grenadierDesc.attackablePriorities = new CreatureType[] {
+                CreatureType.Bomber,
+                CreatureType.Granadier,
+                CreatureType.Fighter,
+                CreatureType.Miner,
+                CreatureType.Soldier
             };
 
             grenadierDesc.texture = grenadierTexture;
 
-            UnitDescription soldierDesc = new UnitDescription();
+            CreatureDescription soldierDesc = new CreatureDescription();
             soldierDesc.CanFly = false;
             soldierDesc.height = 1;
             soldierDesc.width = 1;
-            soldierDesc.Type = UnitType.Soldier;
-            soldierDesc.attackablePriorities = new UnitType[] {
-                UnitType.Granadier,
-                UnitType.Miner,
-                UnitType.Soldier
+            soldierDesc.Type = CreatureType.Soldier;
+            soldierDesc.attackablePriorities = new CreatureType[] {
+                CreatureType.Granadier,
+                CreatureType.Miner,
+                CreatureType.Soldier
             };
 
             soldierDesc.texture = soldierTexture;
 
-            mUnits = new List<Unit>(GameState.GRID_WIDTH / 2 + GameState.GRID_WIDTH * 2);
+            mCreatures = new List<Creature>(GameState.GRID_WIDTH / 2 + GameState.GRID_WIDTH * 2);
 
             for( int i = 0; i < GameState.GRID_WIDTH/4; ++i )
             {
@@ -124,14 +124,14 @@ namespace Board_Game.Logic
                     fighter.SetLocation(0, (i * 4) + 2);
                 }
 
-                mUnits.Add(bomber);
-                mUnits.Add(fighter);
+                mCreatures.Add(bomber);
+                mCreatures.Add(fighter);
             }
 
             for (int i = 0; i < GameState.GRID_WIDTH / 2; ++i)
             {
-                Units.Deminer miner = new Deminer(mGrid, mAI, minerDesc);
-                Units.Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierDesc);
+                Creatures.Deminer miner = new Deminer(mGrid, mAI, minerDesc);
+                Creatures.Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierDesc);
 
                 miner.side = mSide;
                 grenadier.side = mSide;
@@ -147,13 +147,13 @@ namespace Board_Game.Logic
                     grenadier.SetLocation(2, (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
                 }
 
-                mUnits.Add(miner);
-                mUnits.Add(grenadier);
+                mCreatures.Add(miner);
+                mCreatures.Add(grenadier);
             }
 
             for( var i = 0; i < GameState.GRID_WIDTH; ++i )
             {
-                Units.Soldier soldier = new Soldier(mGrid, mAI, soldierDesc);
+                Creatures.Soldier soldier = new Soldier(mGrid, mAI, soldierDesc);
                 soldier.side = mSide;
 
                 if (mSide == Side.Red)
@@ -165,21 +165,21 @@ namespace Board_Game.Logic
                     soldier.SetLocation(3, i);
                 }
 
-                mUnits.Add(soldier);
+                mCreatures.Add(soldier);
             }
         }
 
-        public void RemoveUnit(Units.Unit unit)
+        public void RemoveCreature(Creatures.Creature Creature)
         {
-            mUnits.Remove(unit);
-            unit = null;
+            mCreatures.Remove(Creature);
+            Creature = null;
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
         {
-            foreach (Unit unit in mUnits)
+            foreach (Creature Creature in mCreatures)
             {
-                unit.Render(spriteBatch, parentLocation);
+                Creature.Render(spriteBatch, parentLocation);
             }
         }
     }

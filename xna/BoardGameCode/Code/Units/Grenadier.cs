@@ -5,12 +5,12 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Board_Game.Logic;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
-    class Grenadier : GroundUnit
+    class Grenadier : GroundCreature
     {
-        public Grenadier(GameGrid grid, AI AIRef, UnitDescription unitDesc)
-            : base(grid, AIRef, unitDesc)
+        public Grenadier(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
+            : base(grid, AIRef, CreatureDesc)
         {
         }
 
@@ -19,25 +19,25 @@ namespace Board_Game.Units
 	        return grid.mTiles[i, j].side != side;
         }
 
-        public override void RemoveUnits(int newLocationI, int newLocationJ)
+        public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
-	        var unit = grid.mTiles[newLocationI, newLocationJ].occupiedUnit;
-            int UnitLocationI = (int)((unit.position.Y - unit.position.Y % unit.ScreenDimensions().Y) / Tile.TILE_SIZE);
-            int UnitLocationJ = (int)((unit.position.X - unit.position.X % unit.ScreenDimensions().X) / Tile.TILE_SIZE);
+	        var Creature = grid.mTiles[newLocationI, newLocationJ].occupiedCreature;
+            int CreatureLocationI = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
+            int CreatureLocationJ = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
 
-            if (unit.mUnitDesc.CanFly)
+            if (Creature.mCreatureDesc.CanFly)
 	        {
 		        for(var i = 0; i < 2; ++i)
 		        {
 			        for(var j = 0; j < 2; ++j)
 			        {
-                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].side = Side.Neutral;
-                        grid.mTiles[UnitLocationI + i, UnitLocationJ + j].occupiedUnit = null;
+                        grid.mTiles[CreatureLocationI + i, CreatureLocationJ + j].side = Side.Neutral;
+                        grid.mTiles[CreatureLocationI + i, CreatureLocationJ + j].occupiedCreature = null;
 			        }
 		        }
 	        }
 
-	        mAIRef.State.RemoveUnit(unit);
+	        mAIRef.State.RemoveCreature(Creature);
         }
     }
 }

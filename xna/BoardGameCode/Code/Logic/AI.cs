@@ -12,12 +12,12 @@ using Board_Game.Util;
     AI History: MSW
     REV 1(COMPLETED)
     We're gonna make this horribly stupid at first
-    It's gonna randomly pick a unit and move it
+    It's gonna randomly pick a Creature and move it
     to a random location, and it'll attempt to do so
     until it actually makes a move.
 
     REV 2(COMPLETED)
-    Adding in a function to check for units that are
+    Adding in a function to check for Creatures that are
     in attack range, and taking them out.
 
     REV 3(COMPLETED)
@@ -32,7 +32,7 @@ using Board_Game.Util;
     So the first step to this would be to find a random
     target and move in their direction. To do this but
     keep some randomness, we'll change the pickrandom
-    function to pick an enemy unit and move in their direction.
+    function to pick an enemy Creature and move in their direction.
     Basic pathfinding here we come.
 
     REV 5(Completed)
@@ -42,15 +42,15 @@ using Board_Game.Util;
 
     REV 6(Completed)
     So now we want to improve the AI's aiming, by going through
-    all the units that our ranomly chosen unit can attack, and finding
+    all the Creatures that our ranomly chosen Creature can attack, and finding
     the one that has the closest target to attack.
 
     REV 7(Completed)
     The deminers are very stupid with no goals. they should be moving
-    towards the nearest mines just as other units move towards their prey.
+    towards the nearest mines just as other Creatures move towards their prey.
 
     REV 8(Completed)
-    Reworking to use a global array of arrays to store units so we
+    Reworking to use a global array of arrays to store Creatures so we
     can iterate over them more effectively. Also changing to numbers
     from strings to allow easier implementation of multiplayer.
 
@@ -58,7 +58,7 @@ using Board_Game.Util;
     Add Multiple play modes. player vs player, player vs ai, and ai vs ai.
 
     REV 10(Completed)
-    Create an array of priorities for each unit type to differentiate
+    Create an array of priorities for each Creature type to differentiate
     what they go after.
 
     REV 11(Completed)
@@ -68,21 +68,21 @@ using Board_Game.Util;
     instead of distance. This is the start of weight based ai.
 
     REV 12(Completed)
-    Remove attack attackables function. Add a function to return the value of each unit destroyed
-    by making a move based on the unit priorities and add them together. Then add this to
-    the previous score. Tune and enjoy sometimes units not getting destroyed when they are adjacent.
+    Remove attack attackables function. Add a function to return the value of each Creature destroyed
+    by making a move based on the Creature priorities and add them together. Then add this to
+    the previous score. Tune and enjoy sometimes Creatures not getting destroyed when they are adjacent.
 
     REV 13(Completed)
-    Add function to check if a unit in a location is vulnerable to attack. Use this to negatively
-    impact the score of moving to that location. Tune and enjoy units no longer commiting suicide.
+    Add function to check if a Creature in a location is vulnerable to attack. Use this to negatively
+    impact the score of moving to that location. Tune and enjoy Creatures no longer commiting suicide.
 
     REV 14
-    Add loops to find the unit in the entire army with the best scoring move, and move that unit.
+    Add loops to find the Creature in the entire army with the best scoring move, and move that Creature.
     Tune and this means the opposition will start to act like they are more than just one random
-    unit on the feild. We may have to go with random from the top five to keep it from being too predictable.
+    Creature on the feild. We may have to go with random from the top five to keep it from being too predictable.
 
     REV 15
-    Add shortest path function, and use that to get the distance. Also use that to determine if a unit 
+    Add shortest path function, and use that to get the distance. Also use that to determine if a Creature 
     is still trapped and negatively effect score. This may prove too crazy. If done it will be the last
     large ai change until someone pro comes along.
 */
@@ -103,7 +103,7 @@ namespace Board_Game.Logic
         const int TURN_TIME = 250;
         int elapsedTime = 0;
 
-        public int[] unitWorths = { 8, 7, 2, 6, 4 };
+        public int[] CreatureWorths = { 8, 7, 2, 6, 4 };
         private Random random;
 
         public GameGrid mGrid;
@@ -119,36 +119,36 @@ namespace Board_Game.Logic
             mGameState = gameState;
         }
 
-        //TODO: Move to the Unit
+        //TODO: Move to the Creature
         /*
-            This tells us if a square is adjacent to units that will destroy the passed in units.
+            This tells us if a square is adjacent to Creatures that will destroy the passed in Creatures.
         */
-        public bool IsDeathTrap(int i, int j, Units.Unit Unit)
+        public bool IsDeathTrap(int i, int j, Creatures.Creature Creature)
         {
-            var unitAtIJ = mGrid.mTiles[i, j].occupiedUnit;
+            var CreatureAtIJ = mGrid.mTiles[i, j].occupiedCreature;
 
-            //first loop for adjacent ground units
+            //first loop for adjacent ground Creatures
             var lowerI = Rounding.FloorAtMinimum(i - 1, 0);
             var lowerJ = Rounding.FloorAtMinimum(j - 1, 0);
 
-            var upperI = Rounding.CapAtMaximum(i + Unit.mUnitDesc.width, GameState.GRID_WIDTH - 1);
-            var upperJ = Rounding.CapAtMaximum(j + Unit.mUnitDesc.height, GameState.GRID_HEIGHT - 1);
+            var upperI = Rounding.CapAtMaximum(i + Creature.mCreatureDesc.width, GameState.GRID_WIDTH - 1);
+            var upperJ = Rounding.CapAtMaximum(j + Creature.mCreatureDesc.height, GameState.GRID_HEIGHT - 1);
 
             for (var t = lowerI; t <= upperI; ++t)
             {
                 for (var v = lowerJ; v <= upperJ; ++v)
                 {
-                    var adjacentUnit = mGrid.mTiles[t, v].occupiedUnit;
-                    if (adjacentUnit != null
-                       && adjacentUnit.mUnitDesc.CanFly == false
-                       && adjacentUnit.mUnitDesc.Type != Units.UnitType.Miner
-                       && adjacentUnit.side != Unit.side
-                       && adjacentUnit != unitAtIJ)
+                    var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
+                    if (adjacentCreature != null
+                       && adjacentCreature.mCreatureDesc.CanFly == false
+                       && adjacentCreature.mCreatureDesc.Type != Creatures.CreatureType.Miner
+                       && adjacentCreature.side != Creature.side
+                       && adjacentCreature != CreatureAtIJ)
                     {
-                        //check if the unit in the adjacent square has this as an attackable unit
-                        for (var priority = 0; priority < adjacentUnit.mUnitDesc.attackablePriorities.Length; priority++)
+                        //check if the Creature in the adjacent square has this as an attackable Creature
+                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.attackablePriorities.Length; priority++)
                         {
-                            if (adjacentUnit.mUnitDesc.attackablePriorities[priority] == Unit.mUnitDesc.Type)
+                            if (adjacentCreature.mCreatureDesc.attackablePriorities[priority] == Creature.mCreatureDesc.Type)
                             {
                                 return true;
                             }
@@ -157,7 +157,7 @@ namespace Board_Game.Logic
                 }
             }
 
-            //then loop for surrounding air units
+            //then loop for surrounding air Creatures
             lowerI = Rounding.MakeEven(Rounding.FloorAtMinimum(i - 2, 0));
             upperI = Rounding.MakeEven(Rounding.CapAtMaximum(i + 2, GameState.GRID_WIDTH - 2));
 
@@ -168,16 +168,16 @@ namespace Board_Game.Logic
             {
                 for (var v = lowerJ; v <= upperJ; v += 2)
                 {
-                    var adjacentUnit = mGrid.mTiles[t, v].occupiedUnit;
-                    if (adjacentUnit != null
-                       && adjacentUnit.mUnitDesc.CanFly
-                       && adjacentUnit.side != Unit.side
-                       && adjacentUnit != unitAtIJ)
+                    var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
+                    if (adjacentCreature != null
+                       && adjacentCreature.mCreatureDesc.CanFly
+                       && adjacentCreature.side != Creature.side
+                       && adjacentCreature != CreatureAtIJ)
                     {
-                        //check if the unit in the adjacent square has this as an attackable unit
-                        for (var priority = 0; priority < adjacentUnit.mUnitDesc.attackablePriorities.Length; priority++)
+                        //check if the Creature in the adjacent square has this as an attackable Creature
+                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.attackablePriorities.Length; priority++)
                         {
-                            if (adjacentUnit.mUnitDesc.attackablePriorities[priority] == Unit.mUnitDesc.Type)
+                            if (adjacentCreature.mCreatureDesc.attackablePriorities[priority] == Creature.mCreatureDesc.Type)
                             {
                                 return true;
                             }
@@ -192,7 +192,7 @@ namespace Board_Game.Logic
 
         //TODO: could be moved to a gamestate class
         //This function Checks to see if mines need to be changed to teh given colour
-        //It also checks for any units that are on mines, that shoudl be deleted
+        //It also checks for any Creatures that are on mines, that shoudl be deleted
         public void CheckMines(Side colour)
         {
             foreach(Mine mine in mGrid.mMines)
@@ -205,17 +205,17 @@ namespace Board_Game.Logic
                         var square = mGrid.mTiles[(int)mine.position.Y * 2 + t, (int)mine.position.X * 2 + u];
                         if (square.Occupied)
                         {
-                            if (square.occupiedUnit.mUnitDesc.Type == Units.UnitType.Miner
+                            if (square.occupiedCreature.mCreatureDesc.Type == Creatures.CreatureType.Miner
                                 && square.side == colour)
                             {
                                 mine.side = colour;
                             }
-                            else if (square.occupiedUnit.side != mine.side
-                                    && square.occupiedUnit.mUnitDesc.Type != Units.UnitType.Miner
-                                    && square.occupiedUnit.mUnitDesc.CanFly == false)
+                            else if (square.occupiedCreature.side != mine.side
+                                    && square.occupiedCreature.mCreatureDesc.Type != Creatures.CreatureType.Miner
+                                    && square.occupiedCreature.mCreatureDesc.CanFly == false)
                             {
-                                State.RemoveUnit(square.occupiedUnit);
-                                square.occupiedUnit = null;
+                                State.RemoveCreature(square.occupiedCreature);
+                                square.occupiedCreature = null;
                                 square.side = Side.Neutral;
                             }
                         }
@@ -224,44 +224,44 @@ namespace Board_Game.Logic
             }
         }
 
-        //TODO: could be moved to the unit class
+        //TODO: could be moved to the Creature class
         /*
-            This retreives all the locations the unit can move to.  
+            This retreives all the locations the Creature can move to.  
         */
-        private Stack<Move> GetMoveList(Units.Unit unit, Vector2 target)
+        private Stack<Move> GetMoveList(Creatures.Creature Creature, Vector2 target)
         {
-            int randomUnitBonus = random.Next(0,5);
+            int randomCreatureBonus = random.Next(0,5);
 
             Stack<Move> moveList = new Stack<Move>();
-            Units.ClampArea clamp = unit.GetClampArea();
-            int UnitLeftBound = (int)((clamp.leftCut - clamp.leftCut % unit.ScreenDimensions().X) / Tile.TILE_SIZE);
-            int UnitRightBound = (int)((clamp.rightCut - clamp.rightCut % unit.ScreenDimensions().X) / Tile.TILE_SIZE);
-            int UnitTopBound = (int)((clamp.topCut - clamp.topCut % unit.ScreenDimensions().Y) / Tile.TILE_SIZE);
-            int UnitBottomBound = (int)((clamp.bottomCut - clamp.bottomCut % unit.ScreenDimensions().Y) / Tile.TILE_SIZE);
+            Creatures.ClampArea clamp = Creature.GetClampArea();
+            int CreatureLeftBound = (int)((clamp.leftCut - clamp.leftCut % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
+            int CreatureRightBound = (int)((clamp.rightCut - clamp.rightCut % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
+            int CreatureTopBound = (int)((clamp.topCut - clamp.topCut % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
+            int CreatureBottomBound = (int)((clamp.bottomCut - clamp.bottomCut % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
 
-            var currentDistance = GetDistanceToCoordinates(target, unit.GetI(), unit.GetJ());
+            var currentDistance = GetDistanceToCoordinates(target, Creature.GetI(), Creature.GetJ());
 
-            for (int i = UnitTopBound; i <= UnitBottomBound; i += unit.mUnitDesc.width)
+            for (int i = CreatureTopBound; i <= CreatureBottomBound; i += Creature.mCreatureDesc.width)
             {
-                for (int j = UnitLeftBound; j <= UnitRightBound; j += unit.mUnitDesc.height)
+                for (int j = CreatureLeftBound; j <= CreatureRightBound; j += Creature.mCreatureDesc.height)
                 {
                     //staying place is the only invalid move right now
-                    if(i != unit.GetI() || j != unit.GetJ())
+                    if(i != Creature.GetI() || j != Creature.GetJ())
                     {
                         Move newMove;
                         newMove.position.Y = i;
                         newMove.position.X = j;
                         newMove.score = 0;
 
-                        //factor in if the move will take another unit
-                        if(unit.CheckOccupied(i, j))
+                        //factor in if the move will take another Creature
+                        if(Creature.CheckOccupied(i, j))
                         {
-                            if(unit.CheckColour(i,j))
+                            if(Creature.CheckColour(i,j))
                             {
-                                var damageScore = GetDestructionScore(unit, mGrid.mTiles[i, j].occupiedUnit);
+                                var damageScore = GetDestructionScore(Creature, mGrid.mTiles[i, j].occupiedCreature);
                                 if(damageScore == 0)
                                 {
-                                    //cant move into the space of an unattackable unit
+                                    //cant move into the space of an unattackable Creature
                                     continue;
                                 }
                                 else
@@ -275,7 +275,7 @@ namespace Board_Game.Logic
                                 continue;
                             }
                         }
-                        else if(unit.IsEnemyMine(i, j))
+                        else if(Creature.IsEnemyMine(i, j))
                         {
                             //avoid unoccupied enemy mines
                             continue;
@@ -289,7 +289,7 @@ namespace Board_Game.Logic
                         }
 
                         //set score to use distance
-                        if (unit.mUnitDesc.Type == Units.UnitType.Miner)
+                        if (Creature.mCreatureDesc.Type == Creatures.CreatureType.Miner)
                         {
                             newMove.score += (int)((100 / (moveDistance + 1)) / 2);
                         }
@@ -299,10 +299,10 @@ namespace Board_Game.Logic
                         }
 
                         //factor in if the move will get you killed
-                        if (unit.IsEnemyMine((int)newMove.position.Y, (int)newMove.position.X)
-                            || IsDeathTrap((int)newMove.position.Y, (int)newMove.position.X, unit))
+                        if (Creature.IsEnemyMine((int)newMove.position.Y, (int)newMove.position.X)
+                            || IsDeathTrap((int)newMove.position.Y, (int)newMove.position.X, Creature))
                         {
-                            newMove.score -= GetUnitValue(unit);
+                            newMove.score -= GetCreatureValue(Creature);
                         }
 
                         moveList.Push(newMove);
@@ -314,7 +314,7 @@ namespace Board_Game.Logic
         }
         //end
 
-        //TODO: Expand to a pathfinding algorithm, to avoid units getting lost
+        //TODO: Expand to a pathfinding algorithm, to avoid Creatures getting lost
         /*
             Returns the distance between two points
         */
@@ -327,15 +327,15 @@ namespace Board_Game.Logic
         //end
 
         /*
-            This rates the destruction of the targetUnit given the sourceUnit's priorities
+            This rates the destruction of the targetCreature given the sourceCreature's priorities
         */
-        public int GetDestructionScore(Units.Unit sourceUnit, Units.Unit targetUnit)
+        public int GetDestructionScore(Creatures.Creature sourceCreature, Creatures.Creature targetCreature)
         {
-            for (var i = 0; i < sourceUnit.mUnitDesc.attackablePriorities.Length; i++)
+            for (var i = 0; i < sourceCreature.mCreatureDesc.attackablePriorities.Length; i++)
             {
-                if (sourceUnit.mUnitDesc.attackablePriorities[i] == targetUnit.mUnitDesc.Type)
+                if (sourceCreature.mCreatureDesc.attackablePriorities[i] == targetCreature.mCreatureDesc.Type)
                 {
-                    return ((int)Units.UnitType.NumUnitTypes - i) * 200;
+                    return ((int)Creatures.CreatureType.NumCreatureTypes - i) * 200;
                 }
             }
 
@@ -343,11 +343,11 @@ namespace Board_Game.Logic
         }
 
         /*
-            This rates the how valuable a unit is out of all the units
+            This rates the how valuable a Creature is out of all the Creatures
         */
-        public int GetUnitValue(Units.Unit unit)
+        public int GetCreatureValue(Creatures.Creature Creature)
         {
-            return unitWorths[(int)unit.mUnitDesc.Type] * 200;
+            return CreatureWorths[(int)Creature.mCreatureDesc.Type] * 200;
         }
 
         internal void Update(GameTime gameTime)
@@ -362,46 +362,46 @@ namespace Board_Game.Logic
                     bestMove.score = -99;
                     bestMove.position.Y = -99;
                     bestMove.position.X = -99;
-                    Units.Unit unitToMove = null;
+                    Creatures.Creature CreatureToMove = null;
 
-                    List<Units.Unit> units;
+                    List<Creatures.Creature> Creatures;
 
                     if (mGameState.mCurrentPlayer.mSide == Side.Red)
                     {
-                        units = mGameState.Red.Units;
+                        Creatures = mGameState.Red.Creatures;
                     }
                     else
                     {
-                        units = mGameState.Blue.Units;
+                        Creatures = mGameState.Blue.Creatures;
                     }
 
-                    foreach (Units.Unit unit in units)
+                    foreach (Creatures.Creature Creature in Creatures)
                     {
-                        Vector2 target = unit.GetNearestTarget();
+                        Vector2 target = Creature.GetNearestTarget();
 
-                        Stack<Move> possibleMoves = GetMoveList(unit, target);
+                        Stack<Move> possibleMoves = GetMoveList(Creature, target);
 
                         if (possibleMoves.Count == 0)
                         {
-                            Console.Out.WriteLine("No moves for " + unit.mUnitDesc.Type + " at " + unit.position);
+                            Console.Out.WriteLine("No moves for " + Creature.mCreatureDesc.Type + " at " + Creature.position);
                         }
 
                         foreach (Move move in possibleMoves)
                         {
-                            if (unitToMove == null || bestMove.score < move.score)
+                            if (CreatureToMove == null || bestMove.score < move.score)
                             {
                                 bestMove = move;
-                                unitToMove = unit;
+                                CreatureToMove = Creature;
                             }
                         }
                     }
 
-                    if (unitToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
+                    if (CreatureToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
                     {
-                        unitToMove.RemoveUnits((int)bestMove.position.Y, (int)bestMove.position.X);
+                        CreatureToMove.RemoveCreatures((int)bestMove.position.Y, (int)bestMove.position.X);
                     }
 
-                    unitToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X);
+                    CreatureToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X);
 
                     mGameState.EndTurn();
                 }

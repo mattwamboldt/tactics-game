@@ -149,9 +149,9 @@
             <Color>FFFFFFFF</Color>
             <Children></Children>
             <Font>Tutorial</Font>
-            <Text>The Objective of the game is to destroy all opponent units, or take control of all mines (squares the are around a diamond). The De-Miner units convert a neutral(grey) or enemy mine to your colour, at which point you can move your other units safely across.
+            <Text>The Objective of the game is to destroy all opponent Creatures, or take control of all mines (squares the are around a diamond). The De-Miner Creatures convert a neutral(grey) or enemy mine to your colour, at which point you can move your other Creatures safely across.
 
-Flying units, which are the bomber and fighter, will not be destroyed by mines.</Text>
+Flying Creatures, which are the bomber and fighter, will not be destroyed by mines.</Text>
             <WrapWidth>330</WrapWidth>
             <Centered>false</Centered>
           </Item>
@@ -166,21 +166,21 @@ Flying units, which are the bomber and fighter, will not be destroyed by mines.<
         <Color>FF000000</Color>
         <Children>
           <Item Type="Board_Game.UI.Image">
-            <Name>unitBG0</Name>
+            <Name>CreatureBG0</Name>
             <Position>5 5</Position>
             <Size>60 60</Size>
             <Visible>true</Visible>
             <Color>FFA9A9A9</Color>
             <Children>
               <Item Type="Board_Game.UI.Image">
-                <Name>unit</Name>
+                <Name>Creature</Name>
                 <Position>0 0</Position>
                 <Size>60 60</Size>
                 <Visible>true</Visible>
                 <Color>FFFF0000</Color>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitTitle</Name>
+                    <Name>CreatureTitle</Name>
                     <Position>65 0</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -192,7 +192,7 @@ Flying units, which are the bomber and fighter, will not be destroyed by mines.<
                     <Centered>false</Centered>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitDesc</Name>
+                    <Name>CreatureDesc</Name>
                     <Position>65 15</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -200,32 +200,32 @@ Flying units, which are the bomber and fighter, will not be destroyed by mines.<
                     <Children></Children>
                     <Font>Tutorial</Font>
                     <Text>Movement: 1 large square
-Destroys ground units.</Text>
+Destroys ground Creatures.</Text>
                     <WrapWidth>340</WrapWidth>
                     <Centered>false</Centered>
                   </Item>
                 </Children>
-                <TextureName>textures/units/bomber</TextureName>
+                <TextureName>textures/Creatures/bomber</TextureName>
               </Item>
             </Children>
             <TextureName>RAW</TextureName>
           </Item>
           <Item Type="Board_Game.UI.Image">
-            <Name>unitBG1</Name>
+            <Name>CreatureBG1</Name>
             <Position>5 70</Position>
             <Size>60 60</Size>
             <Visible>true</Visible>
             <Color>FFA9A9A9</Color>
             <Children>
               <Item Type="Board_Game.UI.Image">
-                <Name>unit</Name>
+                <Name>Creature</Name>
                 <Position>0 0</Position>
                 <Size>60 60</Size>
                 <Visible>true</Visible>
                 <Color>FFFF0000</Color>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitTitle</Name>
+                    <Name>CreatureTitle</Name>
                     <Position>65 0</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -237,7 +237,7 @@ Destroys ground units.</Text>
                     <Centered>false</Centered>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitDesc</Name>
+                    <Name>CreatureDesc</Name>
                     <Position>65 15</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -245,32 +245,32 @@ Destroys ground units.</Text>
                     <Children></Children>
                     <Font>Tutorial</Font>
                     <Text>Movement: 1 large square
-Destroys air units.</Text>
+Destroys air Creatures.</Text>
                     <WrapWidth>340</WrapWidth>
                     <Centered>false</Centered>
                   </Item>
                 </Children>
-                <TextureName>textures/units/fighter</TextureName>
+                <TextureName>textures/Creatures/fighter</TextureName>
               </Item>
             </Children>
             <TextureName>RAW</TextureName>
           </Item>
           <Item Type="Board_Game.UI.Image">
-            <Name>unitBG2</Name>
+            <Name>CreatureBG2</Name>
             <Position>5 135</Position>
             <Size>60 60</Size>
             <Visible>true</Visible>
             <Color>FFA9A9A9</Color>
             <Children>
               <Item Type="Board_Game.UI.Image">
-                <Name>unit</Name>
+                <Name>Creature</Name>
                 <Position>0 0</Position>
                 <Size>60 60</Size>
                 <Visible>true</Visible>
                 <Color>FFFF0000</Color>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitTitle</Name>
+                    <Name>CreatureTitle</Name>
                     <Position>65 0</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -282,7 +282,7 @@ Destroys air units.</Text>
                     <Centered>false</Centered>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitDesc</Name>
+                    <Name>CreatureDesc</Name>
                     <Position>65 15</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -290,32 +290,32 @@ Destroys air units.</Text>
                     <Children></Children>
                     <Font>Tutorial</Font>
                     <Text>Movement: 1 square
-Destroys ground units.</Text>
+Destroys ground Creatures.</Text>
                     <WrapWidth>340</WrapWidth>
                     <Centered>false</Centered>
                   </Item>
                 </Children>
-                <TextureName>textures/units/soldier</TextureName>
+                <TextureName>textures/Creatures/soldier</TextureName>
               </Item>
             </Children>
             <TextureName>RAW</TextureName>
           </Item>
           <Item Type="Board_Game.UI.Image">
-            <Name>unitBG3</Name>
+            <Name>CreatureBG3</Name>
             <Position>5 200</Position>
             <Size>60 60</Size>
             <Visible>true</Visible>
             <Color>FFA9A9A9</Color>
             <Children>
               <Item Type="Board_Game.UI.Image">
-                <Name>unit</Name>
+                <Name>Creature</Name>
                 <Position>0 0</Position>
                 <Size>60 60</Size>
                 <Visible>true</Visible>
                 <Color>FFFF0000</Color>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitTitle</Name>
+                    <Name>CreatureTitle</Name>
                     <Position>65 0</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -327,7 +327,7 @@ Destroys ground units.</Text>
                     <Centered>false</Centered>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitDesc</Name>
+                    <Name>CreatureDesc</Name>
                     <Position>65 15</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -340,27 +340,27 @@ Captures mines.</Text>
                     <Centered>false</Centered>
                   </Item>
                 </Children>
-                <TextureName>textures/units/deminer</TextureName>
+                <TextureName>textures/Creatures/deminer</TextureName>
               </Item>
             </Children>
             <TextureName>RAW</TextureName>
           </Item>
           <Item Type="Board_Game.UI.Image">
-            <Name>unitBG4</Name>
+            <Name>CreatureBG4</Name>
             <Position>5 265</Position>
             <Size>60 60</Size>
             <Visible>true</Visible>
             <Color>FFA9A9A9</Color>
             <Children>
               <Item Type="Board_Game.UI.Image">
-                <Name>unit</Name>
+                <Name>Creature</Name>
                 <Position>0 0</Position>
                 <Size>60 60</Size>
                 <Visible>true</Visible>
                 <Color>FFFF0000</Color>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitTitle</Name>
+                    <Name>CreatureTitle</Name>
                     <Position>65 0</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -372,7 +372,7 @@ Captures mines.</Text>
                     <Centered>false</Centered>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>unitDesc</Name>
+                    <Name>CreatureDesc</Name>
                     <Position>65 15</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -380,12 +380,12 @@ Captures mines.</Text>
                     <Children></Children>
                     <Font>Tutorial</Font>
                     <Text>Movement: 1 square
-Destroys all units.</Text>
+Destroys all Creatures.</Text>
                     <WrapWidth>340</WrapWidth>
                     <Centered>false</Centered>
                   </Item>
                 </Children>
-                <TextureName>textures/units/grenadier</TextureName>
+                <TextureName>textures/Creatures/grenadier</TextureName>
               </Item>
             </Children>
             <TextureName>RAW</TextureName>

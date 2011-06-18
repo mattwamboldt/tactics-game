@@ -61,11 +61,11 @@ namespace Board_Game
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D mBomberTexture = Content.Load<Texture2D>("textures/units/bomber");
-            Texture2D mFighterTexture = Content.Load<Texture2D>("textures/units/fighter");
-            Texture2D mSoldierTexture = Content.Load<Texture2D>("textures/units/soldier");
-            Texture2D mDeminerTexture = Content.Load<Texture2D>("textures/units/deminer");
-            Texture2D mGrenadierTexture = Content.Load<Texture2D>("textures/units/grenadier");
+            Texture2D mBomberTexture = Content.Load<Texture2D>("textures/Creatures/bomber");
+            Texture2D mFighterTexture = Content.Load<Texture2D>("textures/Creatures/fighter");
+            Texture2D mSoldierTexture = Content.Load<Texture2D>("textures/Creatures/soldier");
+            Texture2D mDeminerTexture = Content.Load<Texture2D>("textures/Creatures/deminer");
+            Texture2D mGrenadierTexture = Content.Load<Texture2D>("textures/Creatures/grenadier");
             mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
 
             FontManager.Initialize(Content);

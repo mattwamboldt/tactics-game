@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 using Board_Game.Rendering;
 using Board_Game.Input;
-using Board_Game.Units;
+using Board_Game.Creatures;
 using Board_Game.Code.Rendering;
 
 namespace Board_Game.Logic
@@ -35,8 +35,8 @@ namespace Board_Game.Logic
         //for drawing
         public Sprite mSprite;
         public Vector2 position;
-        private Units.Unit selectedUnit;
-        private Units.ClampArea unitClamp;
+        private Creatures.Creature selectedCreature;
+        private Creatures.ClampArea CreatureClamp;
 
         public Selector(
                 Sprite selectorSprite,
@@ -50,7 +50,7 @@ namespace Board_Game.Logic
             mSide = Side.Neutral;
             mGridRef = grid;
             mGameState = gameState;
-            selectedUnit = null;
+            selectedCreature = null;
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
@@ -94,87 +94,87 @@ namespace Board_Game.Logic
             }
             if (InputManager.Get().isTriggered(Button.Cross))
             {
-                if (selectedUnit != null)
+                if (selectedCreature != null)
                 {
                     SelectSquare();
                 }
                 else
                 {
-                    SelectUnit();
+                    SelectCreature();
                 }
             }
         }
 
         private void Deselect()
         {
-            if (selectedUnit != null)
+            if (selectedCreature != null)
             {
-                selectedUnit.isSelected = false;
-                selectedUnit = null;
+                selectedCreature.isSelected = false;
+                selectedCreature = null;
             }
         }
 
-        private void SelectUnit()
+        private void SelectCreature()
         {
             if (mGridRef.mTiles[(int)position.Y, (int)position.X].Occupied)
             {
-                Units.Unit unit = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedUnit;
-                if (unit.side == mSide)
+                Creatures.Creature Creature = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedCreature;
+                if (Creature.side == mSide)
                 {
-                    selectedUnit = unit;
-                    unit.isSelected = true;
-                    unitClamp = selectedUnit.GetClampArea();
+                    selectedCreature = Creature;
+                    Creature.isSelected = true;
+                    CreatureClamp = selectedCreature.GetClampArea();
                 }
             }
         }
 
-        private bool isInUnitClampArea()
+        private bool isInCreatureClampArea()
         {
-            ClampArea unitArea = selectedUnit.GetClampArea();
-            return position.X * Tile.TILE_SIZE >= unitArea.leftCut
-                && position.Y * Tile.TILE_SIZE >= unitArea.topCut
-                && position.X * Tile.TILE_SIZE <= unitArea.rightCut
-                && position.Y * Tile.TILE_SIZE <= unitArea.bottomCut;
+            ClampArea CreatureArea = selectedCreature.GetClampArea();
+            return position.X * Tile.TILE_SIZE >= CreatureArea.leftCut
+                && position.Y * Tile.TILE_SIZE >= CreatureArea.topCut
+                && position.X * Tile.TILE_SIZE <= CreatureArea.rightCut
+                && position.Y * Tile.TILE_SIZE <= CreatureArea.bottomCut;
         }
 
         private void SelectSquare()
         {
-            int j = ((int)position.X - (int)position.X % selectedUnit.mUnitDesc.width);
-            int i = ((int)position.Y - (int)position.Y % selectedUnit.mUnitDesc.height);
+            int j = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.width);
+            int i = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.height);
 
-            if (selectedUnit.CheckOccupied(i, j))
+            if (selectedCreature.CheckOccupied(i, j))
             {
-                Units.Unit unit = mGridRef.mTiles[i, j].occupiedUnit;
+                Creatures.Creature Creature = mGridRef.mTiles[i, j].occupiedCreature;
 
-                //toggle selection of the current unit
-                if (selectedUnit == unit)
+                //toggle selection of the current Creature
+                if (selectedCreature == Creature)
                 {
                     Deselect();
                 }
-                //destroy units in your move radius
-                else if (isInUnitClampArea() && selectedUnit.CheckColour(i, j))
+                //destroy Creatures in your move radius
+                else if (isInCreatureClampArea() && selectedCreature.CheckColour(i, j))
                 {
-                    selectedUnit.isSelected = false;
-                    selectedUnit.RemoveUnits(i, j);
-                    selectedUnit.Move(i, j);
-                    selectedUnit = null;
+                    selectedCreature.isSelected = false;
+                    selectedCreature.RemoveCreatures(i, j);
+                    selectedCreature.Move(i, j);
+                    selectedCreature = null;
 
                     mGameState.EndTurn(); 
                 }
-                //switch to friendly units
-                else if (unit != null && unit.side == mSide)
+                //switch to friendly Creatures
+                else if (Creature != null && Creature.side == mSide)
                 {
-                    selectedUnit.isSelected = false;
-                    selectedUnit = unit;
-                    unit.isSelected = true;
-                    unitClamp = selectedUnit.GetClampArea();
+                    selectedCreature.isSelected = false;
+                    selectedCreature = Creature;
+                    Creature.isSelected = true;
+                    CreatureClamp = selectedCreature.GetClampArea();
                 }
             }
-            else if(isInUnitClampArea())
+            else if(isInCreatureClampArea())
             {
-                selectedUnit.isSelected = false;
-                selectedUnit.Move(i, j);
-                selectedUnit = null;
+                selectedCreature.isSelected = false;
+                selectedCreature.Move(i, j);
+                selectedCreature = null;
 
                 mGameState.EndTurn();
             }
@@ -214,17 +214,17 @@ namespace Board_Game.Logic
         }
 #endregion
 
-        internal void RenderUnitRadius(SpriteBatch spriteBatch, Vector2 parentRactangle)
+        internal void RenderCreatureRadius(SpriteBatch spriteBatch, Vector2 parentRactangle)
         {
-            if (selectedUnit != null)
+            if (selectedCreature != null)
             {
-                //draw a rectangle under that unit in it's clamp area
-                ClampArea unitArea = selectedUnit.GetClampArea();
+                //draw a rectangle under that Creature in it's clamp area
+                ClampArea CreatureArea = selectedCreature.GetClampArea();
                 Rectangle areaMovable = new Rectangle(
-                    (int)(unitArea.leftCut + parentRactangle.X),
-                    (int)(unitArea.topCut + parentRactangle.Y),
-                    (int)((unitArea.rightCut - unitArea.leftCut + selectedUnit.ScreenDimensions().X)),
-                    (int)((unitArea.bottomCut - unitArea.topCut + selectedUnit.ScreenDimensions().Y))
+                    (int)(CreatureArea.leftCut + parentRactangle.X),
+                    (int)(CreatureArea.topCut + parentRactangle.Y),
+                    (int)((CreatureArea.rightCut - CreatureArea.leftCut + selectedCreature.ScreenDimensions().X)),
+                    (int)((CreatureArea.bottomCut - CreatureArea.topCut + selectedCreature.ScreenDimensions().Y))
                 );
 
                 Texture2D texture = TextureManager.Get().Find("RAW");

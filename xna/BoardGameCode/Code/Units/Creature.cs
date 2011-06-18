@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 using Board_Game.Rendering;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
     struct ClampArea
     {
@@ -17,10 +17,10 @@ namespace Board_Game.Units
         public int bottomCut;
     };
 
-    //Contains all the code for a unit.
-    class Unit
+    //Contains all the code for a Creature.
+    class Creature
     {
-        //These allow the unit to remember its previous location and
+        //These allow the Creature to remember its previous location and
         //return there in the event of an invalid move
         public int originalI;
         public int originalJ;
@@ -28,11 +28,11 @@ namespace Board_Game.Units
         //this allows us to set the colour
         public Side side;
 
-        //This gives the unit an awareness of the other units on the playing field
-        //so it can destroy itself or better than that, enemy units
+        //This gives the Creature an awareness of the other Creatures on the playing field
+        //so it can destroy itself or better than that, enemy Creatures
         protected GameGrid grid;
 
-        public UnitDescription mUnitDesc;
+        public CreatureDescription mCreatureDesc;
 
         public Vector2 position;
 
@@ -41,9 +41,9 @@ namespace Board_Game.Units
 
         private Sprite mSprite;
 
-        public Unit(GameGrid gridRef, AI AIRef, UnitDescription unitDesc)
+        public Creature(GameGrid gridRef, AI AIRef, CreatureDescription CreatureDesc)
         {
-            mUnitDesc = unitDesc;
+            mCreatureDesc = CreatureDesc;
             originalI = 0;
             originalJ = 0;
             grid = gridRef;
@@ -52,7 +52,7 @@ namespace Board_Game.Units
             position = new Vector2(0, 0);
             isSelected = false;
 
-            mSprite = new Sprite(mUnitDesc.texture, position, Color.White, ScreenDimensions());
+            mSprite = new Sprite(mCreatureDesc.texture, position, Color.White, ScreenDimensions());
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
@@ -87,7 +87,7 @@ namespace Board_Game.Units
             throw new NotImplementedException();
         }
 
-        public virtual void RemoveUnits(int p, int p_2)
+        public virtual void RemoveCreatures(int p, int p_2)
         {
             throw new NotImplementedException();
         }
@@ -150,7 +150,7 @@ namespace Board_Game.Units
 
         /*
             This tells us if a square is actually an enemy mine location. If the
-            unit in question is a deminer it returns false since they can move accross
+            Creature in question is a deminer it returns false since they can move accross
             those just fine.
         */
         public virtual bool IsEnemyMine(int i, int j)
@@ -160,20 +160,20 @@ namespace Board_Game.Units
         }
 
         /*
-            Finds the space that the unit most wants to move into
-         * //TODO: recalculates evey unit to every other unit, every AI update. why am I not caching the distances?
+            Finds the space that the Creature most wants to move into
+         * //TODO: recalculates evey Creature to every other Creature, every AI update. why am I not caching the distances?
         */
         public virtual Vector2 GetNearestTarget()
         {
-            List<Unit> opposingUnits;
+            List<Creature> opposingCreatures;
 
             if (side == Side.Red)
             {
-                opposingUnits = mAIRef.State.Blue.Units;
+                opposingCreatures = mAIRef.State.Blue.Creatures;
             }
             else
             {
-                opposingUnits = mAIRef.State.Red.Units;
+                opposingCreatures = mAIRef.State.Red.Creatures;
             }
 
             Vector2 originalPoint = new Vector2(GetJ(), GetI());
@@ -181,21 +181,21 @@ namespace Board_Game.Units
 
             double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
 
-            foreach (Unit unit in opposingUnits)
+            foreach (Creature Creature in opposingCreatures)
             {
-                if (mUnitDesc.CanAttack(unit.mUnitDesc.Type))
+                if (mCreatureDesc.CanAttack(Creature.mCreatureDesc.Type))
                 {
-                    var iCoord = unit.GetI();
-                    var jCoord = unit.GetJ();
-                    double distanceToUnit = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+                    var iCoord = Creature.GetI();
+                    var jCoord = Creature.GetJ();
+                    double distanceToCreature = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
 
                     //if an opponent is on their mine they're safe so don't bother with them.
-                    if ((distanceToUnit < distanceToNearest && IsEnemyMine(iCoord, jCoord) == false)
+                    if ((distanceToCreature < distanceToNearest && IsEnemyMine(iCoord, jCoord) == false)
                        || nearestTarget.Y == -1)
                     {
                         nearestTarget.Y = iCoord;
                         nearestTarget.X = jCoord;
-                        distanceToNearest = distanceToUnit;
+                        distanceToNearest = distanceToCreature;
                     }
                 }
             }

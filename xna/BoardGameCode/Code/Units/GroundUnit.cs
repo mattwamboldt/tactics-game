@@ -6,19 +6,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
-    class GroundUnit : Unit
+    class GroundCreature : Creature
     {
-        public GroundUnit(GameGrid grid, AI AIRef, UnitDescription unitDesc)
-            : base(grid, AIRef, unitDesc)
+        public GroundCreature(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
+            : base(grid, AIRef, CreatureDesc)
         {
         }
 
         public override void Move(int newLocationI, int newLocationJ)
         {
             grid.mTiles[originalI, originalJ].side = Side.Neutral;
-            grid.mTiles[originalI, originalJ].occupiedUnit = null;
+            grid.mTiles[originalI, originalJ].occupiedCreature = null;
             SetLocation(newLocationI, newLocationJ);
         }
         
@@ -30,7 +30,7 @@ namespace Board_Game.Units
         public override void SetLocation(int newLocationI, int newLocationJ)
         {
             grid.mTiles[newLocationI, newLocationJ].side = side;
-            grid.mTiles[newLocationI, newLocationJ].occupiedUnit = this;
+            grid.mTiles[newLocationI, newLocationJ].occupiedCreature = this;
 
             position.X = newLocationJ * Tile.TILE_SIZE;
             position.Y = newLocationI * Tile.TILE_SIZE;

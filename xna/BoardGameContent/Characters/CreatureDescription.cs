@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
-    public enum UnitType
+    public enum CreatureType
     {
         Undefined = -1,
         Bomber = 0,
@@ -14,32 +14,32 @@ namespace Board_Game.Units
         Soldier = 2,
         Granadier = 3,
         Miner = 4,
-        NumUnitTypes = 5
+        NumCreatureTypes = 5
     }
 
     /// <summary>
-    /// This class is used to seperate the static data about a unit
+    /// This class is used to seperate the static data about a Creature
     /// from its runtime data, such as location. That way you can
-    /// make a unit have a certain speed, size, etc. without having to change
-    /// All the maps and units lists as well
+    /// make a Creature have a certain speed, size, etc. without having to change
+    /// All the maps and Creatures lists as well
     /// </summary>
-    class UnitDescription
+    public class CreatureDescription
     {
         public bool CanFly;
-        public UnitType Type;
+        public CreatureType Type;
         public int height;
         public int width;
         public string textureName;
         public Texture2D texture;
 
-        //used to determine which enemies this unit
+        //used to determine which enemies this Creature
         //will attack and in what order
-        public UnitType[] attackablePriorities;
+        public CreatureType[] attackablePriorities;
 
-        public bool CanAttack(UnitType unitType)
+        public bool CanAttack(CreatureType CreatureType)
         {
             return attackablePriorities != null
-                && attackablePriorities.Contains(unitType);
+                && attackablePriorities.Contains(CreatureType);
         }
     }
 }

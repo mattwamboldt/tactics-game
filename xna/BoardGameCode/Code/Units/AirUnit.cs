@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
-    class AirUnit : Unit
+    class AirCreature : Creature
     {
-        public AirUnit(GameGrid grid, AI AIRef, UnitDescription unitDesc)
-            : base(grid, AIRef, unitDesc)
+        public AirCreature(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
+            : base(grid, AIRef, CreatureDesc)
         {
         }
 
@@ -22,7 +22,7 @@ namespace Board_Game.Units
 		        for(var j = 0; j < 2; ++j)
 		        {
                     grid.mTiles[newLocationI + i, newLocationJ + j].side = side;
-                    grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit = this;
+                    grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature = this;
 		        }
 	        }
 
@@ -43,14 +43,14 @@ namespace Board_Game.Units
 		        for(var j = 0; j < 2; ++j)
 		        {
 			        grid.mTiles[originalI + i, originalJ + j].side = Side.Neutral;
-			        grid.mTiles[originalI + i, originalJ + j].occupiedUnit = null;
+			        grid.mTiles[originalI + i, originalJ + j].occupiedCreature = null;
 		        }
 	        }
         	
 	        SetLocation(newLocationI, newLocationJ);
         }
 
-        public override void RemoveUnits(int newLocationI, int newLocationJ)
+        public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
 	        for(var i = 0; i < 2; ++i)
 	        {
@@ -58,7 +58,7 @@ namespace Board_Game.Units
 		        {
                     if (grid.mTiles[newLocationI + i, newLocationJ + j].Occupied)
 			        {
-				        mAIRef.State.RemoveUnit(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedUnit);
+				        mAIRef.State.RemoveCreature(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature);
 			        }
 		        }
 	        }
@@ -69,7 +69,7 @@ namespace Board_Game.Units
             return new Vector2(Mine.MINE_SIZE, Mine.MINE_SIZE);
         }
 
-        //flying units ignore mines
+        //flying Creatures ignore mines
         public override bool IsEnemyMine(int i, int j)
         {
             return false;

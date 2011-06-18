@@ -62,27 +62,27 @@ namespace Board_Game.Logic
 
         public void Initialize()
         {
-            mRed.CreateUnits(
-                TextureManager.Get().Find("textures/units/bomber"),
-                TextureManager.Get().Find("textures/units/fighter"),
-                TextureManager.Get().Find("textures/units/soldier"),
-                TextureManager.Get().Find("textures/units/deminer"),
-                TextureManager.Get().Find("textures/units/grenadier")
+            mRed.CreateCreatures(
+                TextureManager.Get().Find("textures/Creatures/bomber"),
+                TextureManager.Get().Find("textures/Creatures/fighter"),
+                TextureManager.Get().Find("textures/Creatures/soldier"),
+                TextureManager.Get().Find("textures/Creatures/deminer"),
+                TextureManager.Get().Find("textures/Creatures/grenadier")
             );
 
-            mBlue.CreateUnits(
-                TextureManager.Get().Find("textures/units/bomber"),
-                TextureManager.Get().Find("textures/units/fighter"),
-                TextureManager.Get().Find("textures/units/soldier"),
-                TextureManager.Get().Find("textures/units/deminer"),
-                TextureManager.Get().Find("textures/units/grenadier")
+            mBlue.CreateCreatures(
+                TextureManager.Get().Find("textures/Creatures/bomber"),
+                TextureManager.Get().Find("textures/Creatures/fighter"),
+                TextureManager.Get().Find("textures/Creatures/soldier"),
+                TextureManager.Get().Find("textures/Creatures/deminer"),
+                TextureManager.Get().Find("textures/Creatures/grenadier")
             );
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
         {
             mGrid.Render(spriteBatch);
-            mSelector.RenderUnitRadius(spriteBatch, mGrid.position);
+            mSelector.RenderCreatureRadius(spriteBatch, mGrid.position);
             Blue.Render(spriteBatch, mGrid.position);
             Red.Render(spriteBatch, mGrid.position);
             mSelector.Render(spriteBatch, mGrid.position);
@@ -154,11 +154,11 @@ namespace Board_Game.Logic
             if (!MineVictory())
             {
                 //we need to check for a destruction victory
-                if (Red.Units.Count == 0)
+                if (Red.Creatures.Count == 0)
                 {
                     winner = Side.Blue;
                 }
-                else if (Blue.Units.Count == 0)
+                else if (Blue.Creatures.Count == 0)
                 {
                     winner = Side.Red;
                 }
@@ -180,15 +180,15 @@ namespace Board_Game.Logic
             ChangeTurns();
         }
 
-        public void RemoveUnit(Units.Unit unit)
+        public void RemoveCreature(Creatures.Creature Creature)
         {
-            if (unit.side == Side.Blue)
+            if (Creature.side == Side.Blue)
             {
-                Blue.RemoveUnit(unit);
+                Blue.RemoveCreature(Creature);
             }
             else
             {
-                Red.RemoveUnit(unit);
+                Red.RemoveCreature(Creature);
             }
         }
     }

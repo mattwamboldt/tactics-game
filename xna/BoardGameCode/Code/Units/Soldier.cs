@@ -5,12 +5,12 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Board_Game.Logic;
 
-namespace Board_Game.Units
+namespace Board_Game.Creatures
 {
-    class Soldier : GroundUnit
+    class Soldier : GroundCreature
     {
-        public Soldier(GameGrid grid, AI AIRef, UnitDescription unitDesc)
-            : base(grid, AIRef, unitDesc)
+        public Soldier(GameGrid grid, AI AIRef, CreatureDescription CreatureDesc)
+            : base(grid, AIRef, CreatureDesc)
         {
         }
 
@@ -18,12 +18,12 @@ namespace Board_Game.Units
         {
 	        return grid.mTiles[i, j].side != side
                 && grid.mTiles[i, j].Occupied
-                && !grid.mTiles[i, j].occupiedUnit.mUnitDesc.CanFly;
+                && !grid.mTiles[i, j].occupiedCreature.mCreatureDesc.CanFly;
         }
 
-        public override void RemoveUnits(int newLocationI, int newLocationJ)
+        public override void RemoveCreatures(int newLocationI, int newLocationJ)
         {
-            mAIRef.State.RemoveUnit(grid.mTiles[newLocationI, newLocationJ].occupiedUnit);
+            mAIRef.State.RemoveCreature(grid.mTiles[newLocationI, newLocationJ].occupiedCreature);
         }
     }
 }

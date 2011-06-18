@@ -50,27 +50,27 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="textures\units\bomber.png">
+    <Compile Include="textures\Creatures\bomber.png">
       <Name>bomber</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\units\deminer.png">
+    <Compile Include="textures\Creatures\deminer.png">
       <Name>deminer</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\units\fighter.png">
+    <Compile Include="textures\Creatures\fighter.png">
       <Name>fighter</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\units\grenadier.png">
+    <Compile Include="textures\Creatures\grenadier.png">
       <Name>grenadier</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="textures\units\soldier.png">
+    <Compile Include="textures\Creatures\soldier.png">
       <Name>soldier</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -91,8 +91,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="fonts\UnitName.spritefont">
-      <Name>UnitName</Name>
+    <Compile Include="fonts\CreatureName.spritefont">
+      <Name>CreatureName</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
