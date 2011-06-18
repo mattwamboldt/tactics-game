@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="Board_Game.Creatures.CreatureDescription">
+    <Name>Fighter</Name>
+    <Description>Movement: 1 large square
+Destroys air Creatures.</Description>
     <CanFly>true</CanFly>
     <Type>Fighter</Type>
     <SizeInSpaces>2 2</SizeInSpaces>

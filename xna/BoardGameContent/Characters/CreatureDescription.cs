@@ -28,6 +28,20 @@ namespace Board_Game.Creatures
     /// </summary>
     public class CreatureDescription
     {
+        private string mName;
+        public string Name
+        {
+            set { mName = value; }
+            get { return mName; }
+        }
+
+        private string mDescription;
+        public string Description
+        {
+            set { mDescription = value; }
+            get { return mDescription; }
+        }
+
         private bool mCanFly;
         public bool CanFly
         {
@@ -95,6 +109,8 @@ namespace Board_Game.Creatures
             CreatureDescription existingInstance)
         {
             CreatureDescription desc = new CreatureDescription();
+            desc.Name = input.ReadString();
+            desc.Description = input.ReadString();
             desc.CanFly = input.ReadBoolean();
             desc.Type = input.ReadObject<CreatureType>();
             desc.SizeInSpaces = input.ReadObject<Point>();

@@ -16,6 +16,8 @@ namespace BoardGameContentBuilders.Creatures
     {
         protected override void Write(ContentWriter output, CreatureDescription value)
         {
+            output.Write(value.Name);
+            output.Write(value.Description);
             output.Write(value.CanFly);
             output.WriteObject(value.Type);
             output.WriteObject(value.SizeInSpaces);

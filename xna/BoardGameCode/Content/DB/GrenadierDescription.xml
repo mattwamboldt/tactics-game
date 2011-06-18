@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="Board_Game.Creatures.CreatureDescription">
+    <Name>Grenadier</Name>
+    <Description>Movement: 1 square
+Destroys all Creatures.</Description>
     <CanFly>false</CanFly>
     <Type>Granadier</Type>
     <SizeInSpaces>1 1</SizeInSpaces>
