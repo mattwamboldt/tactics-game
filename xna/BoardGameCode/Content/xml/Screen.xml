@@ -113,31 +113,9 @@
           </Children>
       </Item>
       <Item Type="Board_Game.UI.Image">
-        <Name>titleBackground</Name>
-        <Position>360 0</Position>
-        <Size>270 30</Size>
-        <Visible>true</Visible>
-        <Color>FF000000</Color>
-        <Children>
-          <Item Type="Board_Game.UI.Label">
-            <Name>sideHeader</Name>
-            <Position>0 0</Position>
-            <Size>0 0</Size>
-            <Visible>true</Visible>
-            <Color>FFFFFFFF</Color>
-            <Children></Children>
-            <Font>Button</Font>
-            <Text>DUMMY</Text>
-            <WrapWidth>0</WrapWidth>
-            <Centered>true</Centered>
-          </Item>
-        </Children>
-        <TextureName>RAW</TextureName>
-      </Item>
-      <Item Type="Board_Game.UI.Image">
         <Name>tutorialBackground</Name>
-        <Position>0 380</Position>
-        <Size>340 200</Size>
+        <Position>30 420</Position>
+        <Size>440 150</Size>
         <Visible>true</Visible>
         <Color>FF000000</Color>
         <Children>
@@ -149,38 +127,38 @@
             <Color>FFFFFFFF</Color>
             <Children></Children>
             <Font>Tutorial</Font>
-            <Text>The Objective of the game is to destroy all opponent Creatures, or take control of all mines (squares the are around a diamond). The De-Miner Creatures convert a neutral(grey) or enemy mine to your colour, at which point you can move your other Creatures safely across.
+            <Text>The Objective is to destroy all opponent Units, or take control of all Mines (squares the are around a diamond). The Miners convert a neutral(grey) or enemy mine to your colour, at which point you can move your other units safely across.
 
-Flying Creatures, which are the bomber and fighter, will not be destroyed by mines.</Text>
-            <WrapWidth>330</WrapWidth>
+Flying unit will not be destroyed by mines.</Text>
+            <WrapWidth>430</WrapWidth>
             <Centered>false</Centered>
           </Item>
         </Children>
         <TextureName>RAW</TextureName>
       </Item>
       <Item Type="Board_Game.UI.Image">
-        <Name>sidebarBackground</Name>
-        <Position>360 50</Position>
-        <Size>270 540</Size>
+        <Name>creatureInfo</Name>
+        <Position>500 500</Position>
+        <Size>270 70</Size>
         <Visible>true</Visible>
         <Color>FF000000</Color>
         <Children>
           <Item Type="Board_Game.UI.Image">
-            <Name>CreatureBG0</Name>
+            <Name>imageBG</Name>
             <Position>5 5</Position>
             <Size>60 60</Size>
             <Visible>true</Visible>
             <Color>FFA9A9A9</Color>
             <Children>
               <Item Type="Board_Game.UI.Image">
-                <Name>Creature</Name>
+                <Name>image</Name>
                 <Position>0 0</Position>
                 <Size>60 60</Size>
                 <Visible>true</Visible>
                 <Color>FFFF0000</Color>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureTitle</Name>
+                    <Name>name</Name>
                     <Position>65 0</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -192,7 +170,7 @@ Flying Creatures, which are the bomber and fighter, will not be destroyed by min
                     <Centered>false</Centered>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureDesc</Name>
+                    <Name>description</Name>
                     <Position>65 15</Position>
                     <Size>0 0</Size>
                     <Visible>true</Visible>
@@ -206,186 +184,6 @@ Destroys ground Creatures.</Text>
                   </Item>
                 </Children>
                 <TextureName>textures/Creatures/bomber</TextureName>
-              </Item>
-            </Children>
-            <TextureName>RAW</TextureName>
-          </Item>
-          <Item Type="Board_Game.UI.Image">
-            <Name>CreatureBG1</Name>
-            <Position>5 70</Position>
-            <Size>60 60</Size>
-            <Visible>true</Visible>
-            <Color>FFA9A9A9</Color>
-            <Children>
-              <Item Type="Board_Game.UI.Image">
-                <Name>Creature</Name>
-                <Position>0 0</Position>
-                <Size>60 60</Size>
-                <Visible>true</Visible>
-                <Color>FFFF0000</Color>
-                <Children>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureTitle</Name>
-                    <Position>65 0</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>FIGHTER</Text>
-                    <WrapWidth>0</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureDesc</Name>
-                    <Position>65 15</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>Movement: 1 large square
-Destroys air Creatures.</Text>
-                    <WrapWidth>340</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                </Children>
-                <TextureName>textures/Creatures/fighter</TextureName>
-              </Item>
-            </Children>
-            <TextureName>RAW</TextureName>
-          </Item>
-          <Item Type="Board_Game.UI.Image">
-            <Name>CreatureBG2</Name>
-            <Position>5 135</Position>
-            <Size>60 60</Size>
-            <Visible>true</Visible>
-            <Color>FFA9A9A9</Color>
-            <Children>
-              <Item Type="Board_Game.UI.Image">
-                <Name>Creature</Name>
-                <Position>0 0</Position>
-                <Size>60 60</Size>
-                <Visible>true</Visible>
-                <Color>FFFF0000</Color>
-                <Children>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureTitle</Name>
-                    <Position>65 0</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>SOLDIER</Text>
-                    <WrapWidth>0</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureDesc</Name>
-                    <Position>65 15</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>Movement: 1 square
-Destroys ground Creatures.</Text>
-                    <WrapWidth>340</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                </Children>
-                <TextureName>textures/Creatures/soldier</TextureName>
-              </Item>
-            </Children>
-            <TextureName>RAW</TextureName>
-          </Item>
-          <Item Type="Board_Game.UI.Image">
-            <Name>CreatureBG3</Name>
-            <Position>5 200</Position>
-            <Size>60 60</Size>
-            <Visible>true</Visible>
-            <Color>FFA9A9A9</Color>
-            <Children>
-              <Item Type="Board_Game.UI.Image">
-                <Name>Creature</Name>
-                <Position>0 0</Position>
-                <Size>60 60</Size>
-                <Visible>true</Visible>
-                <Color>FFFF0000</Color>
-                <Children>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureTitle</Name>
-                    <Position>65 0</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>DE-MINER</Text>
-                    <WrapWidth>0</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureDesc</Name>
-                    <Position>65 15</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>Movement: 1 square
-Captures mines.</Text>
-                    <WrapWidth>340</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                </Children>
-                <TextureName>textures/Creatures/deminer</TextureName>
-              </Item>
-            </Children>
-            <TextureName>RAW</TextureName>
-          </Item>
-          <Item Type="Board_Game.UI.Image">
-            <Name>CreatureBG4</Name>
-            <Position>5 265</Position>
-            <Size>60 60</Size>
-            <Visible>true</Visible>
-            <Color>FFA9A9A9</Color>
-            <Children>
-              <Item Type="Board_Game.UI.Image">
-                <Name>Creature</Name>
-                <Position>0 0</Position>
-                <Size>60 60</Size>
-                <Visible>true</Visible>
-                <Color>FFFF0000</Color>
-                <Children>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureTitle</Name>
-                    <Position>65 0</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>BAZOOKA</Text>
-                    <WrapWidth>0</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                  <Item Type="Board_Game.UI.Label">
-                    <Name>CreatureDesc</Name>
-                    <Position>65 15</Position>
-                    <Size>0 0</Size>
-                    <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
-                    <Children></Children>
-                    <Font>Tutorial</Font>
-                    <Text>Movement: 1 square
-Destroys all Creatures.</Text>
-                    <WrapWidth>340</WrapWidth>
-                    <Centered>false</Centered>
-                  </Item>
-                </Children>
-                <TextureName>textures/Creatures/grenadier</TextureName>
               </Item>
             </Children>
             <TextureName>RAW</TextureName>

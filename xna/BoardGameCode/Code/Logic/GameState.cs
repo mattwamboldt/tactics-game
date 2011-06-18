@@ -30,6 +30,7 @@ namespace Board_Game.Logic
         public Player mCurrentPlayer;
         public GameGrid mGrid;
         Selector mSelector;
+        public Selector Selector { get { return mSelector; } }
         public Side winner;
 
         public const int GRID_WIDTH = 12;

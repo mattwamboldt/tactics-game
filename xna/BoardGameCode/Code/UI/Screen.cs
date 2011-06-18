@@ -7,6 +7,7 @@ using Board_Game.Logic;
 using Microsoft.Xna.Framework.Graphics;
 using Board_Game.Code.Rendering;
 using Microsoft.Xna.Framework.Content;
+using Board_Game.Creatures;
 
 namespace Board_Game.UI
 {
@@ -44,6 +45,38 @@ namespace Board_Game.UI
 
             Label blueText = (Label)Root.GetNode("gridBackground.blueBGEdge.blueBG.blueText");
             blueText.Text = blueString;
+
+            //shows and hides the info box
+            Vector2 selectorPosition = gameState.Selector.position;
+            Creature occupiedCreature = gameState.mGrid.mTiles[(int)selectorPosition.Y, (int)selectorPosition.X].occupiedCreature;
+            Image creatureInfo = (Image)Root.GetNode("creatureInfo");
+
+            if (occupiedCreature == null)
+            {
+                creatureInfo.Visible = false;
+            }
+            else
+            {
+                creatureInfo.Visible = true;
+
+                CreatureDescription desc = occupiedCreature.mCreatureDesc;
+                Image info = (Image)creatureInfo.GetNode("imageBG.image");
+                info.TextureName = desc.TextureName;
+                info.Texture = desc.Texture;
+
+                if(occupiedCreature.side == Side.Blue)
+                {
+                    info.Color = Color.Blue;
+                }
+                else
+                {
+                    info.Color = Color.Red;
+                }
+
+                ((Label)info.GetChild("name")).Text = desc.Name;
+                ((Label)info.GetChild("description")).Text = desc.Description;
+            }
+            
 
             if (gameState.winner != Side.Neutral)
             {
