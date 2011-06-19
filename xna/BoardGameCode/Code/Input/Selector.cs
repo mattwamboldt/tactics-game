@@ -10,6 +10,8 @@ using Board_Game.Rendering;
 using Board_Game.Input;
 using Board_Game.Creatures;
 using Board_Game.Code.Rendering;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace Board_Game.Logic
 {
@@ -35,13 +37,20 @@ namespace Board_Game.Logic
         //for drawing
         public Sprite mSprite;
         public Vector2 position;
-        private Creatures.Creature selectedCreature;
-        private Creatures.ClampArea CreatureClamp;
+        private Creature selectedCreature;
+        private ClampArea CreatureClamp;
+
+        //Audio for moving the selector around
+        private SoundEffect mMoveSound;
+        private SoundEffect mSelectSound;
+        private SoundEffect mDeSelectSound;
+        private SoundEffect mPlaceSound;
 
         public Selector(
                 Sprite selectorSprite,
                 GameGrid grid,
-                GameState gameState)
+                GameState gameState
+                )
         {
             position = new Vector2();
 
@@ -51,6 +60,14 @@ namespace Board_Game.Logic
             mGridRef = grid;
             mGameState = gameState;
             selectedCreature = null;
+        }
+
+        public void Initialize(ContentManager Content)
+        {
+            mMoveSound = Content.Load<SoundEffect>("audio/sfx/Move");
+            mSelectSound = Content.Load<SoundEffect>("audio/sfx/Select");
+            mDeSelectSound = Content.Load<SoundEffect>("audio/sfx/DeSelect");
+            mPlaceSound = Content.Load<SoundEffect>("audio/sfx/Place");
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
@@ -79,18 +96,22 @@ namespace Board_Game.Logic
             if (InputManager.Get().isTriggered(Button.Up))
             {
                 MoveUp();
+                mMoveSound.Play();
             }
             if (InputManager.Get().isTriggered(Button.Down))
             {
                 MoveDown();
+                mMoveSound.Play();
             }
             if (InputManager.Get().isTriggered(Button.Left))
             {
                 MoveLeft();
+                mMoveSound.Play();
             }
             if (InputManager.Get().isTriggered(Button.Right))
             {
                 MoveRight();
+                mMoveSound.Play();
             }
             if (InputManager.Get().isTriggered(Button.Cross))
             {
@@ -111,6 +132,7 @@ namespace Board_Game.Logic
             {
                 selectedCreature.isSelected = false;
                 selectedCreature = null;
+                mDeSelectSound.Play();
             }
         }
 
@@ -124,6 +146,7 @@ namespace Board_Game.Logic
                     selectedCreature = Creature;
                     Creature.isSelected = true;
                     CreatureClamp = selectedCreature.GetClampArea();
+                    mSelectSound.Play();
                 }
             }
         }
@@ -175,6 +198,7 @@ namespace Board_Game.Logic
                         selectedCreature = Creature;
                         Creature.isSelected = true;
                         CreatureClamp = selectedCreature.GetClampArea();
+                        mSelectSound.Play();
                     }
                 }
             }
@@ -185,6 +209,7 @@ namespace Board_Game.Logic
                 selectedCreature = null;
 
                 mGameState.EndTurn();
+                mPlaceSound.Play();
             }
         }
 

@@ -86,6 +86,8 @@ namespace Board_Game.Logic
                 grenadierDesc,
                 soldierDesc
             );
+
+            mSelector.Initialize(content);
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
