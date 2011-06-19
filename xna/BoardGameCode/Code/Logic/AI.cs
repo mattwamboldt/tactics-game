@@ -367,6 +367,85 @@ namespace Board_Game.Logic
             return score;
         }
 
+        public virtual Vector2 GetNearestTarget(Creature source)
+        {
+            List<Creature> opposingCreatures;
+
+            if (source.side == Side.Red)
+            {
+                opposingCreatures = State.Blue.Creatures;
+            }
+            else
+            {
+                opposingCreatures = State.Red.Creatures;
+            }
+
+            Vector2 originalPoint = new Vector2(source.GetX(), source.GetY());
+            Vector2 nearestTarget = new Vector2(-1, -1);
+
+            double distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
+
+            foreach (Creature Creature in opposingCreatures)
+            {
+                if (source.mCreatureDesc.CanAttack(Creature.mCreatureDesc.Type))
+                {
+                    var x = Creature.GetX();
+                    var y = Creature.GetY();
+                    double distanceToCreature = GetDistanceToCoordinates(originalPoint, x, y);
+
+                    //if an opponent is on their mine they're safe so don't bother with them.
+                    if ((distanceToCreature < distanceToNearest && source.IsEnemyMine(x, y) == false)
+                       || nearestTarget.X == -1)
+                    {
+                        nearestTarget.X = x;
+                        nearestTarget.Y = y;
+                        distanceToNearest = distanceToCreature;
+                    }
+                }
+            }
+
+            return nearestTarget;
+        }
+
+        public Vector2 GetNearestMine(Creature source)
+        {
+            Vector2 originalPoint = new Vector2(source.GetX(), source.GetY());
+            Vector2 nearestMine = new Vector2(-1, -1);
+
+            double distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
+
+            //The outer loop goes through the mines
+            foreach (Mine mine in mGrid.mMines)
+            {
+                //we want to head for mines of the opposite colour
+                if (mine.side != source.side)
+                {
+                    Vector2 mineCorner = mine.position;
+
+                    //inner loops checks the mine itself
+                    for (var t = 0; t < 2; ++t)
+                    {
+                        for (var u = 0; u < 2; ++u)
+                        {
+                            var x = mineCorner.X * 2 + u;
+                            var y = mineCorner.Y * 2 + t;
+                            var distanceToMineSquare = GetDistanceToCoordinates(originalPoint, x, y);
+
+                            if (distanceToMineSquare < distanceToNearest
+                               || nearestMine.Y == -1)
+                            {
+                                nearestMine.X = x;
+                                nearestMine.Y = y;
+                                distanceToNearest = distanceToMineSquare;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return nearestMine;
+        }
+
         /*
             This rates the how valuable a Creature is out of all the Creatures
         */
@@ -400,9 +479,18 @@ namespace Board_Game.Logic
                         Creatures = mGameState.Blue.Creatures;
                     }
 
-                    foreach (Creatures.Creature Creature in Creatures)
+                    foreach (Creature Creature in Creatures)
                     {
-                        Vector2 target = Creature.GetNearestTarget();
+                        Vector2 target;
+
+                        if (Creature.mCreatureDesc.Type == CreatureType.Miner)
+                        {
+                            target = GetNearestMine(Creature);
+                        }
+                        else
+                        {
+                            target = GetNearestTarget(Creature);
+                        }
 
                         Stack<Move> possibleMoves = GetMoveList(Creature, target);
 

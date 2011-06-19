@@ -68,8 +68,8 @@ namespace Board_Game.Logic
 
             for (int x = 0; x < GameState.GRID_WIDTH / 2; ++x)
             {
-                Creatures.Deminer miner = new Deminer(mGrid, mAI, minerDesc);
-                Creatures.Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierDesc);
+                Creature miner = new Creature(mGrid, mAI, minerDesc);
+                Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierDesc);
 
                 miner.side = mSide;
                 grenadier.side = mSide;

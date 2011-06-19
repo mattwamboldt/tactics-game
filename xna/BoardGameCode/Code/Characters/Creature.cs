@@ -215,49 +215,5 @@ namespace Board_Game.Creatures
             return (Math.Floor((double)(x / 2)) % 2 == Math.Floor((double)(y / 2)) % 2)
                 && (grid.mTiles[x - x % 2, y - y % 2].mine.side != side);
         }
-
-        /*
-            Finds the space that the Creature most wants to move into
-         * //TODO: recalculates evey Creature to every other Creature, every AI update. why am I not caching the distances?
-        */
-        public virtual Vector2 GetNearestTarget()
-        {
-            List<Creature> opposingCreatures;
-
-            if (side == Side.Red)
-            {
-                opposingCreatures = mAIRef.State.Blue.Creatures;
-            }
-            else
-            {
-                opposingCreatures = mAIRef.State.Red.Creatures;
-            }
-
-            Vector2 originalPoint = new Vector2(GetX(), GetY());
-            Vector2 nearestTarget = new Vector2(-1, -1);
-
-            double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
-
-            foreach (Creature Creature in opposingCreatures)
-            {
-                if (mCreatureDesc.CanAttack(Creature.mCreatureDesc.Type))
-                {
-                    var x = Creature.GetX();
-                    var y = Creature.GetY();
-                    double distanceToCreature = mAIRef.GetDistanceToCoordinates(originalPoint, x, y);
-
-                    //if an opponent is on their mine they're safe so don't bother with them.
-                    if ((distanceToCreature < distanceToNearest && IsEnemyMine(x, y) == false)
-                       || nearestTarget.X == -1)
-                    {
-                        nearestTarget.X = x;
-                        nearestTarget.Y = y;
-                        distanceToNearest = distanceToCreature;
-                    }
-                }
-            }
-
-            return nearestTarget;
-        }
     }
 }
