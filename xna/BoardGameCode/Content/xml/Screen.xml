@@ -50,7 +50,7 @@
       </Item>
       <Item Type="Board_Game.UI.Image">
         <Name>tutorialBackground</Name>
-        <Position>30 445</Position>
+        <Position>30 565</Position>
         <Size>440 125</Size>
         <Visible>true</Visible>
         <Color>FF000000</Color>
@@ -138,7 +138,7 @@ Flying units will not be destroyed by mines.</Text>
       </Item>
       <Item Type="Board_Game.UI.Image">
         <Name>creatureInfo</Name>
-        <Position>500 500</Position>
+        <Position>500 620</Position>
         <Size>270 70</Size>
         <Visible>true</Visible>
         <Color>FF000000</Color>

@@ -34,6 +34,8 @@ namespace Board_Game
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
             mAI = new AI();
         }
@@ -125,7 +127,7 @@ namespace Board_Game
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(mBackground, new Rectangle(0, 0, 800, 600), Color.White);
+            spriteBatch.Draw(mBackground, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mScreen.Render(spriteBatch);
             spriteBatch.End();

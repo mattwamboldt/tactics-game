@@ -11,7 +11,7 @@ namespace Board_Game.Logic
 {
     class Tile
     {
-        public const float TILE_SIZE = 35;
+        public const float TILE_SIZE = 45;
 
         public Side side;
         public Creatures.Creature occupiedCreature;
