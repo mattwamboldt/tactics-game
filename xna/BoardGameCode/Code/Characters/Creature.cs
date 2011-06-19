@@ -36,23 +36,21 @@ namespace Board_Game.Creatures
 
         public Vector2 position;
 
-        public AI mAIRef;
         public bool isSelected;
 
         private Sprite mSprite;
 
-        public Creature(GameGrid gridRef, AI AIRef, CreatureDescription CreatureDesc)
+        public Creature(GameGrid gridRef, CreatureDescription CreatureDesc)
         {
             mCreatureDesc = CreatureDesc;
             originalX = 0;
             originalY = 0;
             grid = gridRef;
-            mAIRef = AIRef;
             side = Side.Neutral;
             position = new Vector2(0, 0);
             isSelected = false;
 
-            mSprite = new Sprite(mCreatureDesc.Texture, position, Color.White, ScreenDimensions());
+            mSprite = new Sprite(mCreatureDesc.Texture, position, Color.White, new Vector2(GridWidth * Tile.TILE_SIZE, GridHeight * Tile.TILE_SIZE));
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
@@ -77,11 +75,21 @@ namespace Board_Game.Creatures
             mSprite.Render(spriteBatch, parentPosition);
         }
 
+        public int GridWidth
+        {
+            get { return mCreatureDesc.SizeInSpaces.X; }
+        }
+
+        public int GridHeight
+        {
+            get { return mCreatureDesc.SizeInSpaces.Y; }
+        }
+
         public bool CheckOccupied(int newX, int newY)
         {
-            for (int x = 0; x < mCreatureDesc.SizeInSpaces.X; x++)
+            for (int x = 0; x < GridWidth; x++)
             {
-                for (int y = 0; y < mCreatureDesc.SizeInSpaces.Y; y++)
+                for (int y = 0; y < GridHeight; y++)
                 {
                     if (grid.mTiles[newX + x, newY + y].Occupied)
                     {
@@ -95,67 +103,17 @@ namespace Board_Game.Creatures
 
         public void SetLocation(int newX, int newY)
         {
-            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
-            {
-                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
-                {
-                    grid.mTiles[newX + x, newY + y].side = side;
-                    grid.mTiles[newX + x, newY + y].occupiedCreature = this;
-                }
-            }
-
             originalX = newX;
             originalY = newY;
             position.X = newX * Tile.TILE_SIZE;
             position.Y = newY * Tile.TILE_SIZE;
         }
 
-        public virtual void RemoveCreatures(int newX, int newY)
-        {
-            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
-            {
-                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
-                {
-                    if (grid.mTiles[newX + x, newY + y].Occupied)
-                    {
-                        Creature Creature = grid.mTiles[newX + x, newY + y].occupiedCreature;
-
-                        int CreatureX = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
-                        int CreatureY = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
-
-                        for (var u = 0; u < Creature.mCreatureDesc.SizeInSpaces.X; ++u)
-                        {
-                            for (var v = 0; v < Creature.mCreatureDesc.SizeInSpaces.Y; ++v)
-                            {
-                                grid.mTiles[CreatureX + u, CreatureY + v].side = Side.Neutral;
-                                grid.mTiles[CreatureX + u, CreatureY + v].occupiedCreature = null;
-                            }
-                        }
-
-                        mAIRef.State.RemoveCreature(Creature);
-                    }
-                }
-            }
-        }
-
-        public void Move(int newX, int newY)
-        {
-            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
-            {
-                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
-                {
-                    grid.mTiles[originalX + x, originalY + y].side = Side.Neutral;
-                    grid.mTiles[originalX + x, originalY + y].occupiedCreature = null;
-                }
-            }
-            SetLocation(newX, newY);
-        }
-
         public bool CanDestroyAllUnits(int newX, int newY)
         {
-            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
+            for (var x = 0; x < GridWidth; ++x)
             {
-                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
+                for (var y = 0; y < GridHeight; ++y)
                 {
                     Tile tile = grid.mTiles[newX + x, newY + y];
 
@@ -213,7 +171,7 @@ namespace Board_Game.Creatures
 
         public Vector2 ScreenDimensions()
         {
-            return new Vector2(mCreatureDesc.SizeInSpaces.X * Tile.TILE_SIZE, mCreatureDesc.SizeInSpaces.Y * Tile.TILE_SIZE);
+            return mSprite.Dimensions;
         }
 
         /*

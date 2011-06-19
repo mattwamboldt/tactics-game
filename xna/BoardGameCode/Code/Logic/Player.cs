@@ -20,17 +20,17 @@ namespace Board_Game.Logic
         public bool mIsHuman;
         public Side mSide;
         private List<Creature> mCreatures;
+        private GameState mGame;
         private GameGrid mGrid;
-        public AI mAI;
 
         public List<Creature> Creatures { get { return mCreatures; } }
 
-        public Player(bool isHuman, Side side, AI AIref)
+        public Player(bool isHuman, Side side,GameState game)
         {
             mIsHuman = isHuman;
             mSide = side;
-            mAI = AIref;
-            mGrid = AIref.mGrid;
+            mGame = game;
+            mGrid = mGame.mGrid;
         }
 
         public void CreateCreatures(
@@ -45,21 +45,21 @@ namespace Board_Game.Logic
 
             for( int x = 0; x < GameState.GRID_WIDTH/4; ++x )
             {
-                Creature bomber = new Creature(mGrid, mAI, bomberDesc);
-                Creature fighter = new Creature(mGrid, mAI, fighterDesc);
+                Creature bomber = new Creature(mGrid, bomberDesc);
+                Creature fighter = new Creature(mGrid, fighterDesc);
 
                 bomber.side = mSide;
                 fighter.side = mSide;
 
                 if (mSide == Side.Red)
                 {
-                    bomber.SetLocation((x * 4) + 2, (GameState.GRID_HEIGHT - 2));
-                    fighter.SetLocation(x * 4, (GameState.GRID_HEIGHT - 2));
+                    mGame.SetLocation((x * 4) + 2, (GameState.GRID_HEIGHT - 2), bomber);
+                    mGame.SetLocation(x * 4, (GameState.GRID_HEIGHT - 2), fighter);
                 }
                 else
                 {
-                    bomber.SetLocation(x * 4, 0);
-                    fighter.SetLocation((x * 4) + 2, 0);
+                    mGame.SetLocation(x * 4, 0, bomber);
+                    mGame.SetLocation((x * 4) + 2, 0, fighter);
                 }
 
                 mCreatures.Add(bomber);
@@ -68,21 +68,21 @@ namespace Board_Game.Logic
 
             for (int x = 0; x < GameState.GRID_WIDTH / 2; ++x)
             {
-                Creature miner = new Creature(mGrid, mAI, minerDesc);
-                Creature grenadier = new Creature(mGrid, mAI, grenadierDesc);
+                Creature miner = new Creature(mGrid, minerDesc);
+                Creature grenadier = new Creature(mGrid, grenadierDesc);
 
                 miner.side = mSide;
                 grenadier.side = mSide;
 
                 if (mSide == Side.Red)
                 {
-                    miner.SetLocation(((x % 2) + 1) + (int)(4 * Math.Floor(x / 2.0f)), (GameState.GRID_HEIGHT - 3));
-                    grenadier.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), (GameState.GRID_HEIGHT - 3));
+                    mGame.SetLocation(((x % 2) + 1) + (int)(4 * Math.Floor(x / 2.0f)), (GameState.GRID_HEIGHT - 3), miner);
+                    mGame.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), (GameState.GRID_HEIGHT - 3), grenadier);
                 }
                 else
                 {
-                    miner.SetLocation(((x % 2) + 1) + (4 * (int)(Math.Floor(x / 2.0f))), 2);
-                    grenadier.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), 2);
+                    mGame.SetLocation(((x % 2) + 1) + (4 * (int)(Math.Floor(x / 2.0f))), 2, miner);
+                    mGame.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), 2, grenadier);
                 }
 
                 mCreatures.Add(miner);
@@ -91,16 +91,16 @@ namespace Board_Game.Logic
 
             for( var x = 0; x < GameState.GRID_WIDTH; ++x )
             {
-                Creature soldier = new Creature(mGrid, mAI, soldierDesc);
+                Creature soldier = new Creature(mGrid, soldierDesc);
                 soldier.side = mSide;
 
                 if (mSide == Side.Red)
                 {
-                    soldier.SetLocation(x, (GameState.GRID_HEIGHT - 4));
+                    mGame.SetLocation(x, (GameState.GRID_HEIGHT - 4), soldier);
                 }
                 else
                 {
-                    soldier.SetLocation(x, 3);
+                    mGame.SetLocation(x, 3, soldier);
                 }
 
                 mCreatures.Add(soldier);

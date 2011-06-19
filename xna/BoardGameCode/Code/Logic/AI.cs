@@ -132,8 +132,8 @@ namespace Board_Game.Logic
             var lowerX = Rounding.FloorAtMinimum(x - 1, 0);
             var lowerY = Rounding.FloorAtMinimum(y - 1, 0);
 
-            var upperX = Rounding.CapAtMaximum(x + Creature.mCreatureDesc.SizeInSpaces.X, GameState.GRID_WIDTH - 1);
-            var upperY = Rounding.CapAtMaximum(y + Creature.mCreatureDesc.SizeInSpaces.Y, GameState.GRID_HEIGHT - 1);
+            var upperX = Rounding.CapAtMaximum(x + Creature.GridWidth, GameState.GRID_WIDTH - 1);
+            var upperY = Rounding.CapAtMaximum(y + Creature.GridHeight, GameState.GRID_HEIGHT - 1);
 
             for (var t = lowerX; t <= upperX; ++t)
             {
@@ -242,9 +242,9 @@ namespace Board_Game.Logic
 
             var currentDistance = GetDistanceToCoordinates(target, Creature.GetX(), Creature.GetY());
 
-            for (int x = CreatureLeftBound; x <= CreatureRightBound; x += Creature.mCreatureDesc.SizeInSpaces.X)
+            for (int x = CreatureLeftBound; x <= CreatureRightBound; x += Creature.GridWidth)
             {
-                for (int y = CreatureTopBound; y <= CreatureBottomBound; y += Creature.mCreatureDesc.SizeInSpaces.Y)
+                for (int y = CreatureTopBound; y <= CreatureBottomBound; y += Creature.GridHeight)
                 {
                     //staying place is the only invalid move right now
                     if(x != Creature.GetX() || y != Creature.GetY())
@@ -336,9 +336,9 @@ namespace Board_Game.Logic
             //check the sqaures we're moving into, if they contain a unit we can't
             //attack then return zero, otherwise tally up the destruction
 
-            for(int x = 0; x < sourceCreature.mCreatureDesc.SizeInSpaces.X; x++)
+            for(int x = 0; x < sourceCreature.GridWidth; x++)
             {
-                for (int y = 0; y < sourceCreature.mCreatureDesc.SizeInSpaces.Y; y++ )
+                for (int y = 0; y < sourceCreature.GridHeight; y++ )
                 {
                     if (mGrid.mTiles[x + desiredX, y + desiredY].Occupied)
                     {
@@ -511,10 +511,15 @@ namespace Board_Game.Logic
 
                     if (CreatureToMove.CheckOccupied((int)bestMove.position.X, (int)bestMove.position.Y))
                     {
-                        CreatureToMove.RemoveCreatures((int)bestMove.position.X, (int)bestMove.position.Y);
+                       mGameState.DestroyCreatures(
+                           (int)bestMove.position.X,
+                           (int)bestMove.position.Y,
+                           CreatureToMove.GridWidth,
+                           CreatureToMove.GridHeight
+                       );
                     }
 
-                    CreatureToMove.Move((int)bestMove.position.X, (int)bestMove.position.Y);
+                    mGameState.Move((int)bestMove.position.X, (int)bestMove.position.Y, CreatureToMove);
 
                     mGameState.EndTurn();
                 }

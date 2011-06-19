@@ -153,8 +153,8 @@ namespace Board_Game.Logic
 
         private bool isInCreatureClampArea()
         {
-            int x = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.SizeInSpaces.X);
-            int y = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.SizeInSpaces.Y);
+            int x = ((int)position.X - (int)position.X % selectedCreature.GridWidth);
+            int y = ((int)position.Y - (int)position.Y % selectedCreature.GridHeight);
 
             ClampArea CreatureArea = selectedCreature.GetClampArea();
             return x * Tile.TILE_SIZE >= CreatureArea.leftCut
@@ -165,8 +165,8 @@ namespace Board_Game.Logic
 
         private void SelectSquare()
         {
-            int x = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.SizeInSpaces.X);
-            int y = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.SizeInSpaces.Y);
+            int x = ((int)position.X - (int)position.X % selectedCreature.GridWidth);
+            int y = ((int)position.Y - (int)position.Y % selectedCreature.GridHeight);
 
             if (selectedCreature.CheckOccupied(x, y))
             {
@@ -181,8 +181,8 @@ namespace Board_Game.Logic
                 else if (isInCreatureClampArea() && selectedCreature.CanDestroyAllUnits(x, y))
                 {
                     selectedCreature.isSelected = false;
-                    selectedCreature.RemoveCreatures(x, y);
-                    selectedCreature.Move(x, y);
+                    mGameState.DestroyCreatures(x, y, selectedCreature.GridWidth, selectedCreature.GridHeight);
+                    mGameState.Move(x, y, selectedCreature);
                     selectedCreature = null;
 
                     mGameState.EndTurn();
@@ -205,7 +205,7 @@ namespace Board_Game.Logic
             else if(isInCreatureClampArea())
             {
                 selectedCreature.isSelected = false;
-                selectedCreature.Move(x, y);
+                mGameState.Move(x, y, selectedCreature);
                 selectedCreature = null;
 
                 mGameState.EndTurn();

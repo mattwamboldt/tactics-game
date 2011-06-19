@@ -39,6 +39,8 @@ namespace Board_Game.Logic
         public Player Red { get { return mRed; } }
         public Player Blue { get { return mBlue; } }
 
+        private AI mAI;
+
         public GameState(AI AIref,
                 Sprite selectorSprite)
         {
@@ -49,11 +51,13 @@ namespace Board_Game.Logic
                 TextureManager.Get().Find("textures/tiles/mine")
             );
             
+            mAI = AIref;
+
             AIref.mGrid = mGrid;
             
             //passing in the same AI for now, but could be different later
-            mRed = new Player(true, Side.Red, AIref);
-            mBlue = new Player(false, Side.Blue, AIref);
+            mRed = new Player(true, Side.Red, this);
+            mBlue = new Player(false, Side.Blue, this);
 
             mCurrentPlayer = mRed;
 
@@ -105,7 +109,7 @@ namespace Board_Game.Logic
 
             if (mCurrentPlayer.mIsHuman == false)
             {
-                mCurrentPlayer.mAI.Update(gameTime);
+                mAI.Update(gameTime);
             }
             else
             {
@@ -180,11 +184,11 @@ namespace Board_Game.Logic
         {
             if (mCurrentPlayer.mSide == Side.Red)
             {
-                mCurrentPlayer.mAI.CheckMines(Side.Blue);
+                mAI.CheckMines(Side.Blue);
             }
             else if (mCurrentPlayer.mSide == Side.Blue)
             {
-                mCurrentPlayer.mAI.CheckMines(Side.Red);
+                mAI.CheckMines(Side.Red);
             }
 
             CheckVictory();
@@ -200,6 +204,59 @@ namespace Board_Game.Logic
             else
             {
                 Red.RemoveCreature(Creature);
+            }
+        }
+
+        public void ClearArea(int x, int y, int width, int height)
+        {
+            for (var u = 0; u < width; ++u)
+            {
+                for (var v = 0; v < height; ++v)
+                {
+                    mGrid.mTiles[x + u, y + v].side = Side.Neutral;
+                    mGrid.mTiles[x + u, y + v].occupiedCreature = null;
+                }
+            }
+        }
+
+        public void SetLocation(int x, int y, Creature creature)
+        {
+            for (var u = 0; u < creature.GridWidth; ++u)
+            {
+                for (var v = 0; v < creature.GridHeight; ++v)
+                {
+                    mGrid.mTiles[x + u, y + v].side = creature.side;
+                    mGrid.mTiles[x + u, y + v].occupiedCreature = creature;
+                }
+            }
+
+            creature.SetLocation(x, y);
+        }
+
+        public void Move(int newX, int newY, Creature creature)
+        {
+            ClearArea(creature.originalX, creature.originalY, creature.GridWidth, creature.GridHeight);
+            SetLocation(newX, newY, creature);
+        }
+
+        // Finds and destoys the creatures in a given area
+        public void DestroyCreatures(int newX, int newY, int width, int height)
+        {
+            for (var x = 0; x < width; ++x)
+            {
+                for (var y = 0; y < height; ++y)
+                {
+                    if (mGrid.mTiles[newX + x, newY + y].Occupied)
+                    {
+                        Creature Creature = mGrid.mTiles[newX + x, newY + y].occupiedCreature;
+
+                        int CreatureX = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
+                        int CreatureY = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
+
+                        ClearArea(CreatureX, CreatureY, Creature.GridWidth, Creature.GridHeight);
+                        RemoveCreature(Creature);
+                    }
+                }
             }
         }
     }
