@@ -118,7 +118,21 @@ namespace Board_Game.Creatures
                 {
                     if (grid.mTiles[newX + x, newY + y].Occupied)
                     {
-                        mAIRef.State.RemoveCreature(grid.mTiles[newX + x, newY + y].occupiedCreature);
+                        Creature Creature = grid.mTiles[newX + x, newY + y].occupiedCreature;
+
+                        int CreatureX = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
+                        int CreatureY = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
+
+                        for (var u = 0; u < Creature.mCreatureDesc.SizeInSpaces.X; ++u)
+                        {
+                            for (var v = 0; v < Creature.mCreatureDesc.SizeInSpaces.Y; ++v)
+                            {
+                                grid.mTiles[CreatureX + u, CreatureY + v].side = Side.Neutral;
+                                grid.mTiles[CreatureX + u, CreatureY + v].occupiedCreature = null;
+                            }
+                        }
+
+                        mAIRef.State.RemoveCreature(Creature);
                     }
                 }
             }
