@@ -20,10 +20,12 @@ namespace Board_Game.Creatures
     //Contains all the code for a Creature.
     class Creature
     {
-        //These allow the Creature to remember its previous location and
-        //return there in the event of an invalid move
-        public int originalX;
-        public int originalY;
+        public Point mGridLocation;
+        public Point GridLocation
+        {
+            get { return mGridLocation; }
+            set { mGridLocation = value; }
+        }
 
         //this allows us to set the colour
         public Side side;
@@ -39,8 +41,8 @@ namespace Board_Game.Creatures
         public Creature(CreatureDescription CreatureDesc)
         {
             mCreatureDesc = CreatureDesc;
-            originalX = 0;
-            originalY = 0;
+            mGridLocation.X = 0;
+            mGridLocation.Y = 0;
             side = Side.Neutral;
             position = new Vector2(0, 0);
             isSelected = false;
@@ -92,8 +94,8 @@ namespace Board_Game.Creatures
 
         public void SetLocation(int newX, int newY)
         {
-            originalX = newX;
-            originalY = newY;
+            mGridLocation.X = newX;
+            mGridLocation.Y = newY;
             position.X = newX * Tile.TILE_SIZE;
             position.Y = newY * Tile.TILE_SIZE;
         }
@@ -105,19 +107,17 @@ namespace Board_Game.Creatures
             returnValue.rightCut = (int)(position.X + ScreenDimensions().X);
             returnValue.topCut = (int)(position.Y - ScreenDimensions().Y);
             returnValue.bottomCut = (int)(position.Y + ScreenDimensions().Y);
-            originalX = (int)((position.X - position.X % ScreenDimensions().X) / Tile.TILE_SIZE);
-            originalY = (int)((position.Y - position.Y % ScreenDimensions().Y) / Tile.TILE_SIZE);
             return returnValue;
         }
         
         public int GetX()
         {
-            return (int)(position.X / Tile.TILE_SIZE);
+            return mGridLocation.X;
         }
 
         public int GetY()
         {
-            return (int)(position.Y / Tile.TILE_SIZE);
+            return mGridLocation.Y;
         }
 
         public Vector2 ScreenDimensions()

@@ -236,7 +236,7 @@ namespace Board_Game.Logic
 
         public void Move(int newX, int newY, Creature creature)
         {
-            ClearArea(creature.originalX, creature.originalY, creature.GridWidth, creature.GridHeight);
+            ClearArea(creature.GridLocation.X, creature.GridLocation.Y, creature.GridWidth, creature.GridHeight);
             SetLocation(newX, newY, creature);
         }
 

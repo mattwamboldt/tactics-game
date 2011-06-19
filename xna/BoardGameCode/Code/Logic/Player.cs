@@ -6,6 +6,7 @@ using System.Text;
 using Board_Game.Creatures;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Board_Game.Code.Characters;
 
 namespace Board_Game.Logic
 {
@@ -18,16 +19,18 @@ namespace Board_Game.Logic
     {
         public bool mIsHuman;
         public Side mSide;
-        private List<Creature> mCreatures;
+        private Army mArmy;
         private GameState mGame;
 
-        public List<Creature> Creatures { get { return mCreatures; } }
+        public List<Creature> Creatures { get { return mArmy.Members; } }
 
         public Player(bool isHuman, Side side,GameState game)
         {
             mIsHuman = isHuman;
             mSide = side;
             mGame = game;
+            mArmy = new Army();
+            mArmy.Side = side;
         }
 
         public void CreateCreatures(
@@ -38,81 +41,34 @@ namespace Board_Game.Logic
             CreatureDescription soldierDesc
             )
         {
-            mCreatures = new List<Creature>(GameState.GRID_WIDTH / 2 + GameState.GRID_WIDTH * 2);
+            mArmy.Build(
+                bomberDesc,
+                fighterDesc,
+                minerDesc,
+                grenadierDesc,
+                soldierDesc
+            );
 
-            for( int x = 0; x < GameState.GRID_WIDTH/4; ++x )
+            PlaceOnField();
+        }
+
+        public void PlaceOnField()
+        {
+            foreach (Creature creature in mArmy.Members)
             {
-                Creature bomber = new Creature(bomberDesc);
-                Creature fighter = new Creature(fighterDesc);
-
-                bomber.side = mSide;
-                fighter.side = mSide;
-
-                if (mSide == Side.Red)
-                {
-                    mGame.SetLocation((x * 4) + 2, (GameState.GRID_HEIGHT - 2), bomber);
-                    mGame.SetLocation(x * 4, (GameState.GRID_HEIGHT - 2), fighter);
-                }
-                else
-                {
-                    mGame.SetLocation(x * 4, 0, bomber);
-                    mGame.SetLocation((x * 4) + 2, 0, fighter);
-                }
-
-                mCreatures.Add(bomber);
-                mCreatures.Add(fighter);
-            }
-
-            for (int x = 0; x < GameState.GRID_WIDTH / 2; ++x)
-            {
-                Creature miner = new Creature(minerDesc);
-                Creature grenadier = new Creature(grenadierDesc);
-
-                miner.side = mSide;
-                grenadier.side = mSide;
-
-                if (mSide == Side.Red)
-                {
-                    mGame.SetLocation(((x % 2) + 1) + (int)(4 * Math.Floor(x / 2.0f)), (GameState.GRID_HEIGHT - 3), miner);
-                    mGame.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), (GameState.GRID_HEIGHT - 3), grenadier);
-                }
-                else
-                {
-                    mGame.SetLocation(((x % 2) + 1) + (4 * (int)(Math.Floor(x / 2.0f))), 2, miner);
-                    mGame.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), 2, grenadier);
-                }
-
-                mCreatures.Add(miner);
-                mCreatures.Add(grenadier);
-            }
-
-            for( var x = 0; x < GameState.GRID_WIDTH; ++x )
-            {
-                Creature soldier = new Creature(soldierDesc);
-                soldier.side = mSide;
-
-                if (mSide == Side.Red)
-                {
-                    mGame.SetLocation(x, (GameState.GRID_HEIGHT - 4), soldier);
-                }
-                else
-                {
-                    mGame.SetLocation(x, 3, soldier);
-                }
-
-                mCreatures.Add(soldier);
+                mGame.SetLocation(creature.GridLocation.X, creature.GridLocation.Y, creature);
             }
         }
 
         public void RemoveCreature(Creatures.Creature Creature)
         {
-            mCreatures.Remove(Creature);
+            mArmy.Members.Remove(Creature);
             Creature = null;
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
         {
-            foreach (Creature Creature in mCreatures)
+            foreach (Creature Creature in mArmy.Members)
             {
                 Creature.Render(spriteBatch, parentLocation);
             }
