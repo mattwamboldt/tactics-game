@@ -43,7 +43,7 @@ namespace Board_Game.Logic
         {
             mCreatures = new List<Creature>(GameState.GRID_WIDTH / 2 + GameState.GRID_WIDTH * 2);
 
-            for( int i = 0; i < GameState.GRID_WIDTH/4; ++i )
+            for( int x = 0; x < GameState.GRID_WIDTH/4; ++x )
             {
                 Creature bomber = new Creature(mGrid, mAI, bomberDesc);
                 Creature fighter = new Creature(mGrid, mAI, fighterDesc);
@@ -53,20 +53,20 @@ namespace Board_Game.Logic
 
                 if (mSide == Side.Red)
                 {
-                    bomber.SetLocation((GameState.GRID_HEIGHT - 2), (i * 4) + 2);
-                    fighter.SetLocation((GameState.GRID_HEIGHT - 2), i * 4);
+                    bomber.SetLocation((x * 4) + 2, (GameState.GRID_HEIGHT - 2));
+                    fighter.SetLocation(x * 4, (GameState.GRID_HEIGHT - 2));
                 }
                 else
                 {
-                    bomber.SetLocation(0, i * 4);
-                    fighter.SetLocation(0, (i * 4) + 2);
+                    bomber.SetLocation(x * 4, 0);
+                    fighter.SetLocation((x * 4) + 2, 0);
                 }
 
                 mCreatures.Add(bomber);
                 mCreatures.Add(fighter);
             }
 
-            for (int i = 0; i < GameState.GRID_WIDTH / 2; ++i)
+            for (int x = 0; x < GameState.GRID_WIDTH / 2; ++x)
             {
                 Creatures.Deminer miner = new Deminer(mGrid, mAI, minerDesc);
                 Creatures.Grenadier grenadier = new Grenadier(mGrid, mAI, grenadierDesc);
@@ -76,31 +76,31 @@ namespace Board_Game.Logic
 
                 if (mSide == Side.Red)
                 {
-                    miner.SetLocation((GameState.GRID_HEIGHT - 3), ((i % 2) + 1) + (int)(4 * Math.Floor(i / 2.0f)));
-                    grenadier.SetLocation((GameState.GRID_HEIGHT - 3), (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
+                    miner.SetLocation(((x % 2) + 1) + (int)(4 * Math.Floor(x / 2.0f)), (GameState.GRID_HEIGHT - 3));
+                    grenadier.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), (GameState.GRID_HEIGHT - 3));
                 }
                 else
                 {
-                    miner.SetLocation(2, ((i % 2) + 1) + (4 * (int)(Math.Floor(i / 2.0f))));
-                    grenadier.SetLocation(2, (int)(Math.Floor((i + 1) / 2.0f) * 4 - i % 2));
+                    miner.SetLocation(((x % 2) + 1) + (4 * (int)(Math.Floor(x / 2.0f))), 2);
+                    grenadier.SetLocation((int)(Math.Floor((x + 1) / 2.0f) * 4 - x % 2), 2);
                 }
 
                 mCreatures.Add(miner);
                 mCreatures.Add(grenadier);
             }
 
-            for( var i = 0; i < GameState.GRID_WIDTH; ++i )
+            for( var x = 0; x < GameState.GRID_WIDTH; ++x )
             {
                 Creature soldier = new Creature(mGrid, mAI, soldierDesc);
                 soldier.side = mSide;
 
                 if (mSide == Side.Red)
                 {
-                    soldier.SetLocation((GameState.GRID_HEIGHT - 4), i);
+                    soldier.SetLocation(x, (GameState.GRID_HEIGHT - 4));
                 }
                 else
                 {
-                    soldier.SetLocation(3, i);
+                    soldier.SetLocation(x, 3);
                 }
 
                 mCreatures.Add(soldier);

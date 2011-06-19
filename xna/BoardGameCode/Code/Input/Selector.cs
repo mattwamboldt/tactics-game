@@ -116,9 +116,9 @@ namespace Board_Game.Logic
 
         private void SelectCreature()
         {
-            if (mGridRef.mTiles[(int)position.Y, (int)position.X].Occupied)
+            if (mGridRef.mTiles[(int)position.X, (int)position.Y].Occupied)
             {
-                Creatures.Creature Creature = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedCreature;
+                Creatures.Creature Creature = mGridRef.mTiles[(int)position.X, (int)position.Y].occupiedCreature;
                 if (Creature.side == mSide)
                 {
                     selectedCreature = Creature;
@@ -130,21 +130,24 @@ namespace Board_Game.Logic
 
         private bool isInCreatureClampArea()
         {
+            int x = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.SizeInSpaces.X);
+            int y = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.SizeInSpaces.Y);
+
             ClampArea CreatureArea = selectedCreature.GetClampArea();
-            return position.X * Tile.TILE_SIZE >= CreatureArea.leftCut
-                && position.Y * Tile.TILE_SIZE >= CreatureArea.topCut
-                && position.X * Tile.TILE_SIZE <= CreatureArea.rightCut
-                && position.Y * Tile.TILE_SIZE <= CreatureArea.bottomCut;
+            return x * Tile.TILE_SIZE >= CreatureArea.leftCut
+                && y * Tile.TILE_SIZE >= CreatureArea.topCut
+                && x * Tile.TILE_SIZE <= CreatureArea.rightCut
+                && y * Tile.TILE_SIZE <= CreatureArea.bottomCut;
         }
 
         private void SelectSquare()
         {
-            int j = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.SizeInSpaces.X);
-            int i = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.SizeInSpaces.Y);
+            int x = ((int)position.X - (int)position.X % selectedCreature.mCreatureDesc.SizeInSpaces.X);
+            int y = ((int)position.Y - (int)position.Y % selectedCreature.mCreatureDesc.SizeInSpaces.Y);
 
-            if (selectedCreature.CheckOccupied(i, j))
+            if (selectedCreature.CheckOccupied(x, y))
             {
-                Creatures.Creature Creature = mGridRef.mTiles[i, j].occupiedCreature;
+                Creatures.Creature Creature = mGridRef.mTiles[x, y].occupiedCreature;
 
                 //toggle selection of the current Creature
                 if (selectedCreature == Creature)
@@ -152,11 +155,11 @@ namespace Board_Game.Logic
                     Deselect();
                 }
                 //destroy Creatures in your move radius
-                else if (isInCreatureClampArea() && selectedCreature.CanDestroyAllUnits(i, j))
+                else if (isInCreatureClampArea() && selectedCreature.CanDestroyAllUnits(x, y))
                 {
                     selectedCreature.isSelected = false;
-                    selectedCreature.RemoveCreatures(i, j);
-                    selectedCreature.Move(i, j);
+                    selectedCreature.RemoveCreatures(x, y);
+                    selectedCreature.Move(x, y);
                     selectedCreature = null;
 
                     mGameState.EndTurn();
@@ -164,7 +167,7 @@ namespace Board_Game.Logic
                 //switch to friendly Creatures
                 else
                 {
-                    Creature = mGridRef.mTiles[(int)position.Y, (int)position.X].occupiedCreature;
+                    Creature = mGridRef.mTiles[(int)position.X, (int)position.Y].occupiedCreature;
 
                     if (Creature != null && Creature.side == mSide)
                     {
@@ -178,7 +181,7 @@ namespace Board_Game.Logic
             else if(isInCreatureClampArea())
             {
                 selectedCreature.isSelected = false;
-                selectedCreature.Move(i, j);
+                selectedCreature.Move(x, y);
                 selectedCreature = null;
 
                 mGameState.EndTurn();

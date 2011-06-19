@@ -48,7 +48,7 @@ namespace Board_Game.UI
 
             //shows and hides the info box
             Vector2 selectorPosition = gameState.Selector.position;
-            Creature occupiedCreature = gameState.mGrid.mTiles[(int)selectorPosition.Y, (int)selectorPosition.X].occupiedCreature;
+            Creature occupiedCreature = gameState.mGrid.mTiles[(int)selectorPosition.X, (int)selectorPosition.Y].occupiedCreature;
             Image creatureInfo = (Image)Root.GetNode("creatureInfo");
 
             if (occupiedCreature == null)

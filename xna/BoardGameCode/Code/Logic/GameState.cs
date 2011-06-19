@@ -33,7 +33,7 @@ namespace Board_Game.Logic
         public Selector Selector { get { return mSelector; } }
         public Side winner;
 
-        public const int GRID_WIDTH = 12;
+        public const int GRID_WIDTH = 24;
         public const int GRID_HEIGHT = 12;
 
         public Player Red { get { return mRed; } }
@@ -142,11 +142,11 @@ namespace Board_Game.Logic
         {
             winner = mGrid.mTiles[0, 0].mine.side;
 
-            for (var i = 0; i < GameState.GRID_WIDTH / 2; ++i)
+            for (var x = 0; x < GameState.GRID_WIDTH / 2; ++x)
             {
-                for (var j = 0; j < GameState.GRID_HEIGHT / 2; ++j)
+                for (var y = 0; y < GameState.GRID_HEIGHT / 2; ++y)
                 {
-                    if (i % 2 == j % 2 && winner != mGrid.mTiles[i * 2, j * 2].mine.side)
+                    if (x % 2 == y % 2 && winner != mGrid.mTiles[x * 2, y * 2].mine.side)
                     {
                         winner = Side.Neutral;
                         return false;

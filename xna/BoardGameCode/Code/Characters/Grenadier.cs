@@ -14,20 +14,20 @@ namespace Board_Game.Creatures
         {
         }
 
-        public override void RemoveCreatures(int newLocationI, int newLocationJ)
+        public override void RemoveCreatures(int newX, int newY)
         {
-	        var Creature = grid.mTiles[newLocationI, newLocationJ].occupiedCreature;
-            int CreatureLocationI = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
-            int CreatureLocationJ = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
-
+	        var Creature = grid.mTiles[newX, newY].occupiedCreature;
+            int CreatureX = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
+            int CreatureY = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
+            
             if (Creature.mCreatureDesc.CanFly)
 	        {
-		        for(var i = 0; i < 2; ++i)
+		        for(var x = 0; x < 2; ++x)
 		        {
-			        for(var j = 0; j < 2; ++j)
+			        for(var y = 0; y < 2; ++y)
 			        {
-                        grid.mTiles[CreatureLocationI + i, CreatureLocationJ + j].side = Side.Neutral;
-                        grid.mTiles[CreatureLocationI + i, CreatureLocationJ + j].occupiedCreature = null;
+                        grid.mTiles[CreatureX + x, CreatureY + y].side = Side.Neutral;
+                        grid.mTiles[CreatureX + x, CreatureY + y].occupiedCreature = null;
 			        }
 		        }
 	        }

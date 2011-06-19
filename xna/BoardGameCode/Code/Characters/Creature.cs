@@ -22,8 +22,8 @@ namespace Board_Game.Creatures
     {
         //These allow the Creature to remember its previous location and
         //return there in the event of an invalid move
-        public int originalI;
-        public int originalJ;
+        public int originalX;
+        public int originalY;
 
         //this allows us to set the colour
         public Side side;
@@ -44,8 +44,8 @@ namespace Board_Game.Creatures
         public Creature(GameGrid gridRef, AI AIRef, CreatureDescription CreatureDesc)
         {
             mCreatureDesc = CreatureDesc;
-            originalI = 0;
-            originalJ = 0;
+            originalX = 0;
+            originalY = 0;
             grid = gridRef;
             mAIRef = AIRef;
             side = Side.Neutral;
@@ -77,13 +77,13 @@ namespace Board_Game.Creatures
             mSprite.Render(spriteBatch, parentPosition);
         }
 
-        public bool CheckOccupied(int i, int j)
+        public bool CheckOccupied(int newX, int newY)
         {
-            for (int y = i; y < i + mCreatureDesc.SizeInSpaces.Y; y++)
+            for (int x = 0; x < mCreatureDesc.SizeInSpaces.X; x++)
             {
-                for (int x = j; x < j + mCreatureDesc.SizeInSpaces.X; x++)
+                for (int y = 0; y < mCreatureDesc.SizeInSpaces.Y; y++)
                 {
-                    if (grid.mTiles[y, x].Occupied)
+                    if (grid.mTiles[newX + x, newY + y].Occupied)
                     {
                         return true;
                     }
@@ -93,57 +93,57 @@ namespace Board_Game.Creatures
             return false;
         }
 
-        public void SetLocation(int newLocationI, int newLocationJ)
+        public void SetLocation(int newX, int newY)
         {
-            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
             {
-                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
                 {
-                    grid.mTiles[newLocationI + i, newLocationJ + j].side = side;
-                    grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature = this;
+                    grid.mTiles[newX + x, newY + y].side = side;
+                    grid.mTiles[newX + x, newY + y].occupiedCreature = this;
                 }
             }
 
-            originalI = newLocationI;
-            originalJ = newLocationJ;
-            position.X = newLocationJ * Tile.TILE_SIZE;
-            position.Y = newLocationI * Tile.TILE_SIZE;
+            originalX = newX;
+            originalY = newY;
+            position.X = newX * Tile.TILE_SIZE;
+            position.Y = newY * Tile.TILE_SIZE;
         }
 
-        public virtual void RemoveCreatures(int newLocationI, int newLocationJ)
+        public virtual void RemoveCreatures(int newX, int newY)
         {
-            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
             {
-                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
                 {
-                    if (grid.mTiles[newLocationI + i, newLocationJ + j].Occupied)
+                    if (grid.mTiles[newX + x, newY + y].Occupied)
                     {
-                        mAIRef.State.RemoveCreature(grid.mTiles[newLocationI + i, newLocationJ + j].occupiedCreature);
+                        mAIRef.State.RemoveCreature(grid.mTiles[newX + x, newY + y].occupiedCreature);
                     }
                 }
             }
         }
 
-        public void Move(int newLocationI, int newLocationJ)
+        public void Move(int newX, int newY)
         {
-            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
             {
-                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
                 {
-                    grid.mTiles[originalI + i, originalJ + j].side = Side.Neutral;
-                    grid.mTiles[originalI + i, originalJ + j].occupiedCreature = null;
+                    grid.mTiles[originalX + x, originalY + y].side = Side.Neutral;
+                    grid.mTiles[originalX + x, originalY + y].occupiedCreature = null;
                 }
             }
-            SetLocation(newLocationI, newLocationJ);
+            SetLocation(newX, newY);
         }
 
-        public bool CanDestroyAllUnits(int newI, int newJ)
+        public bool CanDestroyAllUnits(int newX, int newY)
         {
-            for (var i = 0; i < mCreatureDesc.SizeInSpaces.Y; ++i)
+            for (var x = 0; x < mCreatureDesc.SizeInSpaces.X; ++x)
             {
-                for (var j = 0; j < mCreatureDesc.SizeInSpaces.X; ++j)
+                for (var y = 0; y < mCreatureDesc.SizeInSpaces.Y; ++y)
                 {
-                    Tile tile = grid.mTiles[newI + i, newJ + j];
+                    Tile tile = grid.mTiles[newX + x, newY + y];
 
                     if ( tile.side == side //Cant attack friendlies
                       || ( tile.Occupied && mCreatureDesc.CanAttack(tile.occupiedCreature.mCreatureDesc.Type) == false))
@@ -163,8 +163,8 @@ namespace Board_Game.Creatures
             returnValue.rightCut = (int)(position.X + ScreenDimensions().X);
             returnValue.topCut = (int)(position.Y - ScreenDimensions().Y);
             returnValue.bottomCut = (int)(position.Y + ScreenDimensions().Y);
-            originalJ = (int)((position.X - position.X % ScreenDimensions().X) / Tile.TILE_SIZE);
-            originalI = (int)((position.Y - position.Y % ScreenDimensions().Y) / Tile.TILE_SIZE);
+            originalX = (int)((position.X - position.X % ScreenDimensions().X) / Tile.TILE_SIZE);
+            originalY = (int)((position.Y - position.Y % ScreenDimensions().Y) / Tile.TILE_SIZE);
 
             //Clamp the area so that it fits within the board.
             if (returnValue.leftCut < 0)
@@ -187,14 +187,14 @@ namespace Board_Game.Creatures
             return returnValue;
         }
         
-        public int GetI()
-        {
-            return (int)(position.Y / Tile.TILE_SIZE);
-        }
-
-        public int GetJ()
+        public int GetX()
         {
             return (int)(position.X / Tile.TILE_SIZE);
+        }
+
+        public int GetY()
+        {
+            return (int)(position.Y / Tile.TILE_SIZE);
         }
 
         public Vector2 ScreenDimensions()
@@ -205,15 +205,15 @@ namespace Board_Game.Creatures
         /*
             This tells us if a square is actually an enemy mine location.
         */
-        public bool IsEnemyMine(int i, int j)
+        public bool IsEnemyMine(int x, int y)
         {
             if (mCreatureDesc.CanFly || mCreatureDesc.Type == CreatureType.Miner)
             {
                 return false;
             }
 
-            return (Math.Floor((double)(i / 2)) % 2 == Math.Floor((double)(j / 2)) % 2)
-                && (grid.mTiles[i - i % 2, j - j % 2].mine.side != side);
+            return (Math.Floor((double)(x / 2)) % 2 == Math.Floor((double)(y / 2)) % 2)
+                && (grid.mTiles[x - x % 2, y - y % 2].mine.side != side);
         }
 
         /*
@@ -233,7 +233,7 @@ namespace Board_Game.Creatures
                 opposingCreatures = mAIRef.State.Red.Creatures;
             }
 
-            Vector2 originalPoint = new Vector2(GetJ(), GetI());
+            Vector2 originalPoint = new Vector2(GetX(), GetY());
             Vector2 nearestTarget = new Vector2(-1, -1);
 
             double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
@@ -242,16 +242,16 @@ namespace Board_Game.Creatures
             {
                 if (mCreatureDesc.CanAttack(Creature.mCreatureDesc.Type))
                 {
-                    var iCoord = Creature.GetI();
-                    var jCoord = Creature.GetJ();
-                    double distanceToCreature = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+                    var x = Creature.GetX();
+                    var y = Creature.GetY();
+                    double distanceToCreature = mAIRef.GetDistanceToCoordinates(originalPoint, x, y);
 
                     //if an opponent is on their mine they're safe so don't bother with them.
-                    if ((distanceToCreature < distanceToNearest && IsEnemyMine(iCoord, jCoord) == false)
-                       || nearestTarget.Y == -1)
+                    if ((distanceToCreature < distanceToNearest && IsEnemyMine(x, y) == false)
+                       || nearestTarget.X == -1)
                     {
-                        nearestTarget.Y = iCoord;
-                        nearestTarget.X = jCoord;
+                        nearestTarget.X = x;
+                        nearestTarget.Y = y;
                         distanceToNearest = distanceToCreature;
                     }
                 }

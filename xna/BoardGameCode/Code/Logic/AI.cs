@@ -124,20 +124,20 @@ namespace Board_Game.Logic
         /*
             This tells us if a square is adjacent to Creatures that will destroy the passed in Creatures.
         */
-        public bool IsDeathTrap(int i, int j, Creatures.Creature Creature)
+        public bool IsDeathTrap(int x, int y, Creatures.Creature Creature)
         {
-            var CreatureAtIJ = mGrid.mTiles[i, j].occupiedCreature;
+            var CreatureAtIJ = mGrid.mTiles[x, y].occupiedCreature;
 
             //first loop for adjacent ground Creatures
-            var lowerI = Rounding.FloorAtMinimum(i - 1, 0);
-            var lowerJ = Rounding.FloorAtMinimum(j - 1, 0);
+            var lowerX = Rounding.FloorAtMinimum(x - 1, 0);
+            var lowerY = Rounding.FloorAtMinimum(y - 1, 0);
 
-            var upperI = Rounding.CapAtMaximum(i + Creature.mCreatureDesc.SizeInSpaces.X, GameState.GRID_WIDTH - 1);
-            var upperJ = Rounding.CapAtMaximum(j + Creature.mCreatureDesc.SizeInSpaces.Y, GameState.GRID_HEIGHT - 1);
+            var upperX = Rounding.CapAtMaximum(x + Creature.mCreatureDesc.SizeInSpaces.X, GameState.GRID_WIDTH - 1);
+            var upperY = Rounding.CapAtMaximum(y + Creature.mCreatureDesc.SizeInSpaces.Y, GameState.GRID_HEIGHT - 1);
 
-            for (var t = lowerI; t <= upperI; ++t)
+            for (var t = lowerX; t <= upperX; ++t)
             {
-                for (var v = lowerJ; v <= upperJ; ++v)
+                for (var v = lowerY; v <= upperY; ++v)
                 {
                     var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
                     if (adjacentCreature != null
@@ -159,15 +159,15 @@ namespace Board_Game.Logic
             }
 
             //then loop for surrounding air Creatures
-            lowerI = Rounding.MakeEven(Rounding.FloorAtMinimum(i - 2, 0));
-            upperI = Rounding.MakeEven(Rounding.CapAtMaximum(i + 2, GameState.GRID_WIDTH - 2));
+            lowerX = Rounding.MakeEven(Rounding.FloorAtMinimum(x - 2, 0));
+            upperX = Rounding.MakeEven(Rounding.CapAtMaximum(x + 2, GameState.GRID_WIDTH - 2));
 
-            lowerJ = Rounding.MakeEven(Rounding.FloorAtMinimum(j - 2, 0));
-            upperJ = Rounding.MakeEven(Rounding.CapAtMaximum(j + 2, GameState.GRID_HEIGHT - 2));
+            lowerY = Rounding.MakeEven(Rounding.FloorAtMinimum(y - 2, 0));
+            upperY = Rounding.MakeEven(Rounding.CapAtMaximum(y + 2, GameState.GRID_HEIGHT - 2));
 
-            for (var t = lowerI; t <= upperI; t += 2)
+            for (var t = lowerX; t <= upperX; t += 2)
             {
-                for (var v = lowerJ; v <= upperJ; v += 2)
+                for (var v = lowerY; v <= upperY; v += 2)
                 {
                     var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
                     if (adjacentCreature != null
@@ -203,7 +203,7 @@ namespace Board_Game.Logic
                 {
                     for (var u = 0; u < 2; ++u)
                     {
-                        var square = mGrid.mTiles[(int)mine.position.Y * 2 + t, (int)mine.position.X * 2 + u];
+                        var square = mGrid.mTiles[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u];
                         if (square.Occupied)
                         {
                             if (square.occupiedCreature.mCreatureDesc.Type == Creatures.CreatureType.Miner
@@ -240,26 +240,26 @@ namespace Board_Game.Logic
             int CreatureTopBound = (int)((clamp.topCut - clamp.topCut % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
             int CreatureBottomBound = (int)((clamp.bottomCut - clamp.bottomCut % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
 
-            var currentDistance = GetDistanceToCoordinates(target, Creature.GetI(), Creature.GetJ());
+            var currentDistance = GetDistanceToCoordinates(target, Creature.GetX(), Creature.GetY());
 
-            for (int i = CreatureTopBound; i <= CreatureBottomBound; i += Creature.mCreatureDesc.SizeInSpaces.X)
+            for (int x = CreatureLeftBound; x <= CreatureRightBound; x += Creature.mCreatureDesc.SizeInSpaces.X)
             {
-                for (int j = CreatureLeftBound; j <= CreatureRightBound; j += Creature.mCreatureDesc.SizeInSpaces.Y)
+                for (int y = CreatureTopBound; y <= CreatureBottomBound; y += Creature.mCreatureDesc.SizeInSpaces.Y)
                 {
                     //staying place is the only invalid move right now
-                    if(i != Creature.GetI() || j != Creature.GetJ())
+                    if(x != Creature.GetX() || y != Creature.GetY())
                     {
                         Move newMove;
-                        newMove.position.Y = i;
-                        newMove.position.X = j;
+                        newMove.position.X = x;
+                        newMove.position.Y = y;
                         newMove.score = 0;
 
                         //factor in if the move will take another Creature
-                        if(Creature.CheckOccupied(i, j))
+                        if(Creature.CheckOccupied(x, y))
                         {
-                            if (Creature.CanDestroyAllUnits(i, j))
+                            if (Creature.CanDestroyAllUnits(x, y))
                             {
-                                var damageScore = GetDestructionScore(Creature, i, j);
+                                var damageScore = GetDestructionScore(Creature, x, y);
                                 if(damageScore == 0)
                                 {
                                     //cant move into the space of an unattackable Creature
@@ -276,13 +276,13 @@ namespace Board_Game.Logic
                                 continue;
                             }
                         }
-                        else if(Creature.IsEnemyMine(i, j))
+                        else if(Creature.IsEnemyMine(x, y))
                         {
                             //avoid unoccupied enemy mines
                             continue;
                         }
 
-                        var moveDistance = GetDistanceToCoordinates(newMove.position, target.Y, target.X);
+                        var moveDistance = GetDistanceToCoordinates(newMove.position, target.X,target.Y);
 
                         if(moveDistance > currentDistance)
                         {
@@ -300,8 +300,8 @@ namespace Board_Game.Logic
                         }
 
                         //factor in if the move will get you killed
-                        if (Creature.IsEnemyMine((int)newMove.position.Y, (int)newMove.position.X)
-                            || IsDeathTrap((int)newMove.position.Y, (int)newMove.position.X, Creature))
+                        if (Creature.IsEnemyMine((int)newMove.position.X, (int)newMove.position.Y)
+                            || IsDeathTrap((int)newMove.position.X, (int)newMove.position.Y, Creature))
                         {
                             newMove.score -= GetCreatureValue(Creature);
                         }
@@ -319,30 +319,30 @@ namespace Board_Game.Logic
         /*
             Returns the distance between two points
         */
-        public double GetDistanceToCoordinates(Vector2 startPoint, float endPointI, float endPointJ)
+        public double GetDistanceToCoordinates(Vector2 startPoint, float endPointX, float endPointY)
         {
-            float jDifference = startPoint.X - endPointJ;
-            float iDifference = startPoint.Y - endPointI;
-            return Math.Sqrt( (jDifference * jDifference) + (iDifference * iDifference) );
+            float xDifference = startPoint.X - endPointX;
+            float yDifference = startPoint.Y - endPointY;
+            return Math.Sqrt( (xDifference * xDifference) + (yDifference * yDifference) );
         }
         //end
 
         /*
             This rates the destruction of the targetCreature given the sourceCreature's priorities
         */
-        public int GetDestructionScore(Creatures.Creature sourceCreature, int desiredI, int desiredJ)
+        public int GetDestructionScore(Creatures.Creature sourceCreature, int desiredX, int desiredY)
         {
             int score = 0;
             //check the sqaures we're moving into, if they contain a unit we can't
             //attack then return zero, otherwise tally up the destruction
 
-            for(int i = 0; i < sourceCreature.mCreatureDesc.SizeInSpaces.Y; i++)
+            for(int x = 0; x < sourceCreature.mCreatureDesc.SizeInSpaces.X; x++)
             {
-                for (int j = 0; j < sourceCreature.mCreatureDesc.SizeInSpaces.X; j++ )
+                for (int y = 0; y < sourceCreature.mCreatureDesc.SizeInSpaces.Y; y++ )
                 {
-                    if (mGrid.mTiles[i + desiredI, j + desiredJ].Occupied)
+                    if (mGrid.mTiles[x + desiredX, y + desiredY].Occupied)
                     {
-                        Creature targetCreature = mGrid.mTiles[i + desiredI, j + desiredJ].occupiedCreature;
+                        Creature targetCreature = mGrid.mTiles[x + desiredX, y + desiredY].occupiedCreature;
                         if (targetCreature != null)
                         {
                             if (sourceCreature.mCreatureDesc.CanAttack(targetCreature.mCreatureDesc.Type))
@@ -385,8 +385,8 @@ namespace Board_Game.Logic
                 {
                     Move bestMove;
                     bestMove.score = -99;
-                    bestMove.position.Y = -99;
                     bestMove.position.X = -99;
+                    bestMove.position.Y = -99;
                     Creatures.Creature CreatureToMove = null;
 
                     List<Creatures.Creature> Creatures;
@@ -421,12 +421,12 @@ namespace Board_Game.Logic
                         }
                     }
 
-                    if (CreatureToMove.CheckOccupied((int)bestMove.position.Y, (int)bestMove.position.X))
+                    if (CreatureToMove.CheckOccupied((int)bestMove.position.X, (int)bestMove.position.Y))
                     {
-                        CreatureToMove.RemoveCreatures((int)bestMove.position.Y, (int)bestMove.position.X);
+                        CreatureToMove.RemoveCreatures((int)bestMove.position.X, (int)bestMove.position.Y);
                     }
 
-                    CreatureToMove.Move((int)bestMove.position.Y, (int)bestMove.position.X);
+                    CreatureToMove.Move((int)bestMove.position.X, (int)bestMove.position.Y);
 
                     mGameState.EndTurn();
                 }

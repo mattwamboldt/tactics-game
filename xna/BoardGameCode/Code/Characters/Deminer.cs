@@ -17,7 +17,7 @@ namespace Board_Game.Creatures
 
         public override Vector2 GetNearestTarget()
         {
-            Vector2 originalPoint = new Vector2(GetJ(), GetI());
+            Vector2 originalPoint = new Vector2(GetX(), GetY());
             Vector2 nearestMine = new Vector2(-1, -1);
 
             double distanceToNearest = mAIRef.GetDistanceToCoordinates(originalPoint, 0, 0);
@@ -35,15 +35,15 @@ namespace Board_Game.Creatures
                     {
                         for (var u = 0; u < 2; ++u)
                         {
-                            var iCoord = mineCorner.Y * 2 + t;
-                            var jCoord = mineCorner.X * 2 + u;
-                            var distanceToMineSquare = mAIRef.GetDistanceToCoordinates(originalPoint, iCoord, jCoord);
+                            var x = mineCorner.X * 2 + u;
+                            var y = mineCorner.Y * 2 + t;
+                            var distanceToMineSquare = mAIRef.GetDistanceToCoordinates(originalPoint, x, y);
 
                             if (distanceToMineSquare < distanceToNearest
                                || nearestMine.Y == -1)
                             {
-                                nearestMine.Y = iCoord;
-                                nearestMine.X = jCoord;
+                                nearestMine.X = x;
+                                nearestMine.Y = y;
                                 distanceToNearest = distanceToMineSquare;
                             }
                         }

@@ -15,36 +15,36 @@ namespace Board_Game.Logic
 
         public GameGrid(int width, int height, Texture2D tileTexture, Texture2D mineTexture)
         {
-            position = new Vector2(0, 0);
+            position = new Vector2(100, 0);
             mTiles = new Tile[width, height];
-            for (int i = 0; i < width; ++i)
+            for (int x = 0; x < width; ++x)
             {
-                for (var j = 0; j < height; ++j)
+                for (var y = 0; y < height; ++y)
                 {
-                    mTiles[i, j] = new Tile(tileTexture, j, i);
+                    mTiles[x, y] = new Tile(tileTexture, x, y);
                 }
             }
 
             mMines = new List<Mine>((width / 4) * (height / 2));
 
-            for (int i = 0; i < width / 2; ++i)
+            for (int x = 0; x < width / 2; ++x)
             {
-                for (int j = 0; j < height / 2; ++j)
+                for (int y = 0; y < height / 2; ++y)
                 {
-                    if (i % 2 == j % 2)
+                    if (x % 2 == y % 2)
                     {
-                        Mine newMine = new Mine(mineTexture, j, i);
+                        Mine newMine = new Mine(mineTexture, x, y);
 
-                        if (i < 2)
+                        if (y < 2)
                         {
                             newMine.side = Side.Blue;
                         }
-                        else if (i >= (height / 2) - 2)
+                        else if (y >= (height / 2) - 2)
                         {
                             newMine.side = Side.Red;
                         }
 
-                        mTiles[i * 2, j * 2].mine = newMine;
+                        mTiles[x * 2, y * 2].mine = newMine;
                         mMines.Add(newMine);
                     }
                 }
@@ -53,11 +53,11 @@ namespace Board_Game.Logic
 
         public void Render(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i <= mTiles.GetUpperBound(0); ++i)
+            for (int x = 0; x <= mTiles.GetUpperBound(0); ++x)
             {
-                for (var j = 0; j <= mTiles.GetUpperBound(1); ++j)
+                for (var y = 0; y <= mTiles.GetUpperBound(1); ++y)
                 {
-                    mTiles[i, j].Render(spriteBatch, position);
+                    mTiles[x, y].Render(spriteBatch, position);
                 }
             }
 
