@@ -40,6 +40,7 @@ namespace Board_Game.Logic
         public Player Blue { get { return mBlue; } }
 
         private AI mAI;
+        public AI AI { get { return mAI; } }
 
         public GameState(AI AIref,
                 Sprite selectorSprite)
@@ -258,6 +259,48 @@ namespace Board_Game.Logic
                     }
                 }
             }
+        }
+
+        // chacks if an area contains ay units
+        public bool CheckOccupied(int newX, int newY, int width, int height)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (mGrid.mTiles[newX + x, newY + y].Occupied)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public ClampArea GetClampArea(Creature creature)
+        {
+            ClampArea returnValue = creature.GetClampArea();
+
+            //Confine the area so that it fits within the board.
+            if (returnValue.leftCut < 0)
+            {
+                returnValue.leftCut = 0;
+            }
+            if (returnValue.topCut < 0)
+            {
+                returnValue.topCut = 0;
+            }
+            if (returnValue.rightCut + creature.ScreenDimensions().X / 2 > mGrid.Width())
+            {
+                returnValue.rightCut = (int)creature.position.X;
+            }
+            if (returnValue.bottomCut + creature.ScreenDimensions().Y / 2 > mGrid.Height())
+            {
+                returnValue.bottomCut = (int)creature.position.Y;
+            }
+
+            return returnValue;
         }
     }
 }

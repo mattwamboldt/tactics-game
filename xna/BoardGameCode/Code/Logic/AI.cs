@@ -234,7 +234,7 @@ namespace Board_Game.Logic
             int randomCreatureBonus = random.Next(0,5);
 
             Stack<Move> moveList = new Stack<Move>();
-            Creatures.ClampArea clamp = Creature.GetClampArea();
+            Creatures.ClampArea clamp = mGameState.GetClampArea(Creature);
             int CreatureLeftBound = (int)((clamp.leftCut - clamp.leftCut % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
             int CreatureRightBound = (int)((clamp.rightCut - clamp.rightCut % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
             int CreatureTopBound = (int)((clamp.topCut - clamp.topCut % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
@@ -255,9 +255,9 @@ namespace Board_Game.Logic
                         newMove.score = 0;
 
                         //factor in if the move will take another Creature
-                        if(Creature.CheckOccupied(x, y))
+                        if (State.CheckOccupied(x, y, Creature.GridWidth, Creature.GridHeight))
                         {
-                            if (Creature.CanDestroyAllUnits(x, y))
+                            if (CanDestroyAllUnits(x, y, Creature))
                             {
                                 var damageScore = GetDestructionScore(Creature, x, y);
                                 if(damageScore == 0)
@@ -276,7 +276,7 @@ namespace Board_Game.Logic
                                 continue;
                             }
                         }
-                        else if(Creature.IsEnemyMine(x, y))
+                        else if(IsEnemyMine(x, y, Creature))
                         {
                             //avoid unoccupied enemy mines
                             continue;
@@ -300,7 +300,7 @@ namespace Board_Game.Logic
                         }
 
                         //factor in if the move will get you killed
-                        if (Creature.IsEnemyMine((int)newMove.position.X, (int)newMove.position.Y)
+                        if (IsEnemyMine((int)newMove.position.X, (int)newMove.position.Y, Creature)
                             || IsDeathTrap((int)newMove.position.X, (int)newMove.position.Y, Creature))
                         {
                             newMove.score -= GetCreatureValue(Creature);
@@ -394,7 +394,7 @@ namespace Board_Game.Logic
                     double distanceToCreature = GetDistanceToCoordinates(originalPoint, x, y);
 
                     //if an opponent is on their mine they're safe so don't bother with them.
-                    if ((distanceToCreature < distanceToNearest && source.IsEnemyMine(x, y) == false)
+                    if ((distanceToCreature < distanceToNearest && IsEnemyMine(x, y, source) == false)
                        || nearestTarget.X == -1)
                     {
                         nearestTarget.X = x;
@@ -454,6 +454,39 @@ namespace Board_Game.Logic
             return CreatureWorths[(int)Creature.mCreatureDesc.Type] * 200;
         }
 
+        /*
+            This tells us if a square is actually an enemy mine location.
+        */
+        public bool IsEnemyMine(int x, int y, Creature creature)
+        {
+            if (creature.CanFly || creature.Type == CreatureType.Miner)
+            {
+                return false;
+            }
+
+            return (Math.Floor((double)(x / 2)) % 2 == Math.Floor((double)(y / 2)) % 2)
+                && (mGrid.mTiles[x - x % 2, y - y % 2].mine.side != creature.side);
+        }
+
+        public bool CanDestroyAllUnits(int newX, int newY, Creature creature)
+        {
+            for (var x = 0; x < creature.GridWidth; ++x)
+            {
+                for (var y = 0; y < creature.GridHeight; ++y)
+                {
+                    Tile tile = mGrid.mTiles[newX + x, newY + y];
+
+                    if (tile.side == creature.side //Cant attack friendlies
+                      || (tile.Occupied && creature.mCreatureDesc.CanAttack(tile.occupiedCreature.Type) == false))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         internal void Update(GameTime gameTime)
         {
             elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
@@ -509,7 +542,7 @@ namespace Board_Game.Logic
                         }
                     }
 
-                    if (CreatureToMove.CheckOccupied((int)bestMove.position.X, (int)bestMove.position.Y))
+                    if (State.CheckOccupied((int)bestMove.position.X, (int)bestMove.position.Y, CreatureToMove.GridWidth, CreatureToMove.GridHeight))
                     {
                        mGameState.DestroyCreatures(
                            (int)bestMove.position.X,

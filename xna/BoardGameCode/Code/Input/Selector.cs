@@ -145,7 +145,7 @@ namespace Board_Game.Logic
                 {
                     selectedCreature = Creature;
                     Creature.isSelected = true;
-                    CreatureClamp = selectedCreature.GetClampArea();
+                    CreatureClamp = mGameState.GetClampArea(selectedCreature);
                     mSelectSound.Play();
                 }
             }
@@ -156,7 +156,7 @@ namespace Board_Game.Logic
             int x = ((int)position.X - (int)position.X % selectedCreature.GridWidth);
             int y = ((int)position.Y - (int)position.Y % selectedCreature.GridHeight);
 
-            ClampArea CreatureArea = selectedCreature.GetClampArea();
+            ClampArea CreatureArea = mGameState.GetClampArea(selectedCreature);
             return x * Tile.TILE_SIZE >= CreatureArea.leftCut
                 && y * Tile.TILE_SIZE >= CreatureArea.topCut
                 && x * Tile.TILE_SIZE <= CreatureArea.rightCut
@@ -168,9 +168,9 @@ namespace Board_Game.Logic
             int x = ((int)position.X - (int)position.X % selectedCreature.GridWidth);
             int y = ((int)position.Y - (int)position.Y % selectedCreature.GridHeight);
 
-            if (selectedCreature.CheckOccupied(x, y))
+            if (mGameState.CheckOccupied(x, y, selectedCreature.GridWidth, selectedCreature.GridHeight))
             {
-                Creatures.Creature Creature = mGridRef.mTiles[x, y].occupiedCreature;
+                Creature Creature = mGridRef.mTiles[x, y].occupiedCreature;
 
                 //toggle selection of the current Creature
                 if (selectedCreature == Creature)
@@ -178,7 +178,7 @@ namespace Board_Game.Logic
                     Deselect();
                 }
                 //destroy Creatures in your move radius
-                else if (isInCreatureClampArea() && selectedCreature.CanDestroyAllUnits(x, y))
+                else if (isInCreatureClampArea() && mGameState.AI.CanDestroyAllUnits(x, y, selectedCreature))
                 {
                     selectedCreature.isSelected = false;
                     mGameState.DestroyCreatures(x, y, selectedCreature.GridWidth, selectedCreature.GridHeight);
@@ -197,7 +197,7 @@ namespace Board_Game.Logic
                         selectedCreature.isSelected = false;
                         selectedCreature = Creature;
                         Creature.isSelected = true;
-                        CreatureClamp = selectedCreature.GetClampArea();
+                        CreatureClamp = mGameState.GetClampArea(selectedCreature);
                         mSelectSound.Play();
                     }
                 }
@@ -252,7 +252,7 @@ namespace Board_Game.Logic
             if (selectedCreature != null)
             {
                 //draw a rectangle under that Creature in it's clamp area
-                ClampArea CreatureArea = selectedCreature.GetClampArea();
+                ClampArea CreatureArea = mGameState.GetClampArea(selectedCreature);
                 Rectangle areaMovable = new Rectangle(
                     (int)(CreatureArea.leftCut + parentRactangle.X),
                     (int)(CreatureArea.topCut + parentRactangle.Y),

@@ -28,10 +28,6 @@ namespace Board_Game.Creatures
         //this allows us to set the colour
         public Side side;
 
-        //This gives the Creature an awareness of the other Creatures on the playing field
-        //so it can destroy itself or better than that, enemy Creatures
-        protected GameGrid grid;
-
         public CreatureDescription mCreatureDesc;
 
         public Vector2 position;
@@ -40,12 +36,11 @@ namespace Board_Game.Creatures
 
         private Sprite mSprite;
 
-        public Creature(GameGrid gridRef, CreatureDescription CreatureDesc)
+        public Creature(CreatureDescription CreatureDesc)
         {
             mCreatureDesc = CreatureDesc;
             originalX = 0;
             originalY = 0;
-            grid = gridRef;
             side = Side.Neutral;
             position = new Vector2(0, 0);
             isSelected = false;
@@ -85,20 +80,14 @@ namespace Board_Game.Creatures
             get { return mCreatureDesc.SizeInSpaces.Y; }
         }
 
-        public bool CheckOccupied(int newX, int newY)
+        public CreatureType Type
         {
-            for (int x = 0; x < GridWidth; x++)
-            {
-                for (int y = 0; y < GridHeight; y++)
-                {
-                    if (grid.mTiles[newX + x, newY + y].Occupied)
-                    {
-                        return true;
-                    }
-                }
-            }
+            get { return mCreatureDesc.Type; }
+        }
 
-            return false;
+        public bool CanFly
+        {
+            get { return mCreatureDesc.CanFly; }
         }
 
         public void SetLocation(int newX, int newY)
@@ -107,25 +96,6 @@ namespace Board_Game.Creatures
             originalY = newY;
             position.X = newX * Tile.TILE_SIZE;
             position.Y = newY * Tile.TILE_SIZE;
-        }
-
-        public bool CanDestroyAllUnits(int newX, int newY)
-        {
-            for (var x = 0; x < GridWidth; ++x)
-            {
-                for (var y = 0; y < GridHeight; ++y)
-                {
-                    Tile tile = grid.mTiles[newX + x, newY + y];
-
-                    if ( tile.side == side //Cant attack friendlies
-                      || ( tile.Occupied && mCreatureDesc.CanAttack(tile.occupiedCreature.mCreatureDesc.Type) == false))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         public ClampArea GetClampArea()
@@ -137,25 +107,6 @@ namespace Board_Game.Creatures
             returnValue.bottomCut = (int)(position.Y + ScreenDimensions().Y);
             originalX = (int)((position.X - position.X % ScreenDimensions().X) / Tile.TILE_SIZE);
             originalY = (int)((position.Y - position.Y % ScreenDimensions().Y) / Tile.TILE_SIZE);
-
-            //Clamp the area so that it fits within the board.
-            if (returnValue.leftCut < 0)
-            {
-                returnValue.leftCut = 0;
-            }
-            if (returnValue.topCut < 0)
-            {
-                returnValue.topCut = 0;
-            }
-            if (returnValue.rightCut + ScreenDimensions().X / 2 > grid.Width())
-            {
-                returnValue.rightCut = (int)position.X;
-            }
-            if (returnValue.bottomCut + ScreenDimensions().Y / 2 > grid.Height())
-            {
-                returnValue.bottomCut = (int)position.Y;
-            }
-
             return returnValue;
         }
         
@@ -172,20 +123,6 @@ namespace Board_Game.Creatures
         public Vector2 ScreenDimensions()
         {
             return mSprite.Dimensions;
-        }
-
-        /*
-            This tells us if a square is actually an enemy mine location.
-        */
-        public bool IsEnemyMine(int x, int y)
-        {
-            if (mCreatureDesc.CanFly || mCreatureDesc.Type == CreatureType.Miner)
-            {
-                return false;
-            }
-
-            return (Math.Floor((double)(x / 2)) % 2 == Math.Floor((double)(y / 2)) % 2)
-                && (grid.mTiles[x - x % 2, y - y % 2].mine.side != side);
         }
     }
 }

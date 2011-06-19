@@ -12,8 +12,7 @@ namespace Board_Game.Logic
     /// <summary>
     /// This defines a player, each player has a set of Creatures and a reference
     /// to the board. This pulls Creature creation away from the AI, and makes it possible
-    /// for each side to have a different number and types of Creatures. Even the possibility of
-    /// differently tuned AI's to face off for testing.
+    /// for each side to have a different number and types of Creatures.
     /// </summary>
     class Player
     {
@@ -21,7 +20,6 @@ namespace Board_Game.Logic
         public Side mSide;
         private List<Creature> mCreatures;
         private GameState mGame;
-        private GameGrid mGrid;
 
         public List<Creature> Creatures { get { return mCreatures; } }
 
@@ -30,7 +28,6 @@ namespace Board_Game.Logic
             mIsHuman = isHuman;
             mSide = side;
             mGame = game;
-            mGrid = mGame.mGrid;
         }
 
         public void CreateCreatures(
@@ -45,8 +42,8 @@ namespace Board_Game.Logic
 
             for( int x = 0; x < GameState.GRID_WIDTH/4; ++x )
             {
-                Creature bomber = new Creature(mGrid, bomberDesc);
-                Creature fighter = new Creature(mGrid, fighterDesc);
+                Creature bomber = new Creature(bomberDesc);
+                Creature fighter = new Creature(fighterDesc);
 
                 bomber.side = mSide;
                 fighter.side = mSide;
@@ -68,8 +65,8 @@ namespace Board_Game.Logic
 
             for (int x = 0; x < GameState.GRID_WIDTH / 2; ++x)
             {
-                Creature miner = new Creature(mGrid, minerDesc);
-                Creature grenadier = new Creature(mGrid, grenadierDesc);
+                Creature miner = new Creature(minerDesc);
+                Creature grenadier = new Creature(grenadierDesc);
 
                 miner.side = mSide;
                 grenadier.side = mSide;
@@ -91,7 +88,7 @@ namespace Board_Game.Logic
 
             for( var x = 0; x < GameState.GRID_WIDTH; ++x )
             {
-                Creature soldier = new Creature(mGrid, soldierDesc);
+                Creature soldier = new Creature(soldierDesc);
                 soldier.side = mSide;
 
                 if (mSide == Side.Red)
