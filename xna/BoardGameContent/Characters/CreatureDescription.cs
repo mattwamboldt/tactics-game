@@ -28,6 +28,13 @@ namespace Board_Game.Creatures
     /// </summary>
     public class CreatureDescription
     {
+        private int mID;
+        public int ID
+        {
+            set { mID = value; }
+            get { return mID; }
+        }
+
         private string mName;
         public string Name
         {
@@ -109,6 +116,7 @@ namespace Board_Game.Creatures
             CreatureDescription existingInstance)
         {
             CreatureDescription desc = new CreatureDescription();
+            desc.ID = input.ReadInt32();
             desc.Name = input.ReadString();
             desc.Description = input.ReadString();
             desc.CanFly = input.ReadBoolean();

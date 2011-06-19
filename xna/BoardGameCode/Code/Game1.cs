@@ -15,6 +15,8 @@ using Board_Game.UI;
 using Board_Game.Input;
 using Board_Game.Code.Rendering;
 using Board_Game.Rendering;
+using BoardGameContent.DB;
+using Board_Game.Code.DB;
 
 namespace Board_Game
 {
@@ -29,6 +31,7 @@ namespace Board_Game
         Screen mScreen;
         GameState mGameState;
         Texture2D mBackground;
+        GameDatabase mDB;
 
         public Game1()
         {
@@ -48,7 +51,7 @@ namespace Board_Game
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            DatabaseManager.Initialize();
             base.Initialize();
         }
 
@@ -62,16 +65,12 @@ namespace Board_Game
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            Texture2D mBomberTexture = Content.Load<Texture2D>("textures/Creatures/bomber");
-            Texture2D mFighterTexture = Content.Load<Texture2D>("textures/Creatures/fighter");
-            Texture2D mSoldierTexture = Content.Load<Texture2D>("textures/Creatures/soldier");
-            Texture2D mDeminerTexture = Content.Load<Texture2D>("textures/Creatures/deminer");
-            Texture2D mGrenadierTexture = Content.Load<Texture2D>("textures/Creatures/grenadier");
-            mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
-
-            FontManager.Initialize(Content);
             TextureManager.Initialize(Content, GraphicsDevice);
+            FontManager.Initialize(Content);
+            
+            mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
+            
+            DatabaseManager.Get().Load(Content);
 
             mGameState = new GameState(mAI, Content.Load<Sprite>("xml/Selector"));
             mGameState.Initialize(Content);

@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Characters\Army.cs" />
+    <Compile Include="Code\DB\DatabseManager.cs" />
     <Compile Include="Code\Logic\AI.cs" />
     <Compile Include="Code\Logic\GameGrid.cs" />
     <Compile Include="Code\Input\InputManager.cs" />

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <!-- TODO: replace this Asset with your own XML asset data. -->
+  <Asset Type="BoardGameContent.DB.GameDatabase">
+    <CreatureTable>
+      <Item>
+        <ID>0</ID>
+        <Name>Bomber</Name>
+        <Description>Movement: 1 large square
+Destroys ground Creatures.</Description>
+        <CanFly>true</CanFly>
+        <Type>Bomber</Type>
+        <SizeInSpaces>2 2</SizeInSpaces>
+        <TextureName>textures/Creatures/bomber</TextureName>
+        <AttackPriorities>
+          <Item>Granadier</Item>
+          <Item>Miner</Item>
+          <Item>Soldier</Item>
+        </AttackPriorities>
+      </Item>
+      <Item>
+        <ID>1</ID>
+        <Name>Fighter</Name>
+        <Description>Movement: 1 large square
+Destroys air Creatures.
+        </Description>
+        <CanFly>true</CanFly>
+        <Type>Fighter</Type>
+        <SizeInSpaces>2 2</SizeInSpaces>
+        <TextureName>textures/Creatures/fighter</TextureName>
+        <AttackPriorities>
+          <Item>Bomber</Item>
+          <Item>Fighter</Item>
+        </AttackPriorities>
+      </Item>
+      <Item>
+        <ID>2</ID>
+        <Name>Grenadier</Name>
+        <Description>Movement: 1 square
+Destroys all Creatures.
+        </Description>
+        <CanFly>false</CanFly>
+        <Type>Granadier</Type>
+        <SizeInSpaces>1 1</SizeInSpaces>
+        <TextureName>textures/Creatures/grenadier</TextureName>
+        <AttackPriorities>
+          <Item>Bomber</Item>
+          <Item>Granadier</Item>
+          <Item>Fighter</Item>
+          <Item>Miner</Item>
+          <Item>Soldier</Item>
+        </AttackPriorities>
+      </Item>
+      <Item>
+        <ID>3</ID>
+        <Name>Miner</Name>
+        <Description>Movement: 1 square
+Captures mines.
+        </Description>
+        <CanFly>false</CanFly>
+        <Type>Miner</Type>
+        <SizeInSpaces>1 1</SizeInSpaces>
+        <TextureName>textures/Creatures/deminer</TextureName>
+        <AttackPriorities>
+        </AttackPriorities>
+      </Item>
+      <Item>
+        <ID>4</ID>
+        <Name>Soldier</Name>
+        <Description>Movement: 1 square
+Destroys ground Creatures.
+        </Description>
+        <CanFly>false</CanFly>
+        <Type>Soldier</Type>
+        <SizeInSpaces>1 1</SizeInSpaces>
+        <TextureName>textures/Creatures/soldier</TextureName>
+        <AttackPriorities>
+          <Item>Granadier</Item>
+          <Item>Miner</Item>
+          <Item>Soldier</Item>
+        </AttackPriorities>
+      </Item>
+    </CreatureTable>
+  </Asset>
+</XnaContent>

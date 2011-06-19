@@ -10,6 +10,7 @@ using Board_Game.Code.Rendering;
 using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Creatures;
+using Board_Game.Code.DB;
 
 namespace Board_Game.Logic
 {
@@ -70,11 +71,12 @@ namespace Board_Game.Logic
 
         public void Initialize(ContentManager content)
         {
-            CreatureDescription bomberDesc = content.Load<CreatureDescription>("DB/BomberDescription");
-            CreatureDescription fighterDesc = content.Load<CreatureDescription>("DB/FighterDescription");
-            CreatureDescription minerDesc = content.Load<CreatureDescription>("DB/MinerDescription");
-            CreatureDescription grenadierDesc = content.Load<CreatureDescription>("DB/GrenadierDescription");
-            CreatureDescription soldierDesc = content.Load<CreatureDescription>("DB/SoldierDescription");
+            CreatureDescription bomberDesc = DatabaseManager.Get().CreatureTable[0];
+            CreatureDescription fighterDesc = DatabaseManager.Get().CreatureTable[1];
+            CreatureDescription minerDesc = DatabaseManager.Get().CreatureTable[3];
+            CreatureDescription soldierDesc = DatabaseManager.Get().CreatureTable[4];
+            CreatureDescription grenadierDesc = DatabaseManager.Get().CreatureTable[2];
+            
 
             mRed.CreateCreatures(
                 bomberDesc,
