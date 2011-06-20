@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework;
 using Board_Game.Rendering;
 using Board_Game.Input;
 using Board_Game.Creatures;
-using Board_Game.Code.Rendering;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 

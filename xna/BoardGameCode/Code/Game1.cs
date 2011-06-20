@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Storage;
 using Board_Game.Logic;
 using Board_Game.UI;
 using Board_Game.Input;
-using Board_Game.Code.Rendering;
 using Board_Game.Rendering;
 using BoardGameContent.DB;
 using Board_Game.Code.DB;
@@ -31,7 +30,6 @@ namespace Board_Game
         Screen mScreen;
         GameState mGameState;
         Texture2D mBackground;
-        GameDatabase mDB;
 
         public Game1()
         {

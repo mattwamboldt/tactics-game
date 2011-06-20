@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Board_Game.Code.Rendering;
+using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Board_Game.Creatures;
 

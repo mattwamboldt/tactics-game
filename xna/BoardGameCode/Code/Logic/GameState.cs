@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Board_Game.Input;
-using Board_Game.Code.Rendering;
 using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Creatures;
@@ -253,8 +252,8 @@ namespace Board_Game.Logic
                     {
                         Creature Creature = mGrid.mTiles[newX + x, newY + y].occupiedCreature;
 
-                        int CreatureX = (int)((Creature.position.X - Creature.position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
-                        int CreatureY = (int)((Creature.position.Y - Creature.position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
+                        int CreatureX = (int)((Creature.Position.X - Creature.Position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
+                        int CreatureY = (int)((Creature.Position.Y - Creature.Position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
 
                         ClearArea(CreatureX, CreatureY, Creature.GridWidth, Creature.GridHeight);
                         RemoveCreature(Creature);
@@ -295,11 +294,11 @@ namespace Board_Game.Logic
             }
             if (returnValue.rightCut + creature.ScreenDimensions().X / 2 > mGrid.Width())
             {
-                returnValue.rightCut = (int)creature.position.X;
+                returnValue.rightCut = (int)creature.Position.X;
             }
             if (returnValue.bottomCut + creature.ScreenDimensions().Y / 2 > mGrid.Height())
             {
-                returnValue.bottomCut = (int)creature.position.Y;
+                returnValue.bottomCut = (int)creature.Position.Y;
             }
 
             return returnValue;

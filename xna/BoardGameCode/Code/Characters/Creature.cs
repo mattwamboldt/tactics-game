@@ -32,7 +32,10 @@ namespace Board_Game.Creatures
 
         public CreatureDescription mCreatureDesc;
 
-        public Vector2 position;
+        public Vector2 Position
+        {
+            get { return mSprite.Position; }
+        }
 
         public bool isSelected;
 
@@ -44,15 +47,13 @@ namespace Board_Game.Creatures
             mGridLocation.X = 0;
             mGridLocation.Y = 0;
             side = Side.Neutral;
-            position = new Vector2(0, 0);
             isSelected = false;
 
-            mSprite = new Sprite(mCreatureDesc.Texture, position, Color.White, new Vector2(GridWidth * Tile.TILE_SIZE, GridHeight * Tile.TILE_SIZE));
+            mSprite = new Sprite(mCreatureDesc.Texture, new Vector2(0, 0), Color.White, new Vector2(GridWidth * Tile.TILE_SIZE, GridHeight * Tile.TILE_SIZE));
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
-            mSprite.Position = position;
             mSprite.Color = Color.White;
 
             if (side == Side.Red)
@@ -96,17 +97,16 @@ namespace Board_Game.Creatures
         {
             mGridLocation.X = newX;
             mGridLocation.Y = newY;
-            position.X = newX * Tile.TILE_SIZE;
-            position.Y = newY * Tile.TILE_SIZE;
+            mSprite.Position = new Vector2(newX * Tile.TILE_SIZE, newY * Tile.TILE_SIZE);
         }
 
         public ClampArea GetClampArea()
         {
             ClampArea returnValue;
-            returnValue.leftCut = (int)(position.X - ScreenDimensions().X);
-            returnValue.rightCut = (int)(position.X + ScreenDimensions().X);
-            returnValue.topCut = (int)(position.Y - ScreenDimensions().Y);
-            returnValue.bottomCut = (int)(position.Y + ScreenDimensions().Y);
+            returnValue.leftCut = (int)(Position.X - ScreenDimensions().X);
+            returnValue.rightCut = (int)(Position.X + ScreenDimensions().X);
+            returnValue.topCut = (int)(Position.Y - ScreenDimensions().Y);
+            returnValue.bottomCut = (int)(Position.Y + ScreenDimensions().Y);
             return returnValue;
         }
         

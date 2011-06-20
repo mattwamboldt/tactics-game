@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 using Microsoft.Xna.Framework.Graphics;
-using Board_Game.Code.Rendering;
+using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Creatures;
 

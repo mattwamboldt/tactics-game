@@ -6,7 +6,7 @@ using System.Collections;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Board_Game.Code.Rendering
+namespace Board_Game.Rendering
 {
     //controls loading and lookup of textures
     public class TextureManager

@@ -529,7 +529,7 @@ namespace Board_Game.Logic
 
                         if (possibleMoves.Count == 0)
                         {
-                            Console.Out.WriteLine("No moves for " + Creature.mCreatureDesc.Type + " at " + Creature.position);
+                            Console.Out.WriteLine("No moves for " + Creature.mCreatureDesc.Type + " at " + Creature.Position);
                         }
 
                         foreach (Move move in possibleMoves)
