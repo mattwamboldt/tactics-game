@@ -59,7 +59,7 @@ namespace Board_Game.UI
             {
                 creatureInfo.Visible = true;
 
-                CreatureDescription desc = occupiedCreature.mCreatureDesc;
+                CreatureDescription desc = occupiedCreature.Class;
                 Image info = (Image)creatureInfo.GetNode("imageBG.image");
                 info.TextureName = desc.TextureName;
                 info.Texture = desc.Texture;

@@ -33,22 +33,9 @@ namespace Board_Game.Logic
             mArmy.Side = side;
         }
 
-        public void CreateCreatures(
-            CreatureDescription bomberDesc,
-            CreatureDescription fighterDesc,
-            CreatureDescription minerDesc,
-            CreatureDescription grenadierDesc,
-            CreatureDescription soldierDesc
-            )
+        public void CreateCreatures()
         {
-            mArmy.Build(
-                bomberDesc,
-                fighterDesc,
-                minerDesc,
-                grenadierDesc,
-                soldierDesc
-            );
-
+            mArmy.Build();
             PlaceOnField();
         }
 

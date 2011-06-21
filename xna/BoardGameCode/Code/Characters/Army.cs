@@ -19,23 +19,22 @@ namespace Board_Game.Code.Characters
         public List<Creature> Members { get { return mMembers; } set { mMembers = value; } }
 
         //This is a dummy function until the file loading goes in
-        public void Build(
-            CreatureDescription bomberDesc,
-            CreatureDescription fighterDesc,
-            CreatureDescription minerDesc,
-            CreatureDescription grenadierDesc,
-            CreatureDescription soldierDesc
-            )
+        public void Build()
         {
             mMembers = new List<Creature>();
 
             for (int x = 0; x < 6; ++x)
             {
-                Creature bomber = new Creature(bomberDesc);
-                Creature fighter = new Creature(fighterDesc);
+                Creature bomber = new Creature();
+                Creature fighter = new Creature();
 
                 bomber.side = mSide;
+                bomber.ClassID = 0;
+                bomber.LinkData();
+
                 fighter.side = mSide;
+                fighter.ClassID = 1;
+                fighter.LinkData();
 
                 if (mSide == Side.Red)
                 {
@@ -54,11 +53,16 @@ namespace Board_Game.Code.Characters
 
             for (int x = 0; x < 12; ++x)
             {
-                Creature miner = new Creature(minerDesc);
-                Creature grenadier = new Creature(grenadierDesc);
+                Creature miner = new Creature();
+                Creature grenadier = new Creature();
 
-                miner.side = mSide;
                 grenadier.side = mSide;
+                grenadier.ClassID = 2;
+                grenadier.LinkData();
+                
+                miner.side = mSide;
+                miner.ClassID = 3;
+                miner.LinkData();
 
                 if (mSide == Side.Red)
                 {
@@ -77,8 +81,10 @@ namespace Board_Game.Code.Characters
 
             for (var x = 0; x < 24; ++x)
             {
-                Creature soldier = new Creature(soldierDesc);
+                Creature soldier = new Creature();
                 soldier.side = mSide;
+                soldier.ClassID = 4;
+                soldier.LinkData();
 
                 if (mSide == Side.Red)
                 {

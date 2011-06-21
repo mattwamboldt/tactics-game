@@ -82,10 +82,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Creature.cs" />
     <Compile Include="Characters\CreatureDescription.cs" />
+    <Compile Include="DB\DatabseManager.cs" />
     <Compile Include="DB\GameDatabase.cs" />
     <Compile Include="Input\InputMap.cs" />
     <Compile Include="Input\InputState.cs" />
+    <Compile Include="Logic\Mine.cs" />
+    <Compile Include="Logic\Tile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Rendering\TextureManager.cs" />

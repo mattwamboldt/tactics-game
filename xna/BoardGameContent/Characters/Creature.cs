@@ -6,10 +6,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Board_Game.Logic;
 using Board_Game.Rendering;
+using Microsoft.Xna.Framework.Content;
+using Board_Game.DB;
 
 namespace Board_Game.Creatures
 {
-    struct ClampArea
+    public enum Side
+    {
+        Red = 0,
+        Blue = 1,
+        Neutral = 2
+    }
+
+    public struct ClampArea
     {
         public int leftCut;
         public int rightCut;
@@ -18,37 +27,49 @@ namespace Board_Game.Creatures
     };
 
     //Contains all the code for a Creature.
-    class Creature
+    public class Creature
     {
-        public Point mGridLocation;
+        //Exposed properties
+
+        private Point mGridLocation;
         public Point GridLocation
         {
             get { return mGridLocation; }
             set { mGridLocation = value; }
         }
 
+        public int ClassID;
+
+        //Private Data filled in by other areas
+
         //this allows us to set the colour
+        [ContentSerializerIgnore]
         public Side side;
-
-        public CreatureDescription mCreatureDesc;
-
-        public Vector2 Position
-        {
-            get { return mSprite.Position; }
-        }
-
+        
+        [ContentSerializerIgnore]
         public bool isSelected;
+
+        private CreatureDescription mCreatureDesc;
+
+        [ContentSerializerIgnore]
+        public CreatureDescription Class
+        {
+            get { return mCreatureDesc; }
+        }
 
         private Sprite mSprite;
 
-        public Creature(CreatureDescription CreatureDesc)
+        public Creature()
         {
-            mCreatureDesc = CreatureDesc;
             mGridLocation.X = 0;
             mGridLocation.Y = 0;
             side = Side.Neutral;
             isSelected = false;
+        }
 
+        public void LinkData()
+        {
+            mCreatureDesc = DatabaseManager.Get().CreatureTable[ClassID];
             mSprite = new Sprite(mCreatureDesc.Texture, new Vector2(0, 0), Color.White, new Vector2(GridWidth * Tile.TILE_SIZE, GridHeight * Tile.TILE_SIZE));
         }
 
@@ -73,26 +94,6 @@ namespace Board_Game.Creatures
             mSprite.Render(spriteBatch, parentPosition);
         }
 
-        public int GridWidth
-        {
-            get { return mCreatureDesc.SizeInSpaces.X; }
-        }
-
-        public int GridHeight
-        {
-            get { return mCreatureDesc.SizeInSpaces.Y; }
-        }
-
-        public CreatureType Type
-        {
-            get { return mCreatureDesc.Type; }
-        }
-
-        public bool CanFly
-        {
-            get { return mCreatureDesc.CanFly; }
-        }
-
         public void SetLocation(int newX, int newY)
         {
             mGridLocation.X = newX;
@@ -109,6 +110,38 @@ namespace Board_Game.Creatures
             returnValue.bottomCut = (int)(Position.Y + ScreenDimensions().Y);
             return returnValue;
         }
+
+        //Exposing member attributes for simplicity
+
+        [ContentSerializerIgnore]
+        public Vector2 Position
+        {
+            get { return mSprite.Position; }
+        }
+
+        [ContentSerializerIgnore]
+        public int GridWidth
+        {
+            get { return mCreatureDesc.SizeInSpaces.X; }
+        }
+
+        [ContentSerializerIgnore]
+        public int GridHeight
+        {
+            get { return mCreatureDesc.SizeInSpaces.Y; }
+        }
+
+        [ContentSerializerIgnore]
+        public CreatureType Type
+        {
+            get { return mCreatureDesc.Type; }
+        }
+
+        [ContentSerializerIgnore]
+        public bool CanFly
+        {
+            get { return mCreatureDesc.CanFly; }
+        }
         
         public int GetX()
         {
@@ -123,6 +156,18 @@ namespace Board_Game.Creatures
         public Vector2 ScreenDimensions()
         {
             return mSprite.Dimensions;
+        }
+    }
+
+    public class CreatureReader : ContentTypeReader<Creature>
+    {
+        protected override Creature Read(ContentReader input, Creature existingInstance)
+        {
+            Creature output = new Creature();
+            output.GridLocation = input.ReadObject<Point>();
+            output.ClassID = input.ReadInt32();
+            output.LinkData();
+            return output;
         }
     }
 }

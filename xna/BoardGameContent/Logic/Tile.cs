@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Board_Game.Logic;
 using Board_Game.Rendering;
+using Board_Game.Creatures;
 
 namespace Board_Game.Logic
 {
-    class Tile
+    public class Tile
     {
         public const float TILE_SIZE = 45;
 

@@ -141,15 +141,15 @@ namespace Board_Game.Logic
                 {
                     var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
                     if (adjacentCreature != null
-                       && adjacentCreature.mCreatureDesc.CanFly == false
-                       && adjacentCreature.mCreatureDesc.Type != Creatures.CreatureType.Miner
+                       && adjacentCreature.CanFly == false
+                       && adjacentCreature.Type != Creatures.CreatureType.Miner
                        && adjacentCreature.side != Creature.side
                        && adjacentCreature != CreatureAtIJ)
                     {
                         //check if the Creature in the adjacent square has this as an attackable Creature
-                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.AttackPriorities.Length; priority++)
+                        for (var priority = 0; priority < adjacentCreature.Class.AttackPriorities.Length; priority++)
                         {
-                            if (adjacentCreature.mCreatureDesc.AttackPriorities[priority] == Creature.mCreatureDesc.Type)
+                            if (adjacentCreature.Class.AttackPriorities[priority] == Creature.Type)
                             {
                                 return true;
                             }
@@ -171,14 +171,14 @@ namespace Board_Game.Logic
                 {
                     var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
                     if (adjacentCreature != null
-                       && adjacentCreature.mCreatureDesc.CanFly
+                       && adjacentCreature.CanFly
                        && adjacentCreature.side != Creature.side
                        && adjacentCreature != CreatureAtIJ)
                     {
                         //check if the Creature in the adjacent square has this as an attackable Creature
-                        for (var priority = 0; priority < adjacentCreature.mCreatureDesc.AttackPriorities.Length; priority++)
+                        for (var priority = 0; priority < adjacentCreature.Class.AttackPriorities.Length; priority++)
                         {
-                            if (adjacentCreature.mCreatureDesc.AttackPriorities[priority] == Creature.mCreatureDesc.Type)
+                            if (adjacentCreature.Class.AttackPriorities[priority] == Creature.Type)
                             {
                                 return true;
                             }
@@ -206,14 +206,14 @@ namespace Board_Game.Logic
                         var square = mGrid.mTiles[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u];
                         if (square.Occupied)
                         {
-                            if (square.occupiedCreature.mCreatureDesc.Type == Creatures.CreatureType.Miner
+                            if (square.occupiedCreature.Type == CreatureType.Miner
                                 && square.side == colour)
                             {
                                 mine.side = colour;
                             }
                             else if (square.occupiedCreature.side != mine.side
-                                    && square.occupiedCreature.mCreatureDesc.Type != Creatures.CreatureType.Miner
-                                    && square.occupiedCreature.mCreatureDesc.CanFly == false)
+                                    && square.occupiedCreature.Type != CreatureType.Miner
+                                    && square.occupiedCreature.CanFly == false)
                             {
                                 State.RemoveCreature(square.occupiedCreature);
                                 square.occupiedCreature = null;
@@ -290,7 +290,7 @@ namespace Board_Game.Logic
                         }
 
                         //set score to use distance
-                        if (Creature.mCreatureDesc.Type == Creatures.CreatureType.Miner)
+                        if (Creature.Type == Creatures.CreatureType.Miner)
                         {
                             newMove.score += (int)((100 / (moveDistance + 1)) / 2);
                         }
@@ -345,11 +345,11 @@ namespace Board_Game.Logic
                         Creature targetCreature = mGrid.mTiles[x + desiredX, y + desiredY].occupiedCreature;
                         if (targetCreature != null)
                         {
-                            if (sourceCreature.mCreatureDesc.CanAttack(targetCreature.mCreatureDesc.Type))
+                            if (sourceCreature.Class.CanAttack(targetCreature.Type))
                             {
-                                for (var p = 0; p < sourceCreature.mCreatureDesc.AttackPriorities.Length; p++)
+                                for (var p = 0; p < sourceCreature.Class.AttackPriorities.Length; p++)
                                 {
-                                    if (sourceCreature.mCreatureDesc.AttackPriorities[p] == targetCreature.mCreatureDesc.Type)
+                                    if (sourceCreature.Class.AttackPriorities[p] == targetCreature.Type)
                                     {
                                         score += ((int)Creatures.CreatureType.NumCreatureTypes - p) * 200;
                                     }
@@ -387,7 +387,7 @@ namespace Board_Game.Logic
 
             foreach (Creature Creature in opposingCreatures)
             {
-                if (source.mCreatureDesc.CanAttack(Creature.mCreatureDesc.Type))
+                if (source.Class.CanAttack(Creature.Type))
                 {
                     var x = Creature.GetX();
                     var y = Creature.GetY();
@@ -451,7 +451,7 @@ namespace Board_Game.Logic
         */
         public int GetCreatureValue(Creatures.Creature Creature)
         {
-            return CreatureWorths[(int)Creature.mCreatureDesc.Type] * 200;
+            return CreatureWorths[(int)Creature.Type] * 200;
         }
 
         /*
@@ -477,7 +477,7 @@ namespace Board_Game.Logic
                     Tile tile = mGrid.mTiles[newX + x, newY + y];
 
                     if (tile.side == creature.side //Cant attack friendlies
-                      || (tile.Occupied && creature.mCreatureDesc.CanAttack(tile.occupiedCreature.Type) == false))
+                      || (tile.Occupied && creature.Class.CanAttack(tile.occupiedCreature.Type) == false))
                     {
                         return false;
                     }
@@ -516,7 +516,7 @@ namespace Board_Game.Logic
                     {
                         Vector2 target;
 
-                        if (Creature.mCreatureDesc.Type == CreatureType.Miner)
+                        if (Creature.Type == CreatureType.Miner)
                         {
                             target = GetNearestMine(Creature);
                         }
@@ -529,7 +529,7 @@ namespace Board_Game.Logic
 
                         if (possibleMoves.Count == 0)
                         {
-                            Console.Out.WriteLine("No moves for " + Creature.mCreatureDesc.Type + " at " + Creature.Position);
+                            Console.Out.WriteLine("No moves for " + Creature.Type + " at " + Creature.Position);
                         }
 
                         foreach (Move move in possibleMoves)

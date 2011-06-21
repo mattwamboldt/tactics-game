@@ -85,17 +85,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Characters\Army.cs" />
-    <Compile Include="Code\DB\DatabseManager.cs" />
     <Compile Include="Code\Logic\AI.cs" />
     <Compile Include="Code\Logic\GameGrid.cs" />
     <Compile Include="Code\Input\InputManager.cs" />
     <Compile Include="Code\Input\Selector.cs" />
     <Compile Include="Code\Logic\GameState.cs" />
-    <Compile Include="Code\Logic\Mine.cs" />
     <Compile Include="Code\Logic\Player.cs" />
-    <Compile Include="Code\Logic\Tile.cs" />
     <Compile Include="Code\UI\Screen.cs" />
-    <Compile Include="Code\Characters\Creature.cs" />
     <Compile Include="Code\Util\Rounding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Program.cs" />

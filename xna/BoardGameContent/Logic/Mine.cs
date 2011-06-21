@@ -5,10 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Board_Game.Rendering;
+using Board_Game.Creatures;
 
 namespace Board_Game.Logic
 {
-    class Mine
+    public class Mine
     {
         public Side side;
 

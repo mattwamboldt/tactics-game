@@ -9,17 +9,10 @@ using Board_Game.Input;
 using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Creatures;
-using Board_Game.Code.DB;
+using Board_Game.DB;
 
 namespace Board_Game.Logic
 {
-    public enum Side
-    {
-        Red = 0,
-        Blue = 1,
-        Neutral = 2
-    }
-
     /// <summary>
     /// Will eventually house an entire games logical components, the grid and players.
     /// </summary>
@@ -41,6 +34,8 @@ namespace Board_Game.Logic
 
         private AI mAI;
         public AI AI { get { return mAI; } }
+
+        Creature Test;
 
         public GameState(AI AIref,
                 Sprite selectorSprite)
@@ -70,28 +65,13 @@ namespace Board_Game.Logic
 
         public void Initialize(ContentManager content)
         {
-            CreatureDescription bomberDesc = DatabaseManager.Get().CreatureTable[0];
-            CreatureDescription fighterDesc = DatabaseManager.Get().CreatureTable[1];
-            CreatureDescription minerDesc = DatabaseManager.Get().CreatureTable[3];
-            CreatureDescription soldierDesc = DatabaseManager.Get().CreatureTable[4];
-            CreatureDescription grenadierDesc = DatabaseManager.Get().CreatureTable[2];
-            
+            mRed.CreateCreatures();
+            mBlue.CreateCreatures();
 
-            mRed.CreateCreatures(
-                bomberDesc,
-                fighterDesc,
-                minerDesc,
-                grenadierDesc,
-                soldierDesc
-            );
-
-            mBlue.CreateCreatures(
-                bomberDesc,
-                fighterDesc,
-                minerDesc,
-                grenadierDesc,
-                soldierDesc
-            );
+            Test = content.Load<Creature>("xml/TestCreature");
+            Test.side = Side.Red;
+            SetLocation(Test.GridLocation.X, Test.GridLocation.Y, Test);
+            mRed.Creatures.Add(Test);
 
             mSelector.Initialize(content);
         }

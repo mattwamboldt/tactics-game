@@ -6,9 +6,9 @@ using BoardGameContent.DB;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Creatures;
 
-namespace Board_Game.Code.DB
+namespace Board_Game.DB
 {
-    class DatabaseManager
+    public class DatabaseManager
     {
         private GameDatabase mDatabase;
         private static DatabaseManager mInstance;

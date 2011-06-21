@@ -15,7 +15,7 @@ using Board_Game.UI;
 using Board_Game.Input;
 using Board_Game.Rendering;
 using BoardGameContent.DB;
-using Board_Game.Code.DB;
+using Board_Game.DB;
 
 namespace Board_Game
 {
