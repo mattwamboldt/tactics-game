@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Characters.Army">
+    <Side>Red</Side>
+    <Members>
+      <Item>
+        <GridLocation>0 10</GridLocation>
+        <ClassID>1</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>2 10</GridLocation>
+        <ClassID>0</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>0 8</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>1 8</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>2 8</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>3 8</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>0 9</GridLocation>
+        <ClassID>3</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>1 9</GridLocation>
+        <ClassID>2</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>2 9</GridLocation>
+        <ClassID>2</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>3 9</GridLocation>
+        <ClassID>3</ClassID>
+      </Item>
+    </Members>
+  </Asset>
+</XnaContent>

@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\Army.cs" />
     <Compile Include="Characters\Creature.cs" />
     <Compile Include="Characters\CreatureDescription.cs" />
     <Compile Include="DB\DatabseManager.cs" />

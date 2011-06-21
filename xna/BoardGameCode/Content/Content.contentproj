@@ -172,8 +172,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="xml\TestCreature.xml">
-      <Name>TestCreature</Name>
+    <Compile Include="Armies\BlueTest.xml">
+      <Name>BlueTest</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armies\RedTest.xml">
+      <Name>RedTest</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>

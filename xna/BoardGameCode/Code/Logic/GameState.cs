@@ -10,6 +10,7 @@ using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Creatures;
 using Board_Game.DB;
+using Board_Game.Characters;
 
 namespace Board_Game.Logic
 {
@@ -34,8 +35,6 @@ namespace Board_Game.Logic
 
         private AI mAI;
         public AI AI { get { return mAI; } }
-
-        Creature Test;
 
         public GameState(AI AIref,
                 Sprite selectorSprite)
@@ -65,13 +64,11 @@ namespace Board_Game.Logic
 
         public void Initialize(ContentManager content)
         {
-            mRed.CreateCreatures();
-            mBlue.CreateCreatures();
+            mRed.mArmy = content.Load<Army>("Armies/RedTest");
+            mRed.PlaceOnField();
 
-            Test = content.Load<Creature>("xml/TestCreature");
-            Test.side = Side.Red;
-            SetLocation(Test.GridLocation.X, Test.GridLocation.Y, Test);
-            mRed.Creatures.Add(Test);
+            mBlue.mArmy = content.Load<Army>("Armies/BlueTest");
+            mBlue.PlaceOnField();
 
             mSelector.Initialize(content);
         }

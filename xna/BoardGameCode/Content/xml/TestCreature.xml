@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<XnaContent>
-  <Asset Type="Board_Game.Creatures.Creature">
-    <GridLocation>3 7</GridLocation>
-    <ClassID>4</ClassID>
-  </Asset>
-</XnaContent>

@@ -6,7 +6,7 @@ using System.Text;
 using Board_Game.Creatures;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Board_Game.Code.Characters;
+using Board_Game.Characters;
 
 namespace Board_Game.Logic
 {
@@ -19,7 +19,7 @@ namespace Board_Game.Logic
     {
         public bool mIsHuman;
         public Side mSide;
-        private Army mArmy;
+        public Army mArmy;
         private GameState mGame;
 
         public List<Creature> Creatures { get { return mArmy.Members; } }
@@ -31,12 +31,6 @@ namespace Board_Game.Logic
             mGame = game;
             mArmy = new Army();
             mArmy.Side = side;
-        }
-
-        public void CreateCreatures()
-        {
-            mArmy.Build();
-            PlaceOnField();
         }
 
         public void PlaceOnField()
