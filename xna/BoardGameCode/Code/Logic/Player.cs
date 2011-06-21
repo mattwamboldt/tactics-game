@@ -29,8 +29,6 @@ namespace Board_Game.Logic
             mIsHuman = isHuman;
             mSide = side;
             mGame = game;
-            mArmy = new Army();
-            mArmy.Side = side;
         }
 
         public void PlaceOnField()
