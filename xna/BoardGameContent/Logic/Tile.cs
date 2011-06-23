@@ -14,7 +14,7 @@ namespace Board_Game.Logic
         public const float TILE_SIZE = 45;
 
         public Side side;
-        public Creatures.Creature occupiedCreature;
+        public Creature occupiedCreature;
         public Mine mine;
 
         public bool Occupied { get { return occupiedCreature != null; } }

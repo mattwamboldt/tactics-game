@@ -16,6 +16,7 @@ using Board_Game.Input;
 using Board_Game.Rendering;
 using BoardGameContent.DB;
 using Board_Game.DB;
+using GameEditor;
 
 namespace Board_Game
 {
@@ -31,6 +32,10 @@ namespace Board_Game
         GameState mGameState;
         Texture2D mBackground;
 
+#if EDITOR
+        Editor mEditorForm;
+#endif
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -39,6 +44,10 @@ namespace Board_Game
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
             mAI = new AI();
+#if EDITOR
+            mEditorForm = new Editor();
+            mEditorForm.Show();
+#endif
         }
 
         /// <summary>

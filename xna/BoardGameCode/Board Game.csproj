@@ -25,6 +25,9 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <TargetCulture>en</TargetCulture>
+    <ProductName>Board Game Base</ProductName>
+    <PublisherName>Heroless Games</PublisherName>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -55,6 +58,16 @@
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Editor|x86' ">
+    <OutputPath>bin\x86\Editor\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS EDITOR</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <Private>False</Private>
@@ -71,6 +84,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -147,6 +161,10 @@
     <ProjectReference Include="..\BoardGameContent\BoardGameContent.csproj">
       <Project>{1CE1279E-9D0C-4E6E-AA78-6EC7FBBFF4AC}</Project>
       <Name>BoardGameContent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameEditor\GameEditor.csproj">
+      <Project>{98217BF4-7441-412B-97C1-4D978FCD856B}</Project>
+      <Name>GameEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
