@@ -495,12 +495,6 @@ namespace Board_Game.Logic
             {
                 if (mGameState.winner == Side.Neutral)
                 {
-                    Move bestMove;
-                    bestMove.score = -99;
-                    bestMove.position.X = -99;
-                    bestMove.position.Y = -99;
-                    Creatures.Creature CreatureToMove = null;
-
                     List<Creatures.Creature> Creatures;
 
                     if (mGameState.mCurrentPlayer.mSide == Side.Red)
@@ -511,6 +505,12 @@ namespace Board_Game.Logic
                     {
                         Creatures = mGameState.Blue.Creatures;
                     }
+
+                    Move bestMove;
+                    bestMove.score = -99;
+                    bestMove.position.X = -99;
+                    bestMove.position.Y = -99;
+                    Creatures.Creature CreatureToMove = null;
 
                     foreach (Creature Creature in Creatures)
                     {
@@ -542,17 +542,22 @@ namespace Board_Game.Logic
                         }
                     }
 
-                    if (State.CheckOccupied((int)bestMove.position.X, (int)bestMove.position.Y, CreatureToMove.GridWidth, CreatureToMove.GridHeight))
+                    //BUG: we have run out of units with attackable enemies to move but the games not over
+                    //FIX: give up and await our demise
+                    if (CreatureToMove != null)
                     {
-                       mGameState.DestroyCreatures(
-                           (int)bestMove.position.X,
-                           (int)bestMove.position.Y,
-                           CreatureToMove.GridWidth,
-                           CreatureToMove.GridHeight
-                       );
-                    }
+                        if (State.CheckOccupied((int)bestMove.position.X, (int)bestMove.position.Y, CreatureToMove.GridWidth, CreatureToMove.GridHeight))
+                        {
+                           mGameState.DestroyCreatures(
+                               (int)bestMove.position.X,
+                               (int)bestMove.position.Y,
+                               CreatureToMove.GridWidth,
+                               CreatureToMove.GridHeight
+                           );
+                        }
 
-                    mGameState.Move((int)bestMove.position.X, (int)bestMove.position.Y, CreatureToMove);
+                        mGameState.Move((int)bestMove.position.X, (int)bestMove.position.Y, CreatureToMove);
+                    }
 
                     mGameState.EndTurn();
                 }
