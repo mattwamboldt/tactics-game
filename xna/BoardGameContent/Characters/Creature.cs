@@ -76,6 +76,8 @@ namespace Board_Game.Creatures
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
             mSprite.Color = Color.White;
+            mSprite.Texture = mCreatureDesc.Texture;
+            mSprite.Dimensions = new Vector2(GridWidth * Tile.TILE_SIZE, GridHeight * Tile.TILE_SIZE);
 
             if (side == Side.Red)
             {

@@ -96,7 +96,7 @@ namespace Board_Game.Creatures
 
         public void LoadTexture()
         {
-            if (mTexture == null)
+            if (mTextureName != null)
             {
                 mTexture = TextureManager.Get().Find(mTextureName);
             }

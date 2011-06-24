@@ -69,6 +69,7 @@ namespace GameEditor
             nameText.Text = mSelectedDesc.Name;
             idText.Text = mSelectedDesc.ID.ToString();
             descriptionText.Text = mSelectedDesc.Description;
+            textureList.SelectedItem = mSelectedDesc.TextureName;
         }
 
         private void nameText_TextChanged(object sender, EventArgs e)
@@ -89,6 +90,11 @@ namespace GameEditor
 
         private void textureList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (mSelectedDesc != null)
+            {
+                mSelectedDesc.TextureName = (string)textureList.SelectedItem;
+                mSelectedDesc.LoadTexture();
+            }
         }
     }
 }
