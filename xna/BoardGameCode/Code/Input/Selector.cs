@@ -264,5 +264,42 @@ namespace Board_Game.Logic
                 spriteBatch.Draw(texture, areaMovable, new Color(0,255,0,130));
             }
         }
+
+        public void HandleInput(Cursor cursor)
+        {
+            Point cursorPosition = cursor.GetPosition();
+            Rectangle bounds = new Rectangle(
+                (int)mGridRef.position.X,
+                (int)mGridRef.position.Y,
+                (int)mGridRef.Width(),
+                (int)mGridRef.Height()
+            );
+
+            if (bounds.Contains(cursorPosition))
+            {
+                Vector2 newPoint = new Vector2(
+                    (int)((cursorPosition.X - mGridRef.position.X) / Tile.TILE_SIZE),
+                    (int)((cursorPosition.Y - mGridRef.position.Y) / Tile.TILE_SIZE)
+                );
+
+                if (newPoint.Equals(position) == false)
+                {
+                    position = newPoint;
+                    mMoveSound.Play();
+                }
+
+                if (cursor.IsLeftClick())
+                {
+                    if (selectedCreature != null)
+                    {
+                        SelectSquare();
+                    }
+                    else
+                    {
+                        SelectCreature();
+                    }
+                }
+            }
+        }
     }
 }

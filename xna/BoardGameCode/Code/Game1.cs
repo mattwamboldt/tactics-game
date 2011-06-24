@@ -31,6 +31,7 @@ namespace Board_Game
         Screen mScreen;
         GameState mGameState;
         Texture2D mBackground;
+        Cursor mCursor;
 
 #if EDITOR
         Editor mEditorForm;
@@ -76,6 +77,7 @@ namespace Board_Game
             FontManager.Initialize(Content);
             
             mBackground = Content.Load<Texture2D>("textures/backgrounds/battlefield");
+            mCursor = new Cursor(TextureManager.Get().Find("textures/UI/cursor"));
             
             DatabaseManager.Get().Load(Content);
 
@@ -107,6 +109,7 @@ namespace Board_Game
         protected override void Update(GameTime gameTime)
         {
             InputManager.Get().Update();
+            mCursor.Update();
             
             // Allows the game to exit
             if (InputManager.Get().isTriggered(Button.Home))
@@ -118,7 +121,8 @@ namespace Board_Game
             {
                 graphics.ToggleFullScreen();
             }
-            
+
+            mGameState.Selector.HandleInput(mCursor);
             mGameState.Update(gameTime);
             mScreen.Update(mGameState);
 
@@ -140,6 +144,7 @@ namespace Board_Game
             spriteBatch.Draw(mBackground, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mScreen.Render(spriteBatch);
+            mCursor.Render(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
