@@ -84,6 +84,10 @@ namespace Board_Game
             mAI.Initialize(mGameState);
             mScreen = new Screen(GraphicsDevice, Content);
             mAI.mScreen = mScreen;
+
+#if EDITOR
+            mEditorForm.DisplayStartData();
+#endif
         }
 
         /// <summary>

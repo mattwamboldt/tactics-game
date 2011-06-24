@@ -35,6 +35,11 @@ namespace Board_Game.Rendering
             mTextureCollection.Add("RAW", pixel);
         }
 
+        public List<string> GetTextureList()
+        {
+            return mTextureCollection.Keys.Cast<string>().ToList();
+        }
+
         public Texture2D Find(string textureName)
         {
             Texture2D returnReference = (Texture2D)mTextureCollection[textureName];

@@ -39,12 +39,22 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.unitPage = new System.Windows.Forms.TabPage();
-            this.databasePage = new System.Windows.Forms.TabPage();
-            this.classList = new System.Windows.Forms.ListBox();
             this.classListLabel = new System.Windows.Forms.Label();
+            this.classList = new System.Windows.Forms.ListBox();
+            this.databasePage = new System.Windows.Forms.TabPage();
+            this.nameText = new System.Windows.Forms.TextBox();
+            this.descriptionText = new System.Windows.Forms.TextBox();
+            this.idText = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textureList = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.texturePreview = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.unitPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).BeginInit();
             this.SuspendLayout();
             // 
             // openFile
@@ -110,7 +120,7 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -127,6 +137,15 @@
             // 
             // unitPage
             // 
+            this.unitPage.Controls.Add(this.texturePreview);
+            this.unitPage.Controls.Add(this.label4);
+            this.unitPage.Controls.Add(this.textureList);
+            this.unitPage.Controls.Add(this.label3);
+            this.unitPage.Controls.Add(this.label2);
+            this.unitPage.Controls.Add(this.label1);
+            this.unitPage.Controls.Add(this.idText);
+            this.unitPage.Controls.Add(this.descriptionText);
+            this.unitPage.Controls.Add(this.nameText);
             this.unitPage.Controls.Add(this.classListLabel);
             this.unitPage.Controls.Add(this.classList);
             this.unitPage.Location = new System.Drawing.Point(4, 22);
@@ -137,15 +156,14 @@
             this.unitPage.Text = "Units";
             this.unitPage.UseVisualStyleBackColor = true;
             // 
-            // databasePage
+            // classListLabel
             // 
-            this.databasePage.Location = new System.Drawing.Point(4, 22);
-            this.databasePage.Name = "databasePage";
-            this.databasePage.Padding = new System.Windows.Forms.Padding(3);
-            this.databasePage.Size = new System.Drawing.Size(832, 487);
-            this.databasePage.TabIndex = 1;
-            this.databasePage.Text = "tabPage2";
-            this.databasePage.UseVisualStyleBackColor = true;
+            this.classListLabel.AutoSize = true;
+            this.classListLabel.Location = new System.Drawing.Point(8, 12);
+            this.classListLabel.Name = "classListLabel";
+            this.classListLabel.Size = new System.Drawing.Size(51, 13);
+            this.classListLabel.TabIndex = 1;
+            this.classListLabel.Text = "Class List";
             // 
             // classList
             // 
@@ -160,15 +178,97 @@
             this.classList.Name = "classList";
             this.classList.Size = new System.Drawing.Size(120, 160);
             this.classList.TabIndex = 0;
+            this.classList.SelectedIndexChanged += new System.EventHandler(this.classList_SelectedIndexChanged);
             // 
-            // classListLabel
+            // databasePage
             // 
-            this.classListLabel.AutoSize = true;
-            this.classListLabel.Location = new System.Drawing.Point(8, 12);
-            this.classListLabel.Name = "classListLabel";
-            this.classListLabel.Size = new System.Drawing.Size(51, 13);
-            this.classListLabel.TabIndex = 1;
-            this.classListLabel.Text = "Class List";
+            this.databasePage.Location = new System.Drawing.Point(4, 22);
+            this.databasePage.Name = "databasePage";
+            this.databasePage.Padding = new System.Windows.Forms.Padding(3);
+            this.databasePage.Size = new System.Drawing.Size(832, 487);
+            this.databasePage.TabIndex = 1;
+            this.databasePage.Text = "tabPage2";
+            this.databasePage.UseVisualStyleBackColor = true;
+            // 
+            // nameText
+            // 
+            this.nameText.Location = new System.Drawing.Point(132, 46);
+            this.nameText.Name = "nameText";
+            this.nameText.Size = new System.Drawing.Size(100, 20);
+            this.nameText.TabIndex = 2;
+            this.nameText.TextChanged += new System.EventHandler(this.nameText_TextChanged);
+            // 
+            // descriptionText
+            // 
+            this.descriptionText.Location = new System.Drawing.Point(132, 85);
+            this.descriptionText.Multiline = true;
+            this.descriptionText.Name = "descriptionText";
+            this.descriptionText.Size = new System.Drawing.Size(162, 103);
+            this.descriptionText.TabIndex = 3;
+            this.descriptionText.TextChanged += new System.EventHandler(this.descriptionText_TextChanged);
+            // 
+            // idText
+            // 
+            this.idText.Location = new System.Drawing.Point(238, 46);
+            this.idText.Name = "idText";
+            this.idText.ReadOnly = true;
+            this.idText.Size = new System.Drawing.Size(56, 20);
+            this.idText.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(132, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Name";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(132, 69);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Description";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(242, 28);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(18, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "ID";
+            // 
+            // textureList
+            // 
+            this.textureList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.textureList.FormattingEnabled = true;
+            this.textureList.Location = new System.Drawing.Point(5, 207);
+            this.textureList.Name = "textureList";
+            this.textureList.Size = new System.Drawing.Size(289, 21);
+            this.textureList.TabIndex = 8;
+            this.textureList.SelectedIndexChanged += new System.EventHandler(this.textureList_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 191);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Texture";
+            // 
+            // texturePreview
+            // 
+            this.texturePreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.texturePreview.Location = new System.Drawing.Point(6, 235);
+            this.texturePreview.Name = "texturePreview";
+            this.texturePreview.Size = new System.Drawing.Size(288, 244);
+            this.texturePreview.TabIndex = 10;
+            this.texturePreview.TabStop = false;
             // 
             // Editor
             // 
@@ -185,6 +285,7 @@
             this.tabControl1.ResumeLayout(false);
             this.unitPage.ResumeLayout(false);
             this.unitPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.texturePreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -206,6 +307,15 @@
         private System.Windows.Forms.TabPage databasePage;
         private System.Windows.Forms.Label classListLabel;
         private System.Windows.Forms.ListBox classList;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox idText;
+        private System.Windows.Forms.TextBox descriptionText;
+        private System.Windows.Forms.TextBox nameText;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox textureList;
+        private System.Windows.Forms.PictureBox texturePreview;
     }
 }
 
