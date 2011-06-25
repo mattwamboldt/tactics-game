@@ -104,11 +104,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Rendering\TextureManager.cs" />
+    <Compile Include="UI\Animation.cs" />
     <Compile Include="UI\FontManager.cs" />
     <Compile Include="UI\Image.cs" />
     <Compile Include="UI\Label.cs" />
     <Compile Include="UI\Layout.cs" />
     <Compile Include="UI\Shape.cs" />
+    <Compile Include="UI\ShapeState.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
