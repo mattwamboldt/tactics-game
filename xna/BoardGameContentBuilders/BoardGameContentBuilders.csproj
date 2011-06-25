@@ -137,6 +137,7 @@
     <Compile Include="DB\GameDatabaseWriter.cs" />
     <Compile Include="Input\InputMapWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\AnimationWriter.cs" />
     <Compile Include="UI\LabelWriter.cs" />
     <Compile Include="UI\ImageWriter.cs" />
     <Compile Include="UI\ShapeWriter.cs" />
