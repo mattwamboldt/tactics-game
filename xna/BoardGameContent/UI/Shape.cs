@@ -156,6 +156,17 @@ namespace Board_Game.UI
                 true);
         }
 
+        public void Update()
+        {
+            mAnimation.NextFrame();
+            SetPosition(mAnimation.CurrentFrame.Position, true);
+
+            foreach (Shape child in mChildren)
+            {
+                child.Update();
+            }
+        }
+
         public virtual void Render(SpriteBatch spriteBatch)
         {
             if(mVisibility)

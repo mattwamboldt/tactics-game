@@ -22,8 +22,20 @@ namespace BoardGameContent.UI
         protected ShapeState[] mKeyFrames; //Defines position as an offset from the parent
         public ShapeState[] KeyFrames{ get { return mKeyFrames; } set { mKeyFrames = value; } }
 
+        protected bool mIsPlaying;
+        [ContentSerializerIgnore]
+        public bool IsPlaying { get { return mIsPlaying; } set { mIsPlaying = value; } }
+
+        //This starts the animation from the beginning
+        public void Play()
+        {
+            Reset();
+            mIsPlaying = true;
+        }
+
         public void Reset()
         {
+            mIsPlaying = false;
             CurrentFrame = new ShapeState(KeyFrames[0]);
             CurrentKeyFrame = 0;
         }
@@ -36,7 +48,12 @@ namespace BoardGameContent.UI
             int nextKeyFrameIndex = CurrentKeyFrame + 1;
             
             // we hit the end of the animation so stop here
-            if (nextKeyFrameIndex < mKeyFrames.Length)
+            if (nextKeyFrameIndex >= mKeyFrames.Length)
+            {
+                mIsPlaying = false;
+            }
+
+            if (mIsPlaying)
             {
                 ShapeState nextKeyFrame = mKeyFrames[nextKeyFrameIndex];
                 int framesBetween = nextKeyFrame.Frame - mCurrentFrame.Frame;

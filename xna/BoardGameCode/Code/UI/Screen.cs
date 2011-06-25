@@ -28,6 +28,7 @@ namespace Board_Game.UI
 
         public void Update(GameState gameState)
         {
+            mRoot.Update();
             string redString = "HUMAN";
             string blueString = "HUMAN";
             if (!gameState.Red.mIsHuman)
