@@ -2,38 +2,73 @@
 <XnaContent>
   <Asset Type="Board_Game.UI.Shape">
     <Name>root</Name>
-    <Position>0 0</Position>
-    <Size>800 600</Size>
     <Visible>true</Visible>
-    <Color>FFFFFFFF</Color>
+    <Animation>
+      <KeyFrames>
+        <Item>
+          <Position>0 0</Position>
+          <Size>800 600</Size>
+          <Color>FFFFFFFF</Color>
+          <Frame>0</Frame>
+        </Item>
+      </KeyFrames>
+    </Animation>
     <Children>
       <Item Type="Board_Game.UI.Shape">
           <Name>gridBackground</Name>
-          <Position>0 0</Position>
-          <Size>340 370</Size>
           <Visible>true</Visible>
-          <Color>FF000000</Color>
+          <Animation>
+            <KeyFrames>
+              <Item>
+                <Position>0 0</Position>
+                <Size>340 370</Size>
+                <Color>FF000000</Color>
+                <Frame>0</Frame>
+              </Item>
+            </KeyFrames>
+          </Animation>
           <Children>
             <Item Type="Board_Game.UI.Image">
               <Name>victorBGEdge</Name>
-              <Position>-2 -2</Position>
-              <Size>104 34</Size>
               <Visible>false</Visible>
-              <Color>FFFFFFFF</Color>
+              <Animation>
+                <KeyFrames>
+                  <Item>
+                    <Position>-2 -2</Position>
+                    <Size>104 34</Size>
+                    <Color>FFFFFFFF</Color>
+                    <Frame>0</Frame>
+                  </Item>
+                </KeyFrames>
+              </Animation>
               <Children>
                 <Item Type="Board_Game.UI.Image">
                   <Name>victorBG</Name>
-                  <Position>-2 -2</Position>
-                  <Size>100 30</Size>
                   <Visible>true</Visible>
-                  <Color>FF000000</Color>
+                  <Animation>
+                    <KeyFrames>
+                      <Item>
+                        <Position>-2 -2</Position>
+                        <Size>100 30</Size>
+                        <Color>FF000000</Color>
+                        <Frame>0</Frame>
+                      </Item>
+                    </KeyFrames>
+                  </Animation>
                   <Children>
                     <Item Type="Board_Game.UI.Label">
                       <Name>victorText</Name>
-                      <Position>0 0</Position>
-                      <Size>0 0</Size>
                       <Visible>true</Visible>
-                      <Color>FFFFFFFF</Color>
+                      <Animation>
+                        <KeyFrames>
+                          <Item>
+                            <Position>0 0</Position>
+                            <Size>0 0</Size>
+                            <Color>FFFFFFFF</Color>
+                            <Frame>0</Frame>
+                          </Item>
+                        </KeyFrames>
+                      </Animation>
                       <Children></Children>
                       <Font>Button</Font>
                       <Text>DUMMY</Text>
@@ -50,17 +85,31 @@
       </Item>
       <Item Type="Board_Game.UI.Image">
         <Name>tutorialBackground</Name>
-        <Position>30 565</Position>
-        <Size>440 125</Size>
         <Visible>true</Visible>
-        <Color>FF000000</Color>
+        <Animation>
+          <KeyFrames>
+            <Item>
+              <Position>30 565</Position>
+              <Size>440 125</Size>
+              <Color>FF000000</Color>
+              <Frame>0</Frame>
+            </Item>
+          </KeyFrames>
+        </Animation>
         <Children>
           <Item Type="Board_Game.UI.Label">
             <Name>tutorialText</Name>
-            <Position>5 5</Position>
-            <Size>0 0</Size>
             <Visible>true</Visible>
-            <Color>FFFFFFFF</Color>
+            <Animation>
+              <KeyFrames>
+                <Item>
+                  <Position>5 5</Position>
+                  <Size>0 0</Size>
+                  <Color>FFFFFFFF</Color>
+                  <Frame>0</Frame>
+                </Item>
+              </KeyFrames>
+            </Animation>
             <Children></Children>
             <Font>Tutorial</Font>
             <Text>Destroy all opponent units, or take control of all mines (squares that are around a diamond). Miners convert neutral or enemy mines to your colour, making them safe to move across.
@@ -71,24 +120,45 @@ Flying units will not be destroyed by mines.</Text>
           </Item>
           <Item Type="Board_Game.UI.Image">
             <Name>redBGEdge</Name>
-            <Position>470 0</Position>
-            <Size>102 22</Size>
             <Visible>true</Visible>
-            <Color>FFFFFFFF</Color>
+            <Animation>
+              <KeyFrames>
+                <Item>
+                  <Position>470 0</Position>
+                  <Size>102 22</Size>
+                  <Color>FFFFFFFF</Color>
+                  <Frame>0</Frame>
+                </Item>
+              </KeyFrames>
+            </Animation>
             <Children>
               <Item Type="Board_Game.UI.Image">
                 <Name>redBG</Name>
-                <Position>1 1</Position>
-                <Size>100 20</Size>
                 <Visible>true</Visible>
-                <Color>FFFF0000</Color>
+                <Animation>
+                  <KeyFrames>
+                    <Item>
+                      <Position>1 1</Position>
+                      <Size>100 20</Size>
+                      <Color>FFFF0000</Color>
+                      <Frame>0</Frame>
+                    </Item>
+                  </KeyFrames>
+                </Animation>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
                     <Name>redText</Name>
-                    <Position>0 0</Position>
-                    <Size>0 0</Size>
                     <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
+                    <Animation>
+                      <KeyFrames>
+                        <Item>
+                          <Position>0 0</Position>
+                          <Size>0 0</Size>
+                          <Color>FFFFFFFF</Color>
+                          <Frame>0</Frame>
+                        </Item>
+                      </KeyFrames>
+                    </Animation>
                     <Children></Children>
                     <Font>Button</Font>
                     <Text>DUMMY</Text>
@@ -103,24 +173,45 @@ Flying units will not be destroyed by mines.</Text>
           </Item>
           <Item Type="Board_Game.UI.Image">
             <Name>blueBGEdge</Name>
-            <Position>470 28</Position>
-            <Size>102 22</Size>
             <Visible>true</Visible>
-            <Color>FFFFFFFF</Color>
+            <Animation>
+              <KeyFrames>
+                <Item>
+                  <Position>470 28</Position>
+                  <Size>102 22</Size>
+                  <Color>FFFFFFFF</Color>
+                  <Frame>0</Frame>
+                </Item>
+              </KeyFrames>
+            </Animation>
             <Children>
               <Item Type="Board_Game.UI.Image">
                 <Name>blueBG</Name>
-                <Position>1 1</Position>
-                <Size>100 20</Size>
                 <Visible>true</Visible>
-                <Color>FF0000FF</Color>
+                <Animation>
+                  <KeyFrames>
+                    <Item>
+                      <Position>1 1</Position>
+                      <Size>100 20</Size>
+                      <Color>FF0000FF</Color>
+                      <Frame>0</Frame>
+                    </Item>
+                  </KeyFrames>
+                </Animation>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
                     <Name>blueText</Name>
-                    <Position>0 0</Position>
-                    <Size>0 0</Size>
                     <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
+                    <Animation>
+                      <KeyFrames>
+                        <Item>
+                          <Position>0 0</Position>
+                          <Size>0 0</Size>
+                          <Color>FFFFFFFF</Color>
+                          <Frame>0</Frame>
+                        </Item>
+                      </KeyFrames>
+                    </Animation>
                     <Children></Children>
                     <Font>Button</Font>
                     <Text>DUMMY</Text>
@@ -138,31 +229,59 @@ Flying units will not be destroyed by mines.</Text>
       </Item>
       <Item Type="Board_Game.UI.Image">
         <Name>creatureInfo</Name>
-        <Position>500 620</Position>
-        <Size>270 70</Size>
         <Visible>true</Visible>
-        <Color>FF000000</Color>
+        <Animation>
+          <KeyFrames>
+            <Item>
+              <Position>500 620</Position>
+              <Size>270 70</Size>
+              <Color>FF000000</Color>
+              <Frame>0</Frame>
+            </Item>
+          </KeyFrames>
+        </Animation>
         <Children>
           <Item Type="Board_Game.UI.Image">
             <Name>imageBG</Name>
-            <Position>5 5</Position>
-            <Size>60 60</Size>
             <Visible>true</Visible>
-            <Color>FFA9A9A9</Color>
+            <Animation>
+              <KeyFrames>
+                <Item>
+                  <Position>5 5</Position>
+                  <Size>60 60</Size>
+                  <Color>FFA9A9A9</Color>
+                  <Frame>0</Frame>
+                </Item>
+              </KeyFrames>
+            </Animation>
             <Children>
               <Item Type="Board_Game.UI.Image">
                 <Name>image</Name>
-                <Position>0 0</Position>
-                <Size>60 60</Size>
                 <Visible>true</Visible>
-                <Color>FFFF0000</Color>
+                <Animation>
+                  <KeyFrames>
+                    <Item>
+                      <Position>0 0</Position>
+                      <Size>60 60</Size>
+                      <Color>FFFF0000</Color>
+                      <Frame>0</Frame>
+                    </Item>
+                  </KeyFrames>
+                </Animation>
                 <Children>
                   <Item Type="Board_Game.UI.Label">
                     <Name>name</Name>
-                    <Position>65 0</Position>
-                    <Size>0 0</Size>
                     <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
+                    <Animation>
+                      <KeyFrames>
+                        <Item>
+                          <Position>65 0</Position>
+                          <Size>0 0</Size>
+                          <Color>FFFFFFFF</Color>
+                          <Frame>0</Frame>
+                        </Item>
+                      </KeyFrames>
+                    </Animation>
                     <Children></Children>
                     <Font>Tutorial</Font>
                     <Text>BOMBER</Text>
@@ -171,10 +290,17 @@ Flying units will not be destroyed by mines.</Text>
                   </Item>
                   <Item Type="Board_Game.UI.Label">
                     <Name>description</Name>
-                    <Position>65 15</Position>
-                    <Size>0 0</Size>
                     <Visible>true</Visible>
-                    <Color>FFFFFFFF</Color>
+                    <Animation>
+                      <KeyFrames>
+                        <Item>
+                          <Position>65 15</Position>
+                          <Size>0 0</Size>
+                          <Color>FFFFFFFF</Color>
+                          <Frame>0</Frame>
+                        </Item>
+                      </KeyFrames>
+                    </Animation>
                     <Children></Children>
                     <Font>Tutorial</Font>
                     <Text>Movement: 1 large square

@@ -39,10 +39,10 @@ namespace Board_Game.UI
             mText = text;
             mFont = FontManager.Get().Find(fontName);
             mMaxWidth = maxWidth;
-            mSize = mFont.MeasureString(mText);
+            Size = mFont.MeasureString(mText);
 
             mIsCentred = centreAlign;
-            mPosition = position;
+            Position = position;
         }
 
         //Call this after the class is loaded in the content manager
@@ -60,16 +60,16 @@ namespace Board_Game.UI
                 if (mMaxWidth != 0)
                 {
                     text = Layout.WrapString(mMaxWidth, mFont, text);
-                    mSize = mFont.MeasureString(text);
+                    Size = mFont.MeasureString(text);
                 }
 
                 if (mIsCentred)
                 {
-                    mSize = mFont.MeasureString(mText);
+                    Size = mFont.MeasureString(mText);
                     CenterAlign();
                 }
 
-                spriteBatch.DrawString(mFont, text, mAbsolutePosition, mColor);
+                spriteBatch.DrawString(mFont, text, mAbsolutePosition, this.Color);
 
                 base.Render(spriteBatch);
             }

@@ -22,6 +22,12 @@ namespace BoardGameContent.UI
         protected ShapeState[] mKeyFrames; //Defines position as an offset from the parent
         public ShapeState[] KeyFrames{ get { return mKeyFrames; } set { mKeyFrames = value; } }
 
+        public void Reset()
+        {
+            CurrentFrame = new ShapeState(KeyFrames[0]);
+            CurrentKeyFrame = 0;
+        }
+
         /// <summary>
         /// Calculates the next frame based on the current frame and next keyframe
         /// </summary>
@@ -76,8 +82,7 @@ namespace BoardGameContent.UI
             Animation anim = new Animation();
 
             anim.KeyFrames = input.ReadObject<ShapeState[]>();
-            anim.CurrentFrame = new ShapeState(anim.KeyFrames[0]);
-            anim.CurrentKeyFrame = 0;
+            anim.Reset();
 
             return anim;
         }

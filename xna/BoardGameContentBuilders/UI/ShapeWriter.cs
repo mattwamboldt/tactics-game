@@ -14,10 +14,8 @@ namespace BoardGameContentBuilders.UI
         protected override void Write(ContentWriter output, Shape value)
         {
             output.Write(value.Name);
-            output.Write(value.Position);
-            output.Write(value.Size);
             output.Write(value.Visible);
-            output.Write(value.Color);
+            output.WriteObject(value.Animation);
             output.WriteObject<List<Shape>>(value.Children);
         }
 

@@ -23,6 +23,9 @@ namespace BoardGameContent.UI
         protected int mFrame;
         public int Frame { get { return mFrame; } set { mFrame = value; } }
 
+        [ContentSerializerIgnore]
+        public float Width { get { return mSize.X; } set { mSize.X = value; } }
+
         public ShapeState() { }
         public ShapeState(ShapeState orginal)
         {

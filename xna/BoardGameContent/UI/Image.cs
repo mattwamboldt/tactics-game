@@ -30,7 +30,7 @@ namespace Board_Game.UI
         {
             if (mVisibility)
             {
-                spriteBatch.Draw(mTexture, new Rectangle((int)mAbsolutePosition.X, (int)mAbsolutePosition.Y, (int)mSize.X, (int)mSize.Y), mColor);
+                spriteBatch.Draw(mTexture, new Rectangle((int)mAbsolutePosition.X, (int)mAbsolutePosition.Y, (int)Size.X, (int)Size.Y), this.Color);
                 base.Render(spriteBatch);
             }
         }
