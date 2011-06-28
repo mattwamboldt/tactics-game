@@ -89,6 +89,7 @@ namespace Board_Game
 
 #if EDITOR
             mEditorForm.DisplayStartData();
+            mEditorForm.PopulateTree(mScreen.Root);
 #endif
         }
 

@@ -12,6 +12,8 @@ using Board_Game.Creatures;
 using Board_Game.DB;
 using Board_Game.Rendering;
 using Microsoft.Xna.Framework;
+using Board_Game.UI;
+using BoardGameContent.UI;
 
 namespace GameEditor
 {
@@ -95,6 +97,39 @@ namespace GameEditor
                 mSelectedDesc.TextureName = (string)textureList.SelectedItem;
                 mSelectedDesc.LoadTexture();
             }
+        }
+
+        public void PopulateTree(Shape root)
+        {
+            TreeNode node = screenTree.Nodes.Add(root.Name);
+            node.Tag = root;
+            getChildren(node, root);
+        }
+
+        private void getChildren(TreeNode parentNode, Shape parent)
+        {
+            foreach (Shape child in parent.Children)
+            {
+                TreeNode newNode = parentNode.Nodes.Add(child.Name);
+                newNode.Tag = child;
+                getChildren(newNode, child);
+            }
+        }
+
+        private void PopulateFrameList(Shape shape)
+        {
+            frameList.Items.Clear();
+            frameList.DisplayMember = "Frame";
+
+            foreach (ShapeState state in shape.Animation.KeyFrames)
+            {
+                frameList.Items.Add(state);
+            }
+        }
+
+        private void screenTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            PopulateFrameList((Shape)e.Node.Tag);
         }
     }
 }
