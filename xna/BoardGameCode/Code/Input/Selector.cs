@@ -114,14 +114,19 @@ namespace Board_Game.Logic
             }
             if (InputManager.Get().isTriggered(Button.Cross))
             {
-                if (selectedCreature != null)
-                {
-                    SelectSquare();
-                }
-                else
-                {
-                    SelectCreature();
-                }
+                Select();
+            }
+        }
+
+        private void Select()
+        {
+            if (selectedCreature != null)
+            {
+                SelectSquare();
+            }
+            else
+            {
+                SelectCreature();
             }
         }
 
@@ -290,14 +295,7 @@ namespace Board_Game.Logic
 
                 if (cursor.IsLeftClick())
                 {
-                    if (selectedCreature != null)
-                    {
-                        SelectSquare();
-                    }
-                    else
-                    {
-                        SelectCreature();
-                    }
+                    Select();
                 }
             }
         }
