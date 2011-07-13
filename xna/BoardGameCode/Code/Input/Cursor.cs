@@ -41,5 +41,11 @@ namespace Board_Game.Input
             return (mCurrentMouseState.LeftButton == ButtonState.Pressed
                 && mPreviousMouseState.LeftButton == ButtonState.Released);
         }
+
+        public bool IsRightClick()
+        {
+            return (mCurrentMouseState.RightButton == ButtonState.Pressed
+                && mPreviousMouseState.RightButton == ButtonState.Released);
+        }
     }
 }

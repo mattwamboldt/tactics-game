@@ -11,18 +11,19 @@ This is a list of the features that will be added to the game. This list will be
 
 ==========Planned==============
 
+- Design changes - Make changes noted in the planning doc on Jun 18th
+- Make libraries - Pull any common components, such as input, the tile map, screens and sprites into libraries.
+- Branch, achive, release and begin work on next project
+
+====== In Bug Tracking ======
+- AI Pathing - Learn about proper pathfinding and prevent the AI from getting confused or stuck.
+- Full audio - learn how to use XACT and create several effects for the game
 - Unit Editor - Allow editing of Class data, and placement and manipulating of existing units.
-- Screen Editor - Allow creation and manipulation of screen elements, including animation editing
+- Passability - Allow tiles to be marked impassable, and add support to the editor.
 - Multiple Maps - Move all grid related data into the content pipeline, and dynamically load it.
 - TileSets - Create a system for having multiple layers of tiles, and render a section of a larger texture or tileset instead of the existing single texture.
 - Map Editor - Allow editing of tiles, tilesets, and the map.
-- Passability - Allow tiles to be marked impassable, and add support to the editor.
-- AI Pathing - Learn about proper pathfinding and prevent the AI from getting confused or stuck.
-- Design changes - Make changes noted in the planning doc on Jun 18th
 - Sprite Animation - Add animations to sprites for things like moving units, or active terrain.
-- Full audio - learn how to use XACT and create several effects for the game
 - Design Levels - Create several layouts for maps and encounters
 - Level Select - Create a screen to select levels
-- Playtest - Test and tweak the levels til semi fun
-- Make libraries - Pull any common components, such as input, the tile map, screens and sprites into libraries.
-- Branch, achive, release and begin work on next project
+- Screen Editor - Allow creation and manipulation of screen elements, including animation editing

@@ -297,6 +297,13 @@ namespace Board_Game.Logic
                 {
                     Select();
                 }
+                else if (cursor.IsRightClick())
+                {
+#if EDITOR
+                    //TODO: feed this to the editor to trigger changes to the game world
+                    Console.WriteLine("Should edit something!");
+#endif
+                }
             }
         }
     }
