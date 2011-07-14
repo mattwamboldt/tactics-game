@@ -34,6 +34,22 @@ Destroys air Creatures.
       </Item>
       <Item>
         <ID>2</ID>
+        <Name>Soldier</Name>
+        <Description>Movement: 1 square
+Destroys ground Creatures.
+        </Description>
+        <CanFly>false</CanFly>
+        <Type>Soldier</Type>
+        <SizeInSpaces>1 1</SizeInSpaces>
+        <TextureName>textures/Creatures/soldier</TextureName>
+        <AttackPriorities>
+          <Item>Granadier</Item>
+          <Item>Miner</Item>
+          <Item>Soldier</Item>
+        </AttackPriorities>
+      </Item>
+      <Item>
+        <ID>3</ID>
         <Name>Grenadier</Name>
         <Description>Movement: 1 square
 Destroys all Creatures.
@@ -51,7 +67,7 @@ Destroys all Creatures.
         </AttackPriorities>
       </Item>
       <Item>
-        <ID>3</ID>
+        <ID>4</ID>
         <Name>Miner</Name>
         <Description>Movement: 1 square
 Captures mines.
@@ -61,22 +77,6 @@ Captures mines.
         <SizeInSpaces>1 1</SizeInSpaces>
         <TextureName>textures/Creatures/deminer</TextureName>
         <AttackPriorities>
-        </AttackPriorities>
-      </Item>
-      <Item>
-        <ID>4</ID>
-        <Name>Soldier</Name>
-        <Description>Movement: 1 square
-Destroys ground Creatures.
-        </Description>
-        <CanFly>false</CanFly>
-        <Type>Soldier</Type>
-        <SizeInSpaces>1 1</SizeInSpaces>
-        <TextureName>textures/Creatures/soldier</TextureName>
-        <AttackPriorities>
-          <Item>Granadier</Item>
-          <Item>Miner</Item>
-          <Item>Soldier</Item>
         </AttackPriorities>
       </Item>
     </CreatureTable>

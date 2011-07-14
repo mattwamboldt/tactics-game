@@ -45,6 +45,10 @@ namespace Board_Game.Logic
         private SoundEffect mDeSelectSound;
         private SoundEffect mPlaceSound;
 
+#if EDITOR
+        private GameEditor.Editor mEditorForm;
+#endif
+
         public Selector(
                 Sprite selectorSprite,
                 GameGrid grid,
@@ -300,11 +304,24 @@ namespace Board_Game.Logic
                 else if (cursor.IsRightClick())
                 {
 #if EDITOR
+                    Creature Creature = mGridRef.mTiles[(int)position.X, (int)position.Y].occupiedCreature;
+
+                    if (Creature != null)
+                    {
+                        mEditorForm.CreatureSelected(Creature);
+                    }
+
                     //TODO: feed this to the editor to trigger changes to the game world
                     Console.WriteLine("Should edit something!");
 #endif
                 }
             }
         }
+#if EDITOR
+        internal void SetEditorHandle(GameEditor.Editor editorForm)
+        {
+            mEditorForm = editorForm;
+        }
+#endif
     }
 }

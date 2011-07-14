@@ -186,6 +186,13 @@ namespace Board_Game.Logic
             }
         }
 
+        public void ChangeClass(int classID, Creature creature)
+        {
+            ClearArea(creature.GetX(), creature.GetY(), creature.GridWidth, creature.GridHeight);
+            creature.ChangeClass(classID);
+            SetLocation(creature.GetX(), creature.GetY(), creature);
+        }
+
         public void ClearArea(int x, int y, int width, int height)
         {
             for (var u = 0; u < width; ++u)

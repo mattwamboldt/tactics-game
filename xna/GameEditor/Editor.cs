@@ -20,19 +20,21 @@ namespace GameEditor
     public partial class Editor : Form
     {
         CreatureDescription mSelectedDesc = null;
+        Creature mSelectedCreature = null;
+
+        public delegate void ClassChanged(int classID, Creature creature);
+
+        public ClassChanged mClassChange;
 
         public Editor()
         {
             InitializeComponent();
         }
 
-
         private void openFile_FileOk(object sender, CancelEventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-
             Cursor = Cursors.Arrow;
-
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -67,6 +69,11 @@ namespace GameEditor
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
         {
             mSelectedDesc = (CreatureDescription)classList.SelectedItem;
+
+            if (mSelectedCreature != null)
+            {
+                mClassChange(mSelectedDesc.ID, mSelectedCreature);
+            }
 
             nameText.Text = mSelectedDesc.Name;
             idText.Text = mSelectedDesc.ID.ToString();
@@ -130,6 +137,31 @@ namespace GameEditor
         private void screenTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             PopulateFrameList((Shape)e.Node.Tag);
+        }
+
+        public void CreatureSelected(Creature selectedCreature)
+        {
+            if (mSelectedCreature != selectedCreature)
+            {
+                //select the class index
+                mSelectedCreature = selectedCreature;
+                classList.SelectedIndex = (int)selectedCreature.Type;
+
+                //update editing bits
+                sideBox.SelectedIndex = (int)selectedCreature.side;
+            }
+            else
+            {
+                mSelectedCreature = null;
+            }
+        }
+
+        private void sideBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (mSelectedCreature != null)
+            {
+                mSelectedCreature.side = (Side)sideBox.SelectedIndex;
+            }
         }
     }
 }

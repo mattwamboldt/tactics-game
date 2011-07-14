@@ -90,6 +90,8 @@ namespace Board_Game
 #if EDITOR
             mEditorForm.DisplayStartData();
             mEditorForm.PopulateTree(mScreen.Root);
+            mGameState.Selector.SetEditorHandle(mEditorForm);
+            mEditorForm.mClassChange = mGameState.ChangeClass;
 #endif
         }
 

@@ -96,6 +96,13 @@ namespace Board_Game.Creatures
             mSprite.Render(spriteBatch, parentPosition);
         }
 
+        public void SetClass(int classID)
+        {
+            ClassID = classID;
+            LinkData();
+            SetLocation(GridLocation.X, GridLocation.Y);
+        }
+
         public void SetLocation(int newX, int newY)
         {
             mGridLocation.X = newX;
@@ -158,6 +165,12 @@ namespace Board_Game.Creatures
         public Vector2 ScreenDimensions()
         {
             return mSprite.Dimensions;
+        }
+
+        public void ChangeClass(int classID)
+        {
+            ClassID = classID;
+            LinkData();
         }
     }
 
