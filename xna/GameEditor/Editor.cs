@@ -23,8 +23,10 @@ namespace GameEditor
         Creature mSelectedCreature = null;
 
         public delegate void ClassChanged(int classID, Creature creature);
+        public delegate void SideChanged(Side newSide, Creature creature);
 
         public ClassChanged mClassChange;
+        public SideChanged mSideChange;
 
         public Editor()
         {
@@ -160,7 +162,19 @@ namespace GameEditor
         {
             if (mSelectedCreature != null)
             {
-                mSelectedCreature.side = (Side)sideBox.SelectedIndex;
+                mSideChange((Side)sideBox.SelectedIndex, mSelectedCreature);
+            }
+        }
+
+        public void SquareSelected(int x, int y)
+        {
+            if (mSelectedCreature != null)
+            {
+                //move the creature
+            }
+            else
+            {
+                //Place a new creature based on the current description
             }
         }
     }

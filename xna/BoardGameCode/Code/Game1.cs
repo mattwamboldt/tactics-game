@@ -17,6 +17,7 @@ using Board_Game.Rendering;
 using BoardGameContent.DB;
 using Board_Game.DB;
 using GameEditor;
+using Board_Game.Code.Editing;
 
 namespace Board_Game
 {
@@ -35,6 +36,7 @@ namespace Board_Game
 
 #if EDITOR
         Editor mEditorForm;
+        UnitEditor mUnitEditor;
 #endif
 
         public Game1()
@@ -91,7 +93,8 @@ namespace Board_Game
             mEditorForm.DisplayStartData();
             mEditorForm.PopulateTree(mScreen.Root);
             mGameState.Selector.SetEditorHandle(mEditorForm);
-            mEditorForm.mClassChange = mGameState.ChangeClass;
+            mUnitEditor = new UnitEditor(mEditorForm, mGameState);
+            mUnitEditor.SetCallbacks();
 #endif
         }
 

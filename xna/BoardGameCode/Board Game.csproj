@@ -98,6 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Editing\UnitEditor.cs" />
     <Compile Include="Code\Input\Cursor.cs" />
     <Compile Include="Code\Logic\AI.cs" />
     <Compile Include="Code\Logic\GameGrid.cs" />

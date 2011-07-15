@@ -310,6 +310,10 @@ namespace Board_Game.Logic
                     {
                         mEditorForm.CreatureSelected(Creature);
                     }
+                    else
+                    {
+                        mEditorForm.SquareSelected((int)position.X, (int)position.Y);
+                    }
 
                     //TODO: feed this to the editor to trigger changes to the game world
                     Console.WriteLine("Should edit something!");
