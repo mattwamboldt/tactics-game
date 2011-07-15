@@ -7,6 +7,8 @@ using GameEditor;
 using Board_Game.Logic;
 using Board_Game.Creatures;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Board_Game.Rendering;
 
 namespace Board_Game.Code.Editing
 {
@@ -120,6 +122,22 @@ namespace Board_Game.Code.Editing
         {
             mEditorForm.mClassChange = ChangeClass;
             mEditorForm.mSideChange = ChangeSide;
+        }
+
+        public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
+        {
+            if (mSelectedCreature != null)
+            {
+                spriteBatch.Draw(
+                    TextureManager.Get().Find("RAW"),
+                    new Rectangle(
+                        (int)(mSelectedCreature.Position.X + parentPosition.X),
+                        (int)(mSelectedCreature.Position.Y + parentPosition.Y),
+                        (int)mSelectedCreature.ScreenDimensions().X,
+                        (int)mSelectedCreature.ScreenDimensions().Y),
+                    new Color(Color.Chartreuse, 120)
+               );
+            }
         }
     }
 }

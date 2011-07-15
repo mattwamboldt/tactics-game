@@ -155,6 +155,9 @@ namespace Board_Game
             mGameState.Render(spriteBatch, mGameState.mGrid.position);
             mScreen.Render(spriteBatch);
             mCursor.Render(spriteBatch);
+#if EDITOR
+            mUnitEditor.Render(spriteBatch, mGameState.mGrid.position);
+#endif
             spriteBatch.End();
 
             base.Draw(gameTime);
