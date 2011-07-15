@@ -6,6 +6,7 @@ using System.Text;
 using GameEditor;
 using Board_Game.Logic;
 using Board_Game.Creatures;
+using Microsoft.Xna.Framework;
 
 namespace Board_Game.Code.Editing
 {
@@ -14,43 +15,104 @@ namespace Board_Game.Code.Editing
         private Editor mEditorForm;
         private GameState mGameState;
 
+        Creature mSelectedCreature = null;
+        Side mSelectedSide = Side.Neutral;
+
         public UnitEditor(Editor editorForm, GameState gameState)
         {
             mEditorForm = editorForm;
             mGameState = gameState;
         }
 
-        public void ChangeClass(int classID, Creature creature)
+        public void ChangeClass(int classID)
         {
-            mGameState.ClearArea(creature.GetX(), creature.GetY(), creature.GridWidth, creature.GridHeight);
-            creature.ChangeClass(classID);
-            mGameState.SetLocation(creature.GetX(), creature.GetY(), creature);
+            if (mSelectedCreature != null)
+            {
+                mGameState.ClearArea(
+                    mSelectedCreature.GetX(),
+                    mSelectedCreature.GetY(),
+                    mSelectedCreature.GridWidth,
+                    mSelectedCreature.GridHeight
+                );
+
+                mSelectedCreature.ChangeClass(classID);
+
+                mGameState.SetLocation(
+                    mSelectedCreature.GetX(),
+                    mSelectedCreature.GetY(),
+                    mSelectedCreature
+                );
+            }
         }
 
-        public void ChangeSide(Side newSide, Creature creature)
+        public void ChangeSide(Side newSide)
         {
-            if (newSide != creature.side)
+            mSelectedSide = newSide;
+            if (mSelectedCreature != null && newSide != mSelectedCreature.side)
             {
-                if (creature.side == Side.Red)
+                if (mSelectedCreature.side == Side.Red)
                 {
-                    mGameState.Red.Creatures.Remove(creature);
-                    mGameState.Blue.Creatures.Add(creature);
+                    mGameState.Red.Creatures.Remove(mSelectedCreature);
+                    mGameState.Blue.Creatures.Add(mSelectedCreature);
                 }
-                else if (creature.side == Side.Blue)
+                else if (mSelectedCreature.side == Side.Blue)
                 {
-                    mGameState.Blue.Creatures.Remove(creature);
-                    mGameState.Red.Creatures.Add(creature);
+                    mGameState.Blue.Creatures.Remove(mSelectedCreature);
+                    mGameState.Red.Creatures.Add(mSelectedCreature);
                 }
 
-                creature.side = newSide;
+                mSelectedCreature.side = newSide;
 
-                for (var u = 0; u < creature.GridWidth; ++u)
+                for (var u = 0; u < mSelectedCreature.GridWidth; ++u)
                 {
-                    for (var v = 0; v < creature.GridHeight; ++v)
+                    for (var v = 0; v < mSelectedCreature.GridHeight; ++v)
                     {
-                        mGameState.mGrid.mTiles[creature.GetX() + u, creature.GetY() + v].side = newSide;
+                        mGameState.mGrid.mTiles[mSelectedCreature.GetX() + u, mSelectedCreature.GetY() + v].side = newSide;
                     }
                 }
+            }
+        }
+
+        public void SelectCreature(Creature selectedCreature)
+        {
+            if (mSelectedCreature != selectedCreature)
+            {
+                mSelectedCreature = selectedCreature;
+                mEditorForm.UpdateCreature(mSelectedCreature);
+            }
+            else
+            {
+                mSelectedCreature = null;
+            }
+        }
+
+        public void SelectSquare(int x, int y)
+        {
+            if (mSelectedCreature != null)
+            {
+                //move the creature
+                mGameState.Move(x, y, mSelectedCreature);
+            }
+            else if(mEditorForm.mSelectedDesc != null
+                && mSelectedSide != Side.Neutral)
+            {
+                //Place a new creature based on the current settings
+                Creature copy = new Creature();
+                copy.GridLocation = new Point(x, y);
+                copy.ClassID = mEditorForm.mSelectedDesc.ID;
+                copy.LinkData();
+                copy.side = mSelectedSide;
+
+                if (mSelectedSide == Side.Red)
+                {
+                    mGameState.Blue.Creatures.Add(copy);
+                }
+                else if (mSelectedSide == Side.Blue)
+                {
+                    mGameState.Red.Creatures.Add(copy);
+                }
+
+                mGameState.SetLocation(x, y, copy);
             }
         }
 

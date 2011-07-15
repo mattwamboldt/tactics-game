@@ -11,6 +11,9 @@ using Board_Game.Input;
 using Board_Game.Creatures;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+#if EDITOR
+using Board_Game.Code.Editing;
+#endif
 
 namespace Board_Game.Logic
 {
@@ -46,7 +49,7 @@ namespace Board_Game.Logic
         private SoundEffect mPlaceSound;
 
 #if EDITOR
-        private GameEditor.Editor mEditorForm;
+        private UnitEditor mUnitEditor;
 #endif
 
         public Selector(
@@ -308,11 +311,11 @@ namespace Board_Game.Logic
 
                     if (Creature != null)
                     {
-                        mEditorForm.CreatureSelected(Creature);
+                        mUnitEditor.SelectCreature(Creature);
                     }
                     else
                     {
-                        mEditorForm.SquareSelected((int)position.X, (int)position.Y);
+                        mUnitEditor.SelectSquare((int)position.X, (int)position.Y);
                     }
 
                     //TODO: feed this to the editor to trigger changes to the game world
@@ -322,9 +325,9 @@ namespace Board_Game.Logic
             }
         }
 #if EDITOR
-        internal void SetEditorHandle(GameEditor.Editor editorForm)
+        internal void SetEditorHandle(UnitEditor unitEditor)
         {
-            mEditorForm = editorForm;
+            mUnitEditor = unitEditor;
         }
 #endif
     }

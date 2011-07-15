@@ -19,11 +19,10 @@ namespace GameEditor
 {
     public partial class Editor : Form
     {
-        CreatureDescription mSelectedDesc = null;
-        Creature mSelectedCreature = null;
+        public CreatureDescription mSelectedDesc = null;
 
-        public delegate void ClassChanged(int classID, Creature creature);
-        public delegate void SideChanged(Side newSide, Creature creature);
+        public delegate void ClassChanged(int classID);
+        public delegate void SideChanged(Side newSide);
 
         public ClassChanged mClassChange;
         public SideChanged mSideChange;
@@ -71,11 +70,7 @@ namespace GameEditor
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
         {
             mSelectedDesc = (CreatureDescription)classList.SelectedItem;
-
-            if (mSelectedCreature != null)
-            {
-                mClassChange(mSelectedDesc.ID, mSelectedCreature);
-            }
+            mClassChange(mSelectedDesc.ID);
 
             nameText.Text = mSelectedDesc.Name;
             idText.Text = mSelectedDesc.ID.ToString();
@@ -141,41 +136,21 @@ namespace GameEditor
             PopulateFrameList((Shape)e.Node.Tag);
         }
 
-        public void CreatureSelected(Creature selectedCreature)
+        public void UpdateCreature(Creature selectedCreature)
         {
-            if (mSelectedCreature != selectedCreature)
+            if (selectedCreature != null)
             {
                 //select the class index
-                mSelectedCreature = selectedCreature;
                 classList.SelectedIndex = (int)selectedCreature.Type;
 
                 //update editing bits
                 sideBox.SelectedIndex = (int)selectedCreature.side;
             }
-            else
-            {
-                mSelectedCreature = null;
-            }
         }
 
         private void sideBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (mSelectedCreature != null)
-            {
-                mSideChange((Side)sideBox.SelectedIndex, mSelectedCreature);
-            }
-        }
-
-        public void SquareSelected(int x, int y)
-        {
-            if (mSelectedCreature != null)
-            {
-                //move the creature
-            }
-            else
-            {
-                //Place a new creature based on the current description
-            }
+            mSideChange((Side)sideBox.SelectedIndex);
         }
     }
 }
