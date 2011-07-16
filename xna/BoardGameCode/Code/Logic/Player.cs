@@ -52,5 +52,13 @@ namespace Board_Game.Logic
                 Creature.Render(spriteBatch, parentLocation);
             }
         }
+
+        internal void WipeField()
+        {
+            foreach (Creature creature in mArmy.Members)
+            {
+                mGame.ClearArea(creature.GridLocation.X, creature.GridLocation.Y, creature.GridWidth, creature.GridHeight);
+            }
+        }
     }
 }

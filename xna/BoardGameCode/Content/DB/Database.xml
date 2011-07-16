@@ -80,5 +80,10 @@ Captures mines.
         </AttackPriorities>
       </Item>
     </CreatureTable>
+    <ArmyTable>
+      <Item>BlueTest</Item>
+      <Item>BlueLargeTest</Item>
+      <Item>RedTest</Item>
+    </ArmyTable>
   </Asset>
 </XnaContent>

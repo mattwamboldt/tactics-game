@@ -95,7 +95,7 @@ namespace Board_Game
             mEditorForm.DisplayStartData();
             mEditorForm.PopulateTree(mScreen.Root);
 
-            mUnitEditor = new UnitEditor(mEditorForm, mGameState);
+            mUnitEditor = new UnitEditor(mEditorForm, mGameState, Content);
             mUnitEditor.SetCallbacks();
 
             mGameState.Selector.SetEditorHandle(mUnitEditor);

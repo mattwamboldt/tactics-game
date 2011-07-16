@@ -23,24 +23,15 @@ namespace GameEditor
 
         public delegate void ClassChanged(int classID);
         public delegate void SideChanged(Side newSide);
+        public delegate void ArmyChanged(string armyName);
 
         public ClassChanged mClassChange;
         public SideChanged mSideChange;
+        public ArmyChanged mArmyChange;
 
         public Editor()
         {
             InitializeComponent();
-        }
-
-        private void openFile_FileOk(object sender, CancelEventArgs e)
-        {
-            Cursor = Cursors.WaitCursor;
-            Cursor = Cursors.Arrow;
-        }
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            openFile.ShowDialog();
         }
 
         public void DisplayStartData()
@@ -53,7 +44,13 @@ namespace GameEditor
             foreach (CreatureDescription description in descriptions)
             {
                 classList.Items.Add(description);
-                
+            }
+
+            armyList.Items.Clear();
+
+            foreach (string armyName in DatabaseManager.Get().ArmyTable)
+            {
+                armyList.Items.Add(armyName);
             }
 
             textureList.Items.Clear();
@@ -67,6 +64,7 @@ namespace GameEditor
             }
         }
 
+#region Unit Editing
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
         {
             mSelectedDesc = (CreatureDescription)classList.SelectedItem;
@@ -103,6 +101,22 @@ namespace GameEditor
             }
         }
 
+        public void UpdateCreature(Creature selectedCreature)
+        {
+            if (selectedCreature != null)
+            {
+                classList.SelectedIndex = (int)selectedCreature.Type;
+                sideBox.SelectedIndex = (int)selectedCreature.side;
+            }
+        }
+
+        private void sideBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mSideChange((Side)sideBox.SelectedIndex);
+        }
+#endregion
+
+#region Screen Editing
         public void PopulateTree(Shape root)
         {
             TreeNode node = screenTree.Nodes.Add(root.Name);
@@ -135,22 +149,17 @@ namespace GameEditor
         {
             PopulateFrameList((Shape)e.Node.Tag);
         }
+#endregion
 
-        public void UpdateCreature(Creature selectedCreature)
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (selectedCreature != null)
-            {
-                //select the class index
-                classList.SelectedIndex = (int)selectedCreature.Type;
 
-                //update editing bits
-                sideBox.SelectedIndex = (int)selectedCreature.side;
-            }
         }
 
-        private void sideBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void armyList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mSideChange((Side)sideBox.SelectedIndex);
+            mArmyChange((string)armyList.SelectedItem); 
         }
+
     }
 }

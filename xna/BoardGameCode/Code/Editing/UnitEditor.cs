@@ -9,6 +9,8 @@ using Board_Game.Creatures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Board_Game.Rendering;
+using Microsoft.Xna.Framework.Content;
+using Board_Game.Characters;
 
 namespace Board_Game.Code.Editing
 {
@@ -16,14 +18,16 @@ namespace Board_Game.Code.Editing
     {
         private Editor mEditorForm;
         private GameState mGameState;
+        private ContentManager mContentManager;
 
         Creature mSelectedCreature = null;
         Side mSelectedSide = Side.Neutral;
 
-        public UnitEditor(Editor editorForm, GameState gameState)
+        public UnitEditor(Editor editorForm, GameState gameState, ContentManager content)
         {
             mEditorForm = editorForm;
             mGameState = gameState;
+            mContentManager = content;
         }
 
         public void ChangeClass(int classID)
@@ -75,6 +79,23 @@ namespace Board_Game.Code.Editing
             }
         }
 
+        public void ChangeArmy(string armyName)
+        {
+            Army replacement = mContentManager.Load<Army>("Armies/" + armyName);
+            if (replacement.Side == Side.Red)
+            {
+                mGameState.Red.WipeField();
+                mGameState.Red.mArmy = replacement;
+                mGameState.Red.PlaceOnField();
+            }
+            else
+            {
+                mGameState.Blue.WipeField();
+                mGameState.Blue.mArmy = replacement;
+                mGameState.Blue.PlaceOnField();
+            }
+        }
+
         public void SelectCreature(Creature selectedCreature)
         {
             if (mSelectedCreature != selectedCreature)
@@ -122,6 +143,7 @@ namespace Board_Game.Code.Editing
         {
             mEditorForm.mClassChange = ChangeClass;
             mEditorForm.mSideChange = ChangeSide;
+            mEditorForm.mArmyChange = ChangeArmy;
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)

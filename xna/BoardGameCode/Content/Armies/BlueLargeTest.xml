@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Characters.Army">
+    <Side>Blue</Side>
+    <Members>
+      <Item>
+        <GridLocation>0 0</GridLocation>
+        <ClassID>1</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>2 0</GridLocation>
+        <ClassID>0</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>4 0</GridLocation>
+        <ClassID>1</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>6 0</GridLocation>
+        <ClassID>0</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>8 0</GridLocation>
+        <ClassID>1</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>10 0</GridLocation>
+        <ClassID>0</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>0 3</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>1 3</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>2 3</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>3 3</GridLocation>
+        <ClassID>4</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>0 2</GridLocation>
+        <ClassID>3</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>1 2</GridLocation>
+        <ClassID>2</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>2 2</GridLocation>
+        <ClassID>2</ClassID>
+      </Item>
+      <Item>
+        <GridLocation>3 2</GridLocation>
+        <ClassID>3</ClassID>
+      </Item>
+    </Members>
+  </Asset>
+</XnaContent>

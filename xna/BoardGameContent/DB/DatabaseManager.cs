@@ -27,5 +27,10 @@ namespace Board_Game.DB
         {
             get { return mDatabase.CreatureTable; }
         }
+
+        public List<string> ArmyTable
+        {
+            get { return mDatabase.ArmyTable; }
+        }
     }
 }

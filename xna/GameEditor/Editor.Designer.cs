@@ -28,17 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.unitPage = new System.Windows.Forms.TabPage();
+            this.armyList = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.characterBox = new System.Windows.Forms.GroupBox();
             this.sideBox = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -65,11 +66,6 @@
             this.classBox.SuspendLayout();
             this.screenPage.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // openFile
-            // 
-            this.openFile.Title = "Open File";
-            this.openFile.FileOk += new System.ComponentModel.CancelEventHandler(this.openFile_FileOk);
             // 
             // BottomToolStripPanel
             // 
@@ -111,27 +107,26 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.saveToolStripMenuItem,
+            this.loadToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(332, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // fileToolStripMenuItem
+            // saveToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "&File";
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
-            // openToolStripMenuItem
+            // loadToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "&Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.loadToolStripMenuItem.Text = "Load";
             // 
             // tabControl1
             // 
@@ -146,6 +141,8 @@
             // 
             // unitPage
             // 
+            this.unitPage.Controls.Add(this.armyList);
+            this.unitPage.Controls.Add(this.label7);
             this.unitPage.Controls.Add(this.characterBox);
             this.unitPage.Controls.Add(this.classBox);
             this.unitPage.Location = new System.Drawing.Point(4, 22);
@@ -156,13 +153,31 @@
             this.unitPage.Text = "Units";
             this.unitPage.UseVisualStyleBackColor = true;
             // 
+            // armyList
+            // 
+            this.armyList.FormattingEnabled = true;
+            this.armyList.Location = new System.Drawing.Point(87, 14);
+            this.armyList.Name = "armyList";
+            this.armyList.Size = new System.Drawing.Size(226, 21);
+            this.armyList.TabIndex = 13;
+            this.armyList.SelectedIndexChanged += new System.EventHandler(this.armyList_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(14, 17);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(67, 13);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Current Army";
+            // 
             // characterBox
             // 
             this.characterBox.Controls.Add(this.sideBox);
             this.characterBox.Controls.Add(this.label10);
-            this.characterBox.Location = new System.Drawing.Point(8, 253);
+            this.characterBox.Location = new System.Drawing.Point(8, 288);
             this.characterBox.Name = "characterBox";
-            this.characterBox.Size = new System.Drawing.Size(305, 223);
+            this.characterBox.Size = new System.Drawing.Size(305, 188);
             this.characterBox.TabIndex = 11;
             this.characterBox.TabStop = false;
             this.characterBox.Text = "Character";
@@ -202,9 +217,9 @@
             this.classBox.Controls.Add(this.label4);
             this.classBox.Controls.Add(this.nameText);
             this.classBox.Controls.Add(this.label1);
-            this.classBox.Location = new System.Drawing.Point(8, 6);
+            this.classBox.Location = new System.Drawing.Point(8, 44);
             this.classBox.Name = "classBox";
-            this.classBox.Size = new System.Drawing.Size(305, 241);
+            this.classBox.Size = new System.Drawing.Size(305, 238);
             this.classBox.TabIndex = 10;
             this.classBox.TabStop = false;
             this.classBox.Text = "Class";
@@ -371,6 +386,7 @@
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.unitPage.ResumeLayout(false);
+            this.unitPage.PerformLayout();
             this.characterBox.ResumeLayout(false);
             this.characterBox.PerformLayout();
             this.classBox.ResumeLayout(false);
@@ -384,10 +400,7 @@
 
         #endregion
 
-        private System.Windows.Forms.OpenFileDialog openFile;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripPanel BottomToolStripPanel;
         private System.Windows.Forms.ToolStripPanel TopToolStripPanel;
         private System.Windows.Forms.ToolStripPanel RightToolStripPanel;
@@ -414,6 +427,10 @@
         private System.Windows.Forms.ComboBox sideBox;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox canFly;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox armyList;
     }
 }
 

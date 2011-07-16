@@ -16,6 +16,13 @@ namespace BoardGameContent.DB
             get { return mCreatureTable; }
             set { mCreatureTable = value; }
         }
+
+        private List<string> mArmyTable;
+        public List<string> ArmyTable
+        {
+            get { return mArmyTable; }
+            set { mArmyTable = value; }
+        }
     }
 
     public class GameDatabaseReader : ContentTypeReader<GameDatabase>
@@ -24,6 +31,7 @@ namespace BoardGameContent.DB
         {
             GameDatabase db = new GameDatabase();
             db.CreatureTable = input.ReadObject<List<CreatureDescription>>();
+            db.ArmyTable = input.ReadObject<List<string>>();
             return db;
         }
     }

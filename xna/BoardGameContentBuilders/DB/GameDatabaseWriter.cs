@@ -13,6 +13,7 @@ namespace BoardGameContentBuilders.DB
         protected override void Write(ContentWriter output, GameDatabase value)
         {
             output.WriteObject(value.CreatureTable);
+            output.WriteObject(value.ArmyTable);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
