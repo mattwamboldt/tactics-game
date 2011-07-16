@@ -146,6 +146,11 @@ namespace Board_Game.Code.Editing
             mEditorForm.mArmyChange = ChangeArmy;
         }
 
+        public void Save()
+        {
+
+        }
+
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)
         {
             if (mSelectedCreature != null)

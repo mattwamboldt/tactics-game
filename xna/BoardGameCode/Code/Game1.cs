@@ -17,6 +17,7 @@ using Board_Game.Rendering;
 using BoardGameContent.DB;
 using Board_Game.DB;
 using GameEditor;
+using Board_Game.Code.Util;
 #if EDITOR
 using Board_Game.Code.Editing;
 #endif
@@ -35,6 +36,7 @@ namespace Board_Game
         GameState mGameState;
         Texture2D mBackground;
         Cursor mCursor;
+        StorageManager mStorage;
 
 #if EDITOR
         Editor mEditorForm;
@@ -48,6 +50,9 @@ namespace Board_Game
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
+            Components.Add(new GamerServicesComponent(this));
+            mStorage = new StorageManager();
+
             mAI = new AI();
 #if EDITOR
             mEditorForm = new Editor();
@@ -131,6 +136,8 @@ namespace Board_Game
             {
                 graphics.ToggleFullScreen();
             }
+
+            mStorage.Update(gameTime);
 
             mGameState.Selector.HandleInput(mCursor);
             mGameState.Update(gameTime);
