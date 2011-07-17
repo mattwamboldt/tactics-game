@@ -118,12 +118,6 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <NestedContentProject Include="Content\Content.contentproj">
-      <Project>fa11f69e-0270-4d05-8fc2-7e176a12697b</Project>
-      <Visible>False</Visible>
-    </NestedContentProject>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework Client Profile</ProductName>
@@ -169,6 +163,12 @@
       <Project>{98217BF4-7441-412B-97C1-4D978FCD856B}</Project>
       <Name>GameEditor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <NestedContentProject Include="..\data\Content.contentproj">
+      <Project>fa11f69e-0270-4d05-8fc2-7e176a12697b</Project>
+      <Visible>false</Visible>
+    </NestedContentProject>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
