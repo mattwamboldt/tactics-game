@@ -9,7 +9,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <XnaFrameworkVersion>v3.1</XnaFrameworkVersion>
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\$(Platform)\$(Configuration)</OutputPath>
+    <OutputPath>..\temp\data\bin\$(Platform)\$(Configuration)</OutputPath>
+    <BaseIntermediateOutputPath>..\temp\data</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <XnaPlatform>Windows</XnaPlatform>
@@ -18,7 +19,7 @@
     <XnaPlatform>Windows</XnaPlatform>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Editor|x86' ">
-    <OutputPath>bin\x86\Editor\</OutputPath>
+    <OutputPath>..\temp\data\bin\x86\Editor\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
