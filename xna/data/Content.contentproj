@@ -208,6 +208,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\CreatureDescription.csv">
+      <Name>CreatureDescription</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ClassTableProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="audio\music\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

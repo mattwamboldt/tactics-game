@@ -226,6 +226,7 @@
             this.canFly.TabIndex = 11;
             this.canFly.Text = "Can Fly";
             this.canFly.UseVisualStyleBackColor = true;
+            this.canFly.CheckedChanged += new System.EventHandler(this.canFly_CheckedChanged);
             // 
             // classList
             // 

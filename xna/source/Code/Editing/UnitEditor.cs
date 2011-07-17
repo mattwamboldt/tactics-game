@@ -12,6 +12,7 @@ using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Characters;
 using Board_Game.Code.Util;
+using Board_Game.DB;
 
 namespace Board_Game.Code.Editing
 {
@@ -169,20 +170,58 @@ namespace Board_Game.Code.Editing
 
         public void Save(string armyName)
         {
-            Army armyToSave = mGameState.Blue.mArmy;
-            if (armyName.Contains("Red"))
+            if (armyName != null)
             {
-                armyToSave = mGameState.Red.mArmy;
+                Army armyToSave = mGameState.Blue.mArmy;
+                if (armyName.Contains("Red"))
+                {
+                    armyToSave = mGameState.Red.mArmy;
+                }
+
+                string armyData = "classId,x,y";
+
+                foreach (Creature unit in armyToSave.Members)
+                {
+                    armyData += Environment.NewLine;
+                    armyData += unit.ClassID + "," + unit.GetX() + "," + unit.GetY();
+                }
+
+                mStorage.Save("../../../data/Armies/" + armyName + ".csv", armyData, false);
             }
 
-            string armyData = "classId,x,y\n";
+            List<CreatureDescription> descriptions = DatabaseManager.Get().CreatureTable;
+            string descriptionData = "ID,Name,Description,CanFly,Width,Height,Texture,Priority0,Priority1,Priority2,Priority3,Priority4";
 
-            foreach (Creature unit in armyToSave.Members)
+            foreach (CreatureDescription desc in descriptions)
             {
-                armyData += unit.ClassID + "," + unit.GetX() + "," + unit.GetY() + "\n";
+                descriptionData += Environment.NewLine;
+
+                descriptionData +=
+                    desc.ID + "," +
+                    desc.Name + "," +
+                    desc.Description.Replace(Environment.NewLine, "\\n") + "," +
+                    desc.CanFly + "," +
+                    desc.SizeInSpaces.X + "," +
+                    desc.SizeInSpaces.Y + "," +
+                    desc.TextureName;
+
+                for (int i = 0; i < 5; i++)
+                {
+                    descriptionData += ",";
+
+                    if (i < desc.AttackPriorities.Length)
+                    {
+                        descriptionData += (int)desc.AttackPriorities[i];
+                    }
+                    else
+                    {
+                        descriptionData += -1;
+                    }
+                }
             }
 
-            mStorage.Save("../../../data/Armies/" + armyName + ".csv", armyData, false);
+            mStorage.Save("../../../data/DB/CreatureDescription.csv", descriptionData, false);
+
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)

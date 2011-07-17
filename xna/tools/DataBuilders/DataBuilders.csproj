@@ -133,6 +133,7 @@
   <ItemGroup>
     <Compile Include="Importers\CSVImporter.cs" />
     <Compile Include="Processors\ArmyProcessor.cs" />
+    <Compile Include="Processors\Database\ClassTableProcessor.cs" />
     <Compile Include="Writers\Characters\ArmyWriter.cs" />
     <Compile Include="Writers\Characters\CreatureDescriptionWriter.cs" />
     <Compile Include="Writers\Characters\CreatureWriter.cs">

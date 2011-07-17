@@ -21,6 +21,7 @@ namespace Board_Game.DB
         public void Load(ContentManager content)
         {
             mDatabase = content.Load<GameDatabase>("DB/Database");
+            mDatabase.CreatureTable = content.Load<List<CreatureDescription>>("DB/CreatureDescription");
         }
 
         public List<CreatureDescription> CreatureTable

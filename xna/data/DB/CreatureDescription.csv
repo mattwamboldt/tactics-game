@@ -1,0 +1,6 @@
+ID,Name,Description,CanFly,Width,Height,Texture,Priority0,Priority1,Priority2,Priority3,Priority4
+0,Bomber,Movement: 1 large square\nDestroys ground Creatures.,True,2,2,textures/Creatures/bomber,3,4,2,-1,-1
+1,Fighter,Movement: 1 large square\nDestroys air Creatures.,True,2,2,textures/Creatures/fighter,0,1,-1,-1,-1
+2,Soldier,Movement: 1 square\nDestroys ground Creatures.,False,1,1,textures/Creatures/soldier,3,4,2,-1,-1
+3,Grenadier,Movement: 1 square\nDestroys all Creatures,False,1,1,textures/Creatures/grenadier,0,3,1,4,2
+4,Miner,Movement: 1 square\nCaptures mines.,False,1,1,textures/Creatures/deminer,-1,-1,-1,-1,-1

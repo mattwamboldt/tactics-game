@@ -76,6 +76,7 @@ namespace GameEditor
             idText.Text = mSelectedDesc.ID.ToString();
             descriptionText.Text = mSelectedDesc.Description;
             textureList.SelectedItem = mSelectedDesc.TextureName;
+            canFly.Checked = mSelectedDesc.CanFly;
         }
 
         private void nameText_TextChanged(object sender, EventArgs e)
@@ -115,6 +116,19 @@ namespace GameEditor
         private void sideBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             mSideChange((Side)sideBox.SelectedIndex);
+        }
+
+        private void armyList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mArmyChange((string)armyList.SelectedItem); 
+        }
+
+        private void canFly_CheckedChanged(object sender, EventArgs e)
+        {
+            if (mSelectedDesc != null)
+            {
+                mSelectedDesc.CanFly = canFly.Checked;
+            }
         }
 #endregion
 
@@ -157,11 +171,5 @@ namespace GameEditor
         {
             mUnitSave((string)armyList.SelectedItem);
         }
-
-        private void armyList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            mArmyChange((string)armyList.SelectedItem); 
-        }
-
     }
 }
