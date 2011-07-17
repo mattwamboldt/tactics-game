@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Board_Game.Rendering;
 using Microsoft.Xna.Framework.Content;
 using Board_Game.Characters;
+using Board_Game.Code.Util;
 
 namespace Board_Game.Code.Editing
 {
@@ -22,12 +23,15 @@ namespace Board_Game.Code.Editing
 
         Creature mSelectedCreature = null;
         Side mSelectedSide = Side.Neutral;
+        StorageManager mStorage;
 
-        public UnitEditor(Editor editorForm, GameState gameState, ContentManager content)
+        public UnitEditor(Editor editorForm, GameState gameState,
+            ContentManager content, StorageManager storage)
         {
             mEditorForm = editorForm;
             mGameState = gameState;
             mContentManager = content;
+            mStorage = storage;
         }
 
         public void ChangeClass(int classID)
@@ -128,11 +132,11 @@ namespace Board_Game.Code.Editing
 
                 if (mSelectedSide == Side.Red)
                 {
-                    mGameState.Blue.Creatures.Add(copy);
+                    mGameState.Red.Creatures.Add(copy);
                 }
                 else if (mSelectedSide == Side.Blue)
                 {
-                    mGameState.Red.Creatures.Add(copy);
+                    mGameState.Blue.Creatures.Add(copy);
                 }
 
                 mGameState.SetLocation(x, y, copy);
@@ -144,11 +148,25 @@ namespace Board_Game.Code.Editing
             mEditorForm.mClassChange = ChangeClass;
             mEditorForm.mSideChange = ChangeSide;
             mEditorForm.mArmyChange = ChangeArmy;
+            mEditorForm.mUnitSave = Save;
         }
 
-        public void Save()
+        public void Save(string armyName)
         {
+            Army armyToSave = mGameState.Blue.mArmy;
+            if (armyName.Contains("Red"))
+            {
+                armyToSave = mGameState.Red.mArmy;
+            }
 
+            string armyData = "classId,x,y\n";
+
+            foreach (Creature unit in armyToSave.Members)
+            {
+                armyData += unit.ClassID + "," + unit.GetX() + "," + unit.GetY() + "\n";
+            }
+
+            mStorage.Save("../../../data/Armies/" + armyName + ".csv", armyData, false);
         }
 
         public void Render(SpriteBatch spriteBatch, Vector2 parentPosition)

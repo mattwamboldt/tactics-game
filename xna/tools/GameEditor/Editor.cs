@@ -24,10 +24,12 @@ namespace GameEditor
         public delegate void ClassChanged(int classID);
         public delegate void SideChanged(Side newSide);
         public delegate void ArmyChanged(string armyName);
+        public delegate void UnitSave(string armyName);
 
         public ClassChanged mClassChange;
         public SideChanged mSideChange;
         public ArmyChanged mArmyChange;
+        public ArmyChanged mUnitSave;
 
         public Editor()
         {
@@ -153,7 +155,7 @@ namespace GameEditor
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            mUnitSave((string)armyList.SelectedItem);
         }
 
         private void armyList_SelectedIndexChanged(object sender, EventArgs e)

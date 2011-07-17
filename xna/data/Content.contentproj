@@ -171,31 +171,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Armies\BlueTest.xml">
-      <Name>BlueTest</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Armies\RedTest.xml">
-      <Name>RedTest</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="textures\UI\cursor.png">
       <Name>cursor</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Armies\BlueLargeTest.xml">
-      <Name>BlueLargeTest</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +186,23 @@
   <ItemGroup>
     <Compile Include="Armies\RedTestNew.csv">
       <Name>RedTestNew</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armies\BlueLargeTest.csv">
+      <Name>BlueLargeTest</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+    <Compile Include="Armies\BlueTest.csv">
+      <Name>BlueTest</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+    <Compile Include="Armies\RedTest.csv">
+      <Name>RedTest</Name>
       <Importer>CSVImporter</Importer>
       <Processor>ArmyProcessor</Processor>
     </Compile>
