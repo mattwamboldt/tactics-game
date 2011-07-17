@@ -9,58 +9,63 @@ using System.IO;
 
 namespace Board_Game.Code.Util
 {
+    struct SaveOperation
+    {
+        public string Data;
+        public string FileName;
+        public bool IsUserData;
+    }
+
     class StorageManager
     {
         private StorageDevice mSelectedDevice;
-        private bool mSaveRequested;
-        private string mPendingData;
-        private string mPendingFile;
-        private bool mPendingIsUserData;
+        Queue<SaveOperation> mOperations;
         private IAsyncResult mResult;
 
         public StorageManager()
         {
+            mOperations = new Queue<SaveOperation>();
             mSelectedDevice = null;
-            mSaveRequested = false;
-            mPendingData = "";
         }
 
         public void Save(string fileName, string data, bool isUserData)
         {
             //prevents trying to write a file during an existing write request
-            if (!Guide.IsVisible && !mSaveRequested)
+            if (!Guide.IsVisible)
             {
-                mSaveRequested = true;
-                mPendingFile = fileName;
-                mPendingData = data;
-                mPendingIsUserData = isUserData;
-
                 CheckDevice();
+                
+                SaveOperation op = new SaveOperation();
+                op.FileName = fileName;
+                op.Data = data;
+                op.IsUserData = isUserData;
+                mOperations.Enqueue(op);
             }
         }
 
         private void WriteFile()
         {
             StorageContainer container = mSelectedDevice.OpenContainer("Board Game");
+            SaveOperation operation = mOperations.Dequeue();
        
             string filePath = "";
             
             //user data is save files
-            if(mPendingIsUserData)
+            if (operation.IsUserData)
             {
-                filePath = Path.Combine(container.Path, mPendingFile);
+                filePath = Path.Combine(container.Path, operation.FileName);
             }
             //non user data is editor files
             else
             {
-                filePath = Path.Combine(StorageContainer.TitleLocation, mPendingFile);
+                filePath = Path.Combine(StorageContainer.TitleLocation, operation.FileName);
             }
 
             // Open the file, creating it if necessary.
             FileStream stream = File.Open(filePath, FileMode.Create);
 
             StreamWriter writer = new StreamWriter(stream);
-            writer.Write(mPendingData);
+            writer.Write(operation.Data);
             writer.Close();
 
             // Dispose the container, to commit changes.
@@ -69,7 +74,7 @@ namespace Board_Game.Code.Util
 
         private void CheckDevice()
         {
-            if (mSelectedDevice == null)
+            if (mSelectedDevice == null && mOperations.Count == 0)
             {
                 mResult = Guide.BeginShowStorageDeviceSelector(null, null);
             }
@@ -77,7 +82,7 @@ namespace Board_Game.Code.Util
 
         public void Update(GameTime gameTime)
         {
-            if (mSaveRequested)
+            if (mOperations.Count != 0)
             {
                 if (mSelectedDevice == null)
                 {
@@ -87,7 +92,7 @@ namespace Board_Game.Code.Util
                         if (mSelectedDevice == null || !mSelectedDevice.IsConnected)
                         {
                             //alert an error and stop the save flow
-                            mSaveRequested = false;
+                            mOperations.Clear();
                         }
                     }
                 }
@@ -95,7 +100,6 @@ namespace Board_Game.Code.Util
                 else if (mSelectedDevice.IsConnected)
                 {
                     WriteFile();
-                    mSaveRequested = false;
                 }
             }
         }
