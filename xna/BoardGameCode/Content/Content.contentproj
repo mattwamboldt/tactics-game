@@ -123,12 +123,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BoardGameContentBuilders\BoardGameContentBuilders.csproj">
-      <Project>{FDF9BD94-4555-45A9-9BAD-A1C38ABEDD18}</Project>
-      <Name>BoardGameContentBuilders</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="xml\Selector.xml">
       <Name>Selector</Name>
       <Importer>XmlImporter</Importer>
@@ -202,6 +196,12 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\tools\DataBuilders\DataBuilders.csproj">
+      <Project>{FDF9BD94-4555-45A9-9BAD-A1C38ABEDD18}</Project>
+      <Name>DataBuilders</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="audio\music\" />

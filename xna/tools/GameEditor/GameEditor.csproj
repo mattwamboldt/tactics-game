@@ -106,7 +106,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BoardGameContent\BoardGameContent.csproj">
+    <ProjectReference Include="..\..\BoardGameContent\BoardGameContent.csproj">
       <Project>{1CE1279E-9D0C-4E6E-AA78-6EC7FBBFF4AC}</Project>
       <Name>BoardGameContent</Name>
     </ProjectReference>
