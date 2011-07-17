@@ -156,9 +156,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BoardGameContent\BoardGameContent.csproj">
+    <ProjectReference Include="..\lib\DataAccess\DataAccess.csproj">
       <Project>{1CE1279E-9D0C-4E6E-AA78-6EC7FBBFF4AC}</Project>
-      <Name>BoardGameContent</Name>
+      <Name>DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\tools\GameEditor\GameEditor.csproj">
       <Project>{98217BF4-7441-412B-97C1-4D978FCD856B}</Project>
