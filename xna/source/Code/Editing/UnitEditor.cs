@@ -113,6 +113,22 @@ namespace Board_Game.Code.Editing
             }
         }
 
+        public void DeleteCreature()
+        {
+            if (mSelectedCreature != null)
+            {
+                mGameState.ClearArea(
+                    mSelectedCreature.GetX(),
+                    mSelectedCreature.GetY(),
+                    mSelectedCreature.GridWidth,
+                    mSelectedCreature.GridHeight
+                );
+
+                mGameState.RemoveCreature(mSelectedCreature);
+                mSelectedCreature = null;
+            }
+        }
+
         public void SelectSquare(int x, int y)
         {
             if (mSelectedCreature != null)

@@ -137,6 +137,13 @@ namespace Board_Game
                 graphics.ToggleFullScreen();
             }
 
+#if EDITOR
+            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Delete))
+            {
+                mUnitEditor.DeleteCreature();
+            }
+#endif
+
             mStorage.Update(gameTime);
 
             mGameState.Selector.HandleInput(mCursor);
