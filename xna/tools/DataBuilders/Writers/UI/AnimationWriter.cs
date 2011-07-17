@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using BoardGameContent.UI;
 
-namespace BoardGameContentBuilders.UI
+namespace DataBuilder.UI
 {
     [ContentTypeWriter]
     class ShapeStateWriter : ContentTypeWriter<ShapeState>

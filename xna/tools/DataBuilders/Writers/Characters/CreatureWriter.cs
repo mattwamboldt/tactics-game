@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Board_Game.Creatures;
 using Microsoft.Xna.Framework;
 
-namespace BoardGameContentBuilders.Creatures
+namespace DataBuilder.Creatures
 {
     [ContentTypeWriter]
     class CreatureWriter : ContentTypeWriter<Creature>

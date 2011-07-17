@@ -84,6 +84,7 @@ Captures mines.
       <Item>BlueTest</Item>
       <Item>BlueLargeTest</Item>
       <Item>RedTest</Item>
+      <Item>RedTestNew</Item>
     </ArmyTable>
   </Asset>
 </XnaContent>

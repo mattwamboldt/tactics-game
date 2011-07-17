@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Board_Game.UI;
 using System.Collections;
 
-namespace BoardGameContentBuilders.UI
+namespace DataBuilder.UI
 {
     [ContentTypeWriter]
     class ShapeWriter : ContentTypeWriter<Shape>

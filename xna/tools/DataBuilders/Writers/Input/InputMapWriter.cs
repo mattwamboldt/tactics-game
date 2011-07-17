@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Board_Game.Input;
 
-namespace BoardGameContentBuilders.Input
+namespace DataBuilder.Input
 {
     [ContentTypeWriter]
     class InputMapWriter : ContentTypeWriter<InputMap>

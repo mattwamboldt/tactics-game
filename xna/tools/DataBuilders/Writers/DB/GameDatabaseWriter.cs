@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using BoardGameContent.DB;
 
-namespace BoardGameContentBuilders.DB
+namespace DataBuilder.DB
 {
     [ContentTypeWriter]
     class GameDatabaseWriter : ContentTypeWriter<GameDatabase>

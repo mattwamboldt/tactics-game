@@ -5,7 +5,7 @@ using System.Text;
 using Board_Game.Characters;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
-namespace BoardGameContentBuilders.Creatures
+namespace DataBuilder.Creatures
 {
     [ContentTypeWriter]
     class ArmyWriter : ContentTypeWriter<Army>

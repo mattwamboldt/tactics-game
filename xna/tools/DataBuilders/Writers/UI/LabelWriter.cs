@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Board_Game.UI;
 
-namespace BoardGameContentBuilders.UI
+namespace DataBuilder.UI
 {
     [ContentTypeWriter]
     class LabelWriter : ContentTypeWriter<Label>

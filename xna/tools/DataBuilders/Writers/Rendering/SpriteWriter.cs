@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Board_Game.Rendering;
 
-namespace BoardGameContentBuilders.Rendering
+namespace DataBuilder.Rendering
 {
     [ContentTypeWriter]
     class SpriteWriter : ContentTypeWriter<Sprite>
