@@ -73,14 +73,6 @@ namespace Board_Game.Code.Editing
                 }
 
                 mSelectedCreature.side = newSide;
-
-                for (var u = 0; u < mSelectedCreature.GridWidth; ++u)
-                {
-                    for (var v = 0; v < mSelectedCreature.GridHeight; ++v)
-                    {
-                        mGameState.mGrid.mTiles[mSelectedCreature.GetX() + u, mSelectedCreature.GetY() + v].side = newSide;
-                    }
-                }
             }
         }
 

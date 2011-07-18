@@ -207,7 +207,7 @@ namespace Board_Game.Logic
                         if (square.Occupied)
                         {
                             if (square.occupiedCreature.Type == CreatureType.Miner
-                                && square.side == colour)
+                                && square.occupiedCreature.side == colour)
                             {
                                 mine.side = colour;
                             }
@@ -217,7 +217,6 @@ namespace Board_Game.Logic
                             {
                                 State.RemoveCreature(square.occupiedCreature);
                                 square.occupiedCreature = null;
-                                square.side = Side.Neutral;
                             }
                         }
                     }
@@ -475,11 +474,13 @@ namespace Board_Game.Logic
                 for (var y = 0; y < creature.GridHeight; ++y)
                 {
                     Tile tile = mGrid.mTiles[newX + x, newY + y];
-
-                    if (tile.side == creature.side //Cant attack friendlies
-                      || (tile.Occupied && creature.Class.CanAttack(tile.occupiedCreature.Type) == false))
+                    if (tile.Occupied)
                     {
-                        return false;
+                        if (tile.occupiedCreature.side == creature.side //Cant attack friendlies
+                          || creature.Class.CanAttack(tile.occupiedCreature.Type) == false)
+                        {
+                            return false;
+                        }
                     }
                 }
             }

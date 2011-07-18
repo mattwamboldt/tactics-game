@@ -192,7 +192,6 @@ namespace Board_Game.Logic
             {
                 for (var v = 0; v < height; ++v)
                 {
-                    mGrid.mTiles[x + u, y + v].side = Side.Neutral;
                     mGrid.mTiles[x + u, y + v].occupiedCreature = null;
                 }
             }
@@ -204,7 +203,6 @@ namespace Board_Game.Logic
             {
                 for (var v = 0; v < creature.GridHeight; ++v)
                 {
-                    mGrid.mTiles[x + u, y + v].side = creature.side;
                     mGrid.mTiles[x + u, y + v].occupiedCreature = creature;
                 }
             }

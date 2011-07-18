@@ -13,7 +13,6 @@ namespace Board_Game.Logic
     {
         public const float TILE_SIZE = 45;
 
-        public Side side;
         public Creature occupiedCreature;
         public Mine mine;
 
@@ -23,7 +22,6 @@ namespace Board_Game.Logic
 
         public Tile(Texture2D inTexture, int x, int y)
         {
-            side = Side.Neutral;
             occupiedCreature = null;
             mine = null;
             mSprite = new Sprite(
