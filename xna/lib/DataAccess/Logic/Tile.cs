@@ -14,7 +14,6 @@ namespace Board_Game.Logic
         public const float TILE_SIZE = 45;
 
         public Creature occupiedCreature;
-        public Mine mine;
 
         public bool Occupied { get { return occupiedCreature != null; } }
 
@@ -23,7 +22,6 @@ namespace Board_Game.Logic
         public Tile(Texture2D inTexture, int x, int y)
         {
             occupiedCreature = null;
-            mine = null;
             mSprite = new Sprite(
                 inTexture,
                 new Vector2(x * TILE_SIZE, y * TILE_SIZE),

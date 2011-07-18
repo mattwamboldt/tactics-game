@@ -463,8 +463,14 @@ namespace Board_Game.Logic
                 return false;
             }
 
-            return (Math.Floor((double)(x / 2)) % 2 == Math.Floor((double)(y / 2)) % 2)
-                && (mGrid.mTiles[x - x % 2, y - y % 2].mine.side != creature.side);
+            Mine mine = mGrid.GetMine(x - x % 2, y - y % 2);
+
+            if (mine == null)
+            {
+                return false;
+            }
+
+            return mine.side != creature.side;
         }
 
         public bool CanDestroyAllUnits(int newX, int newY, Creature creature)

@@ -14,6 +14,19 @@ namespace Board_Game.Logic
         public List<Mine> mMines;
         public Vector2 position;
 
+        public Mine GetMine(int x, int y)
+        {
+            foreach (Mine mine in mMines)
+            {
+                if (mine.position.X == x && mine.position.Y == y)
+                {
+                    return mine;
+                }
+            }
+
+            return null;
+        }
+
         public GameGrid(int width, int height, Texture2D tileTexture, Texture2D mineTexture)
         {
             position = new Vector2(100, 0);
@@ -45,7 +58,6 @@ namespace Board_Game.Logic
                             newMine.side = Side.Red;
                         }
 
-                        mTiles[x * 2, y * 2].mine = newMine;
                         mMines.Add(newMine);
                     }
                 }

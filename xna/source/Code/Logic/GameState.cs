@@ -125,17 +125,14 @@ namespace Board_Game.Logic
         //determines and sets the winner if a side has won by capturing all the mines.
         public bool MineVictory()
         {
-            winner = mGrid.mTiles[0, 0].mine.side;
+            winner = mGrid.mMines[0].side;
 
-            for (var x = 0; x < GameState.GRID_WIDTH / 2; ++x)
+            foreach (Mine mine in mGrid.mMines)
             {
-                for (var y = 0; y < GameState.GRID_HEIGHT / 2; ++y)
+                if (mine.side != winner)
                 {
-                    if (x % 2 == y % 2 && winner != mGrid.mTiles[x * 2, y * 2].mine.side)
-                    {
-                        winner = Side.Neutral;
-                        return false;
-                    }
+                    winner = Side.Neutral;
+                    return false;
                 }
             }
 
