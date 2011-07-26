@@ -215,6 +215,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="xml\TestMap.xml">
+      <Name>TestMap</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="audio\music\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

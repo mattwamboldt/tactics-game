@@ -126,7 +126,7 @@ namespace Board_Game.Logic
         */
         public bool IsDeathTrap(int x, int y, Creatures.Creature Creature)
         {
-            var CreatureAtIJ = mGrid.mTiles[x, y].occupiedCreature;
+            var CreatureAtIJ = mGrid.Occupants[x, y];
 
             //first loop for adjacent ground Creatures
             var lowerX = Rounding.FloorAtMinimum(x - 1, 0);
@@ -139,7 +139,7 @@ namespace Board_Game.Logic
             {
                 for (var v = lowerY; v <= upperY; ++v)
                 {
-                    var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
+                    var adjacentCreature = mGrid.Occupants[t, v];
                     if (adjacentCreature != null
                        && adjacentCreature.CanFly == false
                        && adjacentCreature.Type != Creatures.CreatureType.Miner
@@ -169,7 +169,7 @@ namespace Board_Game.Logic
             {
                 for (var v = lowerY; v <= upperY; v += 2)
                 {
-                    var adjacentCreature = mGrid.mTiles[t, v].occupiedCreature;
+                    var adjacentCreature = mGrid.Occupants[t, v];
                     if (adjacentCreature != null
                        && adjacentCreature.CanFly
                        && adjacentCreature.side != Creature.side
@@ -196,27 +196,27 @@ namespace Board_Game.Logic
         //It also checks for any Creatures that are on mines, that shoudl be deleted
         public void CheckMines(Side colour)
         {
-            foreach(Mine mine in mGrid.mMines)
+            foreach(Mine mine in mGrid.Mines)
             {
                 //inner loops checks the mine itself
                 for (var t = 0; t < 2; ++t)
                 {
                     for (var u = 0; u < 2; ++u)
                     {
-                        var square = mGrid.mTiles[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u];
-                        if (square.Occupied)
+                        Creature occupant = mGrid.Occupants[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u];
+                        if (occupant != null)
                         {
-                            if (square.occupiedCreature.Type == CreatureType.Miner
-                                && square.occupiedCreature.side == colour)
+                            if (occupant.Type == CreatureType.Miner
+                                && occupant.side == colour)
                             {
                                 mine.side = colour;
                             }
-                            else if (square.occupiedCreature.side != mine.side
-                                    && square.occupiedCreature.Type != CreatureType.Miner
-                                    && square.occupiedCreature.CanFly == false)
+                            else if (occupant.side != mine.side
+                                    && occupant.Type != CreatureType.Miner
+                                    && occupant.CanFly == false)
                             {
-                                State.RemoveCreature(square.occupiedCreature);
-                                square.occupiedCreature = null;
+                                State.RemoveCreature(occupant);
+                                mGrid.Occupants[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u] = null;
                             }
                         }
                     }
@@ -339,25 +339,23 @@ namespace Board_Game.Logic
             {
                 for (int y = 0; y < sourceCreature.GridHeight; y++ )
                 {
-                    if (mGrid.mTiles[x + desiredX, y + desiredY].Occupied)
+                    Creature targetCreature = mGrid.Occupants[x + desiredX, y + desiredY];
+                    
+                    if (targetCreature != null)
                     {
-                        Creature targetCreature = mGrid.mTiles[x + desiredX, y + desiredY].occupiedCreature;
-                        if (targetCreature != null)
+                        if (sourceCreature.Class.CanAttack(targetCreature.Type))
                         {
-                            if (sourceCreature.Class.CanAttack(targetCreature.Type))
+                            for (var p = 0; p < sourceCreature.Class.AttackPriorities.Length; p++)
                             {
-                                for (var p = 0; p < sourceCreature.Class.AttackPriorities.Length; p++)
+                                if (sourceCreature.Class.AttackPriorities[p] == targetCreature.Type)
                                 {
-                                    if (sourceCreature.Class.AttackPriorities[p] == targetCreature.Type)
-                                    {
-                                        score += ((int)Creatures.CreatureType.NumCreatureTypes - p) * 200;
-                                    }
+                                    score += ((int)Creatures.CreatureType.NumCreatureTypes - p) * 200;
                                 }
                             }
-                            else
-                            {
-                                return 0;
-                            }
+                        }
+                        else
+                        {
+                            return 0;
                         }
                     }
                 }
@@ -414,7 +412,7 @@ namespace Board_Game.Logic
             double distanceToNearest = GetDistanceToCoordinates(originalPoint, 0, 0);
 
             //The outer loop goes through the mines
-            foreach (Mine mine in mGrid.mMines)
+            foreach (Mine mine in mGrid.Mines)
             {
                 //we want to head for mines of the opposite colour
                 if (mine.side != source.side)
@@ -479,11 +477,11 @@ namespace Board_Game.Logic
             {
                 for (var y = 0; y < creature.GridHeight; ++y)
                 {
-                    Tile tile = mGrid.mTiles[newX + x, newY + y];
-                    if (tile.Occupied)
+                    Creature occupant = mGrid.Occupants[newX + x, newY + y];
+                    if (occupant != null)
                     {
-                        if (tile.occupiedCreature.side == creature.side //Cant attack friendlies
-                          || creature.Class.CanAttack(tile.occupiedCreature.Type) == false)
+                        if (occupant.side == creature.side //Cant attack friendlies
+                          || creature.Class.CanAttack(occupant.Type) == false)
                         {
                             return false;
                         }

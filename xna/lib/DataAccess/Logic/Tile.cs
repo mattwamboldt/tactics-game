@@ -13,15 +13,10 @@ namespace Board_Game.Logic
     {
         public const float TILE_SIZE = 45;
 
-        public Creature occupiedCreature;
-
-        public bool Occupied { get { return occupiedCreature != null; } }
-
         private Sprite mSprite;
 
         public Tile(Texture2D inTexture, int x, int y)
         {
-            occupiedCreature = null;
             mSprite = new Sprite(
                 inTexture,
                 new Vector2(x * TILE_SIZE, y * TILE_SIZE),

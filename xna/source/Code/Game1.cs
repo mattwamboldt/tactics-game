@@ -90,7 +90,11 @@ namespace Board_Game
             
             DatabaseManager.Get().Load(Content);
 
-            mGameState = new GameState(mAI, Content.Load<Sprite>("xml/Selector"));
+            mGameState = new GameState(
+                mAI,
+                Content.Load<Sprite>("xml/Selector"),
+                Content.Load<GameGrid>("xml/TestMap")
+            );
             mGameState.Initialize(Content);
             mAI.Initialize(mGameState);
             mScreen = new Screen(GraphicsDevice, Content);
@@ -166,11 +170,11 @@ namespace Board_Game
             spriteBatch.Begin();
 
             spriteBatch.Draw(mBackground, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
-            mGameState.Render(spriteBatch, mGameState.mGrid.position);
+            mGameState.Render(spriteBatch, mGameState.mGrid.Position);
             mScreen.Render(spriteBatch);
             mCursor.Render(spriteBatch);
 #if EDITOR
-            mUnitEditor.Render(spriteBatch, mGameState.mGrid.position);
+            mUnitEditor.Render(spriteBatch, mGameState.mGrid.Position);
 #endif
             spriteBatch.End();
 

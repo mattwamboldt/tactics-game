@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Board_Game.Logic.GameGrid">
+    <TileTextureName>textures/tiles/single</TileTextureName>
+    <MineTextureName>textures/tiles/mine</MineTextureName>
+    <Position>100 20</Position>
+    <Width>12</Width>
+    <Height>12</Height>
+  </Asset>
+</XnaContent>

@@ -142,6 +142,7 @@
     <Compile Include="Writers\DB\GameDatabaseWriter.cs" />
     <Compile Include="Writers\Input\InputMapWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Writers\Logic\GameGridWriter.cs" />
     <Compile Include="Writers\UI\AnimationWriter.cs" />
     <Compile Include="Writers\UI\LabelWriter.cs" />
     <Compile Include="Writers\UI\ImageWriter.cs" />

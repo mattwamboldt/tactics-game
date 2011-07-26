@@ -12,9 +12,9 @@ namespace Board_Game.Logic
     public class Mine
     {
         public Side side;
+        public Vector2 position;
 
         private Sprite mSprite;
-        public Vector2 position;
 
         public Mine(Texture2D inTexture, int x, int y)
         {

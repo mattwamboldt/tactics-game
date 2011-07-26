@@ -100,6 +100,7 @@
     <Compile Include="DB\GameDatabase.cs" />
     <Compile Include="Input\InputMap.cs" />
     <Compile Include="Input\InputState.cs" />
+    <Compile Include="Logic\GameGrid.cs" />
     <Compile Include="Logic\Mine.cs" />
     <Compile Include="Logic\Tile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

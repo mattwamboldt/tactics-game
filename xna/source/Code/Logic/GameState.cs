@@ -36,18 +36,10 @@ namespace Board_Game.Logic
         private AI mAI;
         public AI AI { get { return mAI; } }
 
-        public GameState(AI AIref,
-                Sprite selectorSprite)
+        public GameState(AI AIref, Sprite selectorSprite, GameGrid grid)
         {
-            mGrid = new GameGrid(
-                GameState.GRID_WIDTH,
-                GameState.GRID_HEIGHT,
-                TextureManager.Get().Find("textures/tiles/single"),
-                TextureManager.Get().Find("textures/tiles/mine")
-            );
-            
+            mGrid = grid;
             mAI = AIref;
-
             AIref.mGrid = mGrid;
             
             //passing in the same AI for now, but could be different later
@@ -76,10 +68,10 @@ namespace Board_Game.Logic
         public void Render(SpriteBatch spriteBatch, Vector2 parentLocation)
         {
             mGrid.Render(spriteBatch);
-            mSelector.RenderCreatureRadius(spriteBatch, mGrid.position);
-            Blue.Render(spriteBatch, mGrid.position);
-            Red.Render(spriteBatch, mGrid.position);
-            mSelector.Render(spriteBatch, mGrid.position);
+            mSelector.RenderCreatureRadius(spriteBatch, mGrid.Position);
+            Blue.Render(spriteBatch, mGrid.Position);
+            Red.Render(spriteBatch, mGrid.Position);
+            mSelector.Render(spriteBatch, mGrid.Position);
         }
 
         internal void Update(GameTime gameTime)
@@ -125,9 +117,9 @@ namespace Board_Game.Logic
         //determines and sets the winner if a side has won by capturing all the mines.
         public bool MineVictory()
         {
-            winner = mGrid.mMines[0].side;
+            winner = mGrid.Mines[0].side;
 
-            foreach (Mine mine in mGrid.mMines)
+            foreach (Mine mine in mGrid.Mines)
             {
                 if (mine.side != winner)
                 {
@@ -189,7 +181,7 @@ namespace Board_Game.Logic
             {
                 for (var v = 0; v < height; ++v)
                 {
-                    mGrid.mTiles[x + u, y + v].occupiedCreature = null;
+                    mGrid.Occupants[x + u, y + v] = null;
                 }
             }
         }
@@ -200,7 +192,7 @@ namespace Board_Game.Logic
             {
                 for (var v = 0; v < creature.GridHeight; ++v)
                 {
-                    mGrid.mTiles[x + u, y + v].occupiedCreature = creature;
+                    mGrid.Occupants[x + u, y + v] = creature;
                 }
             }
 
@@ -220,15 +212,15 @@ namespace Board_Game.Logic
             {
                 for (var y = 0; y < height; ++y)
                 {
-                    if (mGrid.mTiles[newX + x, newY + y].Occupied)
+                    Creature occupant = mGrid.Occupants[newX + x, newY + y];
+
+                    if (occupant != null)
                     {
-                        Creature Creature = mGrid.mTiles[newX + x, newY + y].occupiedCreature;
+                        int CreatureX = (int)((occupant.Position.X - occupant.Position.X % occupant.ScreenDimensions().X) / Tile.TILE_SIZE);
+                        int CreatureY = (int)((occupant.Position.Y - occupant.Position.Y % occupant.ScreenDimensions().Y) / Tile.TILE_SIZE);
 
-                        int CreatureX = (int)((Creature.Position.X - Creature.Position.X % Creature.ScreenDimensions().X) / Tile.TILE_SIZE);
-                        int CreatureY = (int)((Creature.Position.Y - Creature.Position.Y % Creature.ScreenDimensions().Y) / Tile.TILE_SIZE);
-
-                        ClearArea(CreatureX, CreatureY, Creature.GridWidth, Creature.GridHeight);
-                        RemoveCreature(Creature);
+                        ClearArea(CreatureX, CreatureY, occupant.GridWidth, occupant.GridHeight);
+                        RemoveCreature(occupant);
                     }
                 }
             }
@@ -241,7 +233,7 @@ namespace Board_Game.Logic
             {
                 for (int y = 0; y < height; y++)
                 {
-                    if (mGrid.mTiles[newX + x, newY + y].Occupied)
+                    if (mGrid.Occupants[newX + x, newY + y] != null)
                     {
                         return true;
                     }
@@ -264,11 +256,11 @@ namespace Board_Game.Logic
             {
                 returnValue.topCut = 0;
             }
-            if (returnValue.rightCut + creature.ScreenDimensions().X / 2 > mGrid.Width())
+            if (returnValue.rightCut + creature.ScreenDimensions().X / 2 > mGrid.PixelWidth())
             {
                 returnValue.rightCut = (int)creature.Position.X;
             }
-            if (returnValue.bottomCut + creature.ScreenDimensions().Y / 2 > mGrid.Height())
+            if (returnValue.bottomCut + creature.ScreenDimensions().Y / 2 > mGrid.PixelHeight())
             {
                 returnValue.bottomCut = (int)creature.Position.Y;
             }

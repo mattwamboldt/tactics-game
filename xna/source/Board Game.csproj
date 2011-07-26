@@ -102,7 +102,6 @@
     <Compile Include="Code\Editing\UnitEditor.cs" />
     <Compile Include="Code\Input\Cursor.cs" />
     <Compile Include="Code\Logic\AI.cs" />
-    <Compile Include="Code\Logic\GameGrid.cs" />
     <Compile Include="Code\Input\InputManager.cs" />
     <Compile Include="Code\Input\Selector.cs" />
     <Compile Include="Code\Logic\GameState.cs" />

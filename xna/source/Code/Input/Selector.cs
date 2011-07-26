@@ -149,16 +149,14 @@ namespace Board_Game.Logic
 
         private void SelectCreature()
         {
-            if (mGridRef.mTiles[(int)position.X, (int)position.Y].Occupied)
+            Creature occupant = mGridRef.Occupants[(int)position.X, (int)position.Y];
+
+            if (occupant != null && occupant.side == mSide)
             {
-                Creatures.Creature Creature = mGridRef.mTiles[(int)position.X, (int)position.Y].occupiedCreature;
-                if (Creature.side == mSide)
-                {
-                    selectedCreature = Creature;
-                    Creature.isSelected = true;
-                    CreatureClamp = mGameState.GetClampArea(selectedCreature);
-                    mSelectSound.Play();
-                }
+                selectedCreature = occupant;
+                occupant.isSelected = true;
+                CreatureClamp = mGameState.GetClampArea(selectedCreature);
+                mSelectSound.Play();
             }
         }
 
@@ -181,7 +179,7 @@ namespace Board_Game.Logic
 
             if (mGameState.CheckOccupied(x, y, selectedCreature.GridWidth, selectedCreature.GridHeight))
             {
-                Creature Creature = mGridRef.mTiles[x, y].occupiedCreature;
+                Creature Creature = mGridRef.Occupants[x, y];
 
                 //toggle selection of the current Creature
                 if (selectedCreature == Creature)
@@ -201,7 +199,7 @@ namespace Board_Game.Logic
                 //switch to friendly Creatures
                 else
                 {
-                    Creature = mGridRef.mTiles[(int)position.X, (int)position.Y].occupiedCreature;
+                    Creature = mGridRef.Occupants[(int)position.X, (int)position.Y];
 
                     if (Creature != null && Creature.side == mSide)
                     {
@@ -281,17 +279,17 @@ namespace Board_Game.Logic
         {
             Point cursorPosition = cursor.GetPosition();
             Rectangle bounds = new Rectangle(
-                (int)mGridRef.position.X,
-                (int)mGridRef.position.Y,
-                (int)mGridRef.Width(),
-                (int)mGridRef.Height()
+                (int)mGridRef.Position.X,
+                (int)mGridRef.Position.Y,
+                (int)mGridRef.PixelWidth(),
+                (int)mGridRef.PixelHeight()
             );
 
             if (bounds.Contains(cursorPosition))
             {
                 Vector2 newPoint = new Vector2(
-                    (int)((cursorPosition.X - mGridRef.position.X) / Tile.TILE_SIZE),
-                    (int)((cursorPosition.Y - mGridRef.position.Y) / Tile.TILE_SIZE)
+                    (int)((cursorPosition.X - mGridRef.Position.X) / Tile.TILE_SIZE),
+                    (int)((cursorPosition.Y - mGridRef.Position.Y) / Tile.TILE_SIZE)
                 );
 
                 if (newPoint.Equals(position) == false)
@@ -307,7 +305,7 @@ namespace Board_Game.Logic
                 else if (cursor.IsRightClick())
                 {
 #if EDITOR
-                    Creature Creature = mGridRef.mTiles[(int)position.X, (int)position.Y].occupiedCreature;
+                    Creature Creature = mGridRef.Occupants[(int)position.X, (int)position.Y];
 
                     if (Creature != null)
                     {
