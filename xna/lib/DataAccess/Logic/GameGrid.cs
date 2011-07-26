@@ -38,7 +38,10 @@ namespace Board_Game.Logic
             {
                 for (var y = 0; y < Height; ++y)
                 {
-                    Tiles[x, y] = new Tile(tileTexture, x, y);
+                    Tiles[x, y] = new Tile();
+                    Tiles[x, y].TextureCoordinates = new Point(0, 0);
+                    Tiles[x, y].ScreenCoordinates = new Point(x * (int)Tile.TILE_SIZE, y * (int)Tile.TILE_SIZE);
+                    Tiles[x, y].Texture = tileTexture;
                     Occupants[x, y] = null;
                 }
             }
