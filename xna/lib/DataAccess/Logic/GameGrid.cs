@@ -18,11 +18,10 @@ namespace Board_Game.Logic
         public int Width;
         public int Height;
 
-        [ContentSerializerIgnore]
-        public List<Mine> Mines;
+        public List<Tile> Tiles;
 
         [ContentSerializerIgnore]
-        public Tile[,] Tiles;
+        public List<Mine> Mines;
 
         [ContentSerializerIgnore]
         public Creature[,] Occupants;
@@ -32,16 +31,17 @@ namespace Board_Game.Logic
         {
             Texture2D tileTexture = TextureManager.Get().Find(TileTextureName);
 
-            Tiles = new Tile[Width, Height];
             Occupants = new Creature[Width, Height];
+
+            int currentTile = 0;
             for (int x = 0; x < Width; ++x)
             {
                 for (var y = 0; y < Height; ++y)
                 {
-                    Tiles[x, y] = new Tile();
-                    Tiles[x, y].TextureCoordinates = new Point(0, 0);
-                    Tiles[x, y].ScreenCoordinates = new Point(x * (int)Tile.TILE_SIZE, y * (int)Tile.TILE_SIZE);
-                    Tiles[x, y].Texture = tileTexture;
+                    Tile tile = Tiles[currentTile];
+                    tile.ScreenCoordinates = new Point(x * (int)Tile.TILE_SIZE, y * (int)Tile.TILE_SIZE);
+                    tile.Texture = tileTexture;
+                    currentTile++;
                     Occupants[x, y] = null;
                 }
             }
@@ -88,12 +88,9 @@ namespace Board_Game.Logic
 
         public void Render(SpriteBatch spriteBatch)
         {
-            for (int x = 0; x <= Tiles.GetUpperBound(0); ++x)
+            foreach (Tile tile in Tiles)
             {
-                for (var y = 0; y <= Tiles.GetUpperBound(1); ++y)
-                {
-                    Tiles[x, y].Render(spriteBatch, Position);
-                }
+                tile.Render(spriteBatch, Position);
             }
 
             foreach (Mine mine in Mines)
@@ -124,6 +121,10 @@ namespace Board_Game.Logic
             output.Position = input.ReadVector2();
             output.Width = input.ReadInt32();
             output.Height = input.ReadInt32();
+
+            Texture2D tileTexture = TextureManager.Get().Find(output.TileTextureName);
+
+            output.Tiles = input.ReadObject<List<Tile>>();
 
             output.Initialize();
             return output;

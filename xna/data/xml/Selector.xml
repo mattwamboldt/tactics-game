@@ -4,6 +4,6 @@
     <TextureName>textures/UI/Selector</TextureName>
     <Position>0 0</Position>
     <Color>FFFFFF</Color>
-    <Dimensions>45 45</Dimensions>
+    <Dimensions>32 32</Dimensions>
   </Asset>
 </XnaContent>
