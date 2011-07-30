@@ -225,7 +225,7 @@ namespace Board_Game.Logic
 #region Moving functions
         private void MoveRight()
         {
-            if (position.X < GameState.GRID_WIDTH - 1)
+            if (position.X < mGameState.mGrid.Width - 1)
             {
                 position.X += 1;
             }
@@ -249,7 +249,7 @@ namespace Board_Game.Logic
 
         private void MoveDown()
         {
-            if (position.Y < GameState.GRID_HEIGHT - 1)
+            if (position.Y < mGameState.mGrid.Height - 1)
             {
                 position.Y += 1;
             }

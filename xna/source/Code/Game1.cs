@@ -93,7 +93,7 @@ namespace Board_Game
             mGameState = new GameState(
                 mAI,
                 Content.Load<Sprite>("xml/Selector"),
-                Content.Load<GameGrid>("map/test")
+                Content.Load<GameGrid>("map/level1")
             );
             mGameState.Initialize(Content);
             mAI.Initialize(mGameState);

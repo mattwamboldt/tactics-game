@@ -27,9 +27,6 @@ namespace Board_Game.Logic
         public Selector Selector { get { return mSelector; } }
         public Side winner;
 
-        public const int GRID_WIDTH = 24;
-        public const int GRID_HEIGHT = 12;
-
         public Player Red { get { return mRed; } }
         public Player Blue { get { return mBlue; } }
 
@@ -56,10 +53,10 @@ namespace Board_Game.Logic
 
         public void Initialize(ContentManager content)
         {
-            mRed.mArmy = content.Load<Army>("Armies/RedTest");
+            mRed.mArmy = content.Load<Army>("Armies/level1Red");
             mRed.PlaceOnField();
 
-            mBlue.mArmy = content.Load<Army>("Armies/BlueTest");
+            mBlue.mArmy = content.Load<Army>("Armies/level1Blue");
             mBlue.PlaceOnField();
 
             mSelector.Initialize(content);

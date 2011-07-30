@@ -229,6 +229,70 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="map\level1.tilemap">
+      <Name>level1</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level10.tilemap">
+      <Name>level10</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level2.tilemap">
+      <Name>level2</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level3.tilemap">
+      <Name>level3</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level4.tilemap">
+      <Name>level4</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level5.tilemap">
+      <Name>level5</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level6.tilemap">
+      <Name>level6</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level7.tilemap">
+      <Name>level7</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level8.tilemap">
+      <Name>level8</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level9.tilemap">
+      <Name>level9</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armies\level1Blue.csv">
+      <Name>level1Blue</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+    <Compile Include="Armies\level1Red.csv">
+      <Name>level1Red</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="audio\music\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -132,8 +132,8 @@ namespace Board_Game.Logic
             var lowerX = Rounding.FloorAtMinimum(x - 1, 0);
             var lowerY = Rounding.FloorAtMinimum(y - 1, 0);
 
-            var upperX = Rounding.CapAtMaximum(x + Creature.GridWidth, GameState.GRID_WIDTH - 1);
-            var upperY = Rounding.CapAtMaximum(y + Creature.GridHeight, GameState.GRID_HEIGHT - 1);
+            var upperX = Rounding.CapAtMaximum(x + Creature.GridWidth, mGrid.Width - 1);
+            var upperY = Rounding.CapAtMaximum(y + Creature.GridHeight, mGrid.Height - 1);
 
             for (var t = lowerX; t <= upperX; ++t)
             {
@@ -160,10 +160,10 @@ namespace Board_Game.Logic
 
             //then loop for surrounding air Creatures
             lowerX = Rounding.MakeEven(Rounding.FloorAtMinimum(x - 2, 0));
-            upperX = Rounding.MakeEven(Rounding.CapAtMaximum(x + 2, GameState.GRID_WIDTH - 2));
+            upperX = Rounding.MakeEven(Rounding.CapAtMaximum(x + 2, mGrid.Width - 2));
 
             lowerY = Rounding.MakeEven(Rounding.FloorAtMinimum(y - 2, 0));
-            upperY = Rounding.MakeEven(Rounding.CapAtMaximum(y + 2, GameState.GRID_HEIGHT - 2));
+            upperY = Rounding.MakeEven(Rounding.CapAtMaximum(y + 2, mGrid.Height - 2));
 
             for (var t = lowerX; t <= upperX; t += 2)
             {
