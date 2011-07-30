@@ -34,9 +34,9 @@ namespace Board_Game.Logic
             Occupants = new Creature[Width, Height];
 
             int currentTile = 0;
-            for (int x = 0; x < Width; ++x)
+            for (int y = 0; y < Height; ++y)
             {
-                for (var y = 0; y < Height; ++y)
+                for (var x = 0; x < Width; ++x)
                 {
                     Tile tile = Tiles[currentTile];
                     tile.ScreenCoordinates = new Point(x * (int)Tile.TILE_SIZE, y * (int)Tile.TILE_SIZE);

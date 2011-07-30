@@ -131,9 +131,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Importers\TileMapImporter.cs" />
     <Compile Include="Importers\CSVImporter.cs" />
     <Compile Include="Processors\ArmyProcessor.cs" />
     <Compile Include="Processors\Database\ClassTableProcessor.cs" />
+    <Compile Include="Processors\Logic\TileMapProcessor.cs" />
     <Compile Include="Writers\Characters\ArmyWriter.cs" />
     <Compile Include="Writers\Characters\CreatureDescriptionWriter.cs" />
     <Compile Include="Writers\Characters\CreatureWriter.cs">

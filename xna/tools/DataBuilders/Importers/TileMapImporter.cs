@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
 // TODO: replace this with the type you want to import.
-using TImport = System.Data.DataTable;
+using TImport = System.Collections.Generic.List<string>;
 using System.IO;
 using System.Data;
 
@@ -22,27 +22,17 @@ namespace DataBuilder.Importers
     /// TODO: change the ContentImporter attribute to specify the correct file
     /// extension, display name, and default processor for this importer.
     /// </summary>
-    [ContentImporter(".csv", DisplayName = "CSV Table Importer", DefaultProcessor = "ArmyProcessor")]
-    public class CSVImporter : ContentImporter<TImport>
+    [ContentImporter(".tilemap", DisplayName = "Tile Map Importer", DefaultProcessor = "TileMapProcessor")]
+    public class TileMapImporter : ContentImporter<TImport>
     {
         public override TImport Import(string filename, ContentImporterContext context)
         {
             StreamReader reader = new StreamReader(filename);
-            TImport output = new System.Data.DataTable(Path.GetFileNameWithoutExtension(filename));
-
-            string nextLine = reader.ReadLine();
-            foreach(string columnName in nextLine.Split(new char[]{','}))
-            {
-                output.Columns.Add(columnName);
-            }
+            TImport output = new List<string>();
             
             while(!reader.EndOfStream)
             {
-                nextLine = reader.ReadLine();
-                
-                DataRow row = output.NewRow();
-                row.ItemArray = nextLine.Split(new char[]{','});
-                output.Rows.Add(row);
+                output.Add(reader.ReadLine());
             }
 
             reader.Close();

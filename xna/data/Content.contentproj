@@ -215,17 +215,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="xml\TestMap.xml">
-      <Name>TestMap</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="textures\tiles\testTiles.png">
       <Name>testTiles</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="map\test.tilemap">
+      <Name>test</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
