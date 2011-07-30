@@ -12,6 +12,7 @@ using TInput = System.Collections.Generic.List<string>;
 using TOutput = Board_Game.Logic.GameGrid;
 using System.Data;
 using Board_Game.Logic;
+using Board_Game.Creatures;
 
 namespace DataBuilder.Processors.Logic
 {
@@ -40,8 +41,12 @@ namespace DataBuilder.Processors.Logic
                 Convert.ToInt32(line[1])
             );
 
+            
+
             output.Width = Convert.ToInt32(line[2]);
             output.Height = Convert.ToInt32(line[3]);
+
+            int numMines = Convert.ToInt32(line[4]);
 
             output.Tiles = new List<Tile>(output.Width * output.Height);
 
@@ -60,6 +65,21 @@ namespace DataBuilder.Processors.Logic
                     output.Tiles.Add(tile);
                 }
             }
+
+            output.Mines = new List<Mine>(numMines);
+            for (int i = 0; i < numMines; i++)
+            {
+                line = input[3 + output.Height + i].Split(new char[] { ',' });
+                Mine mine = new Mine();
+                mine.side = (Side)Convert.ToInt32(line[0]);
+                mine.position = new Vector2(
+                    Convert.ToInt32(line[1]),
+                    Convert.ToInt32(line[2])
+                );
+
+                output.Mines.Add(mine);
+            }
+
 
             return output;
         }

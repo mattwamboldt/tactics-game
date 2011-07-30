@@ -19,8 +19,6 @@ namespace Board_Game.Logic
         public int Height;
 
         public List<Tile> Tiles;
-
-        [ContentSerializerIgnore]
         public List<Mine> Mines;
 
         [ContentSerializerIgnore]
@@ -48,28 +46,9 @@ namespace Board_Game.Logic
 
             Texture2D mineTexture = TextureManager.Get().Find(MineTextureName);
 
-            Mines = new List<Mine>((Width / 4) * (Height / 2));
-
-            for (int x = 0; x < Width / 2; ++x)
+            for (int i = 0; i < Mines.Count; i++)
             {
-                for (int y = 0; y < Height / 2; ++y)
-                {
-                    if (x % 2 == y % 2)
-                    {
-                        Mine newMine = new Mine(mineTexture, x, y);
-
-                        if (y < 2)
-                        {
-                            newMine.side = Side.Blue;
-                        }
-                        else if (y >= (Height / 2) - 2)
-                        {
-                            newMine.side = Side.Red;
-                        }
-
-                        Mines.Add(newMine);
-                    }
-                }
+                Mines[i].Initialize(mineTexture);
             }
         }
 
@@ -122,9 +101,8 @@ namespace Board_Game.Logic
             output.Width = input.ReadInt32();
             output.Height = input.ReadInt32();
 
-            Texture2D tileTexture = TextureManager.Get().Find(output.TileTextureName);
-
             output.Tiles = input.ReadObject<List<Tile>>();
+            output.Mines = input.ReadObject<List<Mine>>();
 
             output.Initialize();
             return output;

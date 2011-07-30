@@ -16,13 +16,13 @@ namespace Board_Game.Logic
 
         private Sprite mSprite;
 
-        public Mine(Texture2D inTexture, int x, int y)
+        public Mine(){}
+
+        public void Initialize(Texture2D inTexture)
         {
-            side = Side.Neutral;
-            position = new Vector2(x, y);
             mSprite = new Sprite(
                 inTexture,
-                new Vector2(position.X * Tile.TILE_SIZE * 2, position.Y * Tile.TILE_SIZE * 2),
+                new Vector2(position.X * Tile.TILE_SIZE, position.Y * Tile.TILE_SIZE),
                 Color.White,
                 new Vector2(Tile.TILE_SIZE * 2, Tile.TILE_SIZE * 2));
         }

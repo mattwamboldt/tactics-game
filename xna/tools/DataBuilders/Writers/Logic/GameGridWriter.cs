@@ -18,6 +18,7 @@ namespace DataBuilder.Logic
             output.Write(value.Width);
             output.Write(value.Height);
             output.WriteObject(value.Tiles);
+            output.WriteObject(value.Mines);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)

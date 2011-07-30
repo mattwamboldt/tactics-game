@@ -203,7 +203,7 @@ namespace Board_Game.Logic
                 {
                     for (var u = 0; u < 2; ++u)
                     {
-                        Creature occupant = mGrid.Occupants[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u];
+                        Creature occupant = mGrid.Occupants[(int)mine.position.X + t, (int)mine.position.Y + u];
                         if (occupant != null)
                         {
                             if (occupant.Type == CreatureType.Miner
@@ -216,7 +216,7 @@ namespace Board_Game.Logic
                                     && occupant.CanFly == false)
                             {
                                 State.RemoveCreature(occupant);
-                                mGrid.Occupants[(int)mine.position.X * 2 + t, (int)mine.position.Y * 2 + u] = null;
+                                mGrid.Occupants[(int)mine.position.X + t, (int)mine.position.Y + u] = null;
                             }
                         }
                     }
