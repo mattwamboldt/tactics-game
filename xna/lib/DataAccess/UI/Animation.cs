@@ -51,6 +51,7 @@ namespace BoardGameContent.UI
             if (nextKeyFrameIndex >= mKeyFrames.Length)
             {
                 mIsPlaying = false;
+                CurrentFrame = mKeyFrames[CurrentKeyFrame];
             }
 
             if (mIsPlaying)

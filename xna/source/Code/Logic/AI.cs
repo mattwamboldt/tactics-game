@@ -77,15 +77,16 @@ using Board_Game.Creatures;
     Add function to check if a Creature in a location is vulnerable to attack. Use this to negatively
     impact the score of moving to that location. Tune and enjoy Creatures no longer commiting suicide.
 
-    REV 14
+    REV 14(Completed)
     Add loops to find the Creature in the entire army with the best scoring move, and move that Creature.
     Tune and this means the opposition will start to act like they are more than just one random
     Creature on the feild. We may have to go with random from the top five to keep it from being too predictable.
 
-    REV 15
-    Add shortest path function, and use that to get the distance. Also use that to determine if a Creature 
-    is still trapped and negatively effect score. This may prove too crazy. If done it will be the last
-    large ai change until someone pro comes along.
+    Future improvements
+    - true pathfinding to gague things better
+    - An overhaul of the algorithm for choosing. First the list of all possible moves should be created
+      then sorted based on weighted criteria. This would allow for easier expansion and tweaking of the ai
+      if we want to make it agressive or defensive we merely change the weights
 */
 
 namespace Board_Game.Logic

@@ -58,6 +58,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.frameList = new System.Windows.Forms.ListBox();
             this.screenTree = new System.Windows.Forms.TreeView();
+            this.frameProperties = new System.Windows.Forms.PropertyGrid();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.unitPage.SuspendLayout();
@@ -109,7 +110,7 @@
             this.saveToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(332, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(540, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -128,7 +129,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(332, 513);
+            this.tabControl1.Size = new System.Drawing.Size(540, 513);
             this.tabControl1.TabIndex = 3;
             // 
             // unitPage
@@ -316,6 +317,7 @@
             // 
             // screenPage
             // 
+            this.screenPage.Controls.Add(this.frameProperties);
             this.screenPage.Controls.Add(this.label6);
             this.screenPage.Controls.Add(this.label5);
             this.screenPage.Controls.Add(this.frameList);
@@ -323,7 +325,7 @@
             this.screenPage.Location = new System.Drawing.Point(4, 22);
             this.screenPage.Name = "screenPage";
             this.screenPage.Padding = new System.Windows.Forms.Padding(3);
-            this.screenPage.Size = new System.Drawing.Size(324, 487);
+            this.screenPage.Size = new System.Drawing.Size(532, 487);
             this.screenPage.TabIndex = 1;
             this.screenPage.Text = "Screen";
             this.screenPage.UseVisualStyleBackColor = true;
@@ -353,6 +355,7 @@
             this.frameList.Name = "frameList";
             this.frameList.Size = new System.Drawing.Size(100, 446);
             this.frameList.TabIndex = 1;
+            this.frameList.SelectedIndexChanged += new System.EventHandler(this.frameList_SelectedIndexChanged);
             // 
             // screenTree
             // 
@@ -364,11 +367,19 @@
             this.screenTree.TabIndex = 0;
             this.screenTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.screenTree_AfterSelect);
             // 
+            // frameProperties
+            // 
+            this.frameProperties.Location = new System.Drawing.Point(280, 15);
+            this.frameProperties.Name = "frameProperties";
+            this.frameProperties.Size = new System.Drawing.Size(244, 464);
+            this.frameProperties.TabIndex = 4;
+            this.frameProperties.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.frameProperties_PropertyValueChanged);
+            // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 537);
+            this.ClientSize = new System.Drawing.Size(540, 537);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -423,6 +434,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox armyList;
+        private System.Windows.Forms.PropertyGrid frameProperties;
     }
 }
 

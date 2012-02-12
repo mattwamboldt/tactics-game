@@ -154,6 +154,7 @@ namespace GameEditor
         {
             frameList.Items.Clear();
             frameList.DisplayMember = "Frame";
+            
 
             foreach (ShapeState state in shape.Animation.KeyFrames)
             {
@@ -170,6 +171,16 @@ namespace GameEditor
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mUnitSave((string)armyList.SelectedItem);
+        }
+
+        private void frameList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            frameProperties.SelectedObject = (ShapeState)frameList.SelectedItem;
+        }
+
+        private void frameProperties_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            frameProperties.Refresh();
         }
     }
 }
