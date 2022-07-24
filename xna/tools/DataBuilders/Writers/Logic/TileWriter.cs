@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Board_Game.Logic;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Board_Game.Logic;
 
 namespace DataBuilder.Logic
 {
@@ -15,7 +12,7 @@ namespace DataBuilder.Logic
             output.WriteObject(value.TextureCoordinates);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(TileReader).AssemblyQualifiedName;
         }

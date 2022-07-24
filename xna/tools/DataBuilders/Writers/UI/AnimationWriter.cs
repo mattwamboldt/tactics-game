@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BoardGameContent.UI;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using BoardGameContent.UI;
 
 namespace DataBuilder.UI
 {
@@ -18,7 +15,7 @@ namespace DataBuilder.UI
             output.Write(value.Frame);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(ShapeStateReader).AssemblyQualifiedName;
         }
@@ -29,10 +26,10 @@ namespace DataBuilder.UI
     {
         protected override void Write(ContentWriter output, Animation value)
         {
-            output.WriteObject<ShapeState[]>(value.KeyFrames);
+            output.WriteObject(value.KeyFrames);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(AnimationReader).AssemblyQualifiedName;
         }

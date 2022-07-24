@@ -4,6 +4,8 @@
     <CreatureTable>
     </CreatureTable>
     <ArmyTable>
+      <Item>level1Red</Item>
+      <Item>level1Blue</Item>
       <Item>BlueTest</Item>
       <Item>BlueLargeTest</Item>
       <Item>RedTest</Item>

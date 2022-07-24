@@ -1,18 +1,16 @@
 ﻿#if EDITOR
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GameEditor;
-using Board_Game.Logic;
-using Board_Game.Creatures;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Board_Game.Rendering;
-using Microsoft.Xna.Framework.Content;
 using Board_Game.Characters;
 using Board_Game.Code.Util;
+using Board_Game.Creatures;
 using Board_Game.DB;
+using Board_Game.Logic;
+using Board_Game.Rendering;
+using GameEditor;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace Board_Game.Code.Editing
 {
@@ -227,7 +225,7 @@ namespace Board_Game.Code.Editing
                         (int)(mSelectedCreature.Position.Y + parentPosition.Y),
                         (int)mSelectedCreature.ScreenDimensions().X,
                         (int)mSelectedCreature.ScreenDimensions().Y),
-                    new Color(Color.Chartreuse, 120)
+                    new Color(Color.Chartreuse.R, Color.Chartreuse.G, Color.Chartreuse.B, 120)
                );
             }
         }

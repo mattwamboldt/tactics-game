@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Board_Game.Input;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Board_Game.Input;
 
 namespace DataBuilder.Input
 {
@@ -16,7 +13,7 @@ namespace DataBuilder.Input
             output.WriteObject(value.PadMap);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(InputMapReader).AssemblyQualifiedName;
         }

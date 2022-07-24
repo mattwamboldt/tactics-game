@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Board_Game.Rendering;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Board_Game.Rendering;
 
 namespace DataBuilder.Rendering
 {
@@ -18,7 +15,7 @@ namespace DataBuilder.Rendering
             output.Write(value.Dimensions);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(SpriteReader).AssemblyQualifiedName;
         }

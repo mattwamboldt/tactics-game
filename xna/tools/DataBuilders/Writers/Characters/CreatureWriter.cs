@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Board_Game.Creatures;
+﻿using Board_Game.Creatures;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace DataBuilder.Creatures
 {
@@ -17,7 +14,7 @@ namespace DataBuilder.Creatures
             output.Write(value.ClassID);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(CreatureReader).AssemblyQualifiedName;
         }

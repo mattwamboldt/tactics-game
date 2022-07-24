@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BoardGameContent.DB;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using BoardGameContent.DB;
 
 namespace DataBuilder.DB
 {
@@ -16,7 +13,7 @@ namespace DataBuilder.DB
             output.WriteObject(value.ArmyTable);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(GameDatabaseReader).AssemblyQualifiedName;
         }

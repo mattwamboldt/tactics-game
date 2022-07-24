@@ -1,0 +1,307 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>fa11f69e-0270-4d05-8fc2-7e176a12697b</ProjectGuid>
+    <ProjectTypeGuids>{96E2B04D-8817-42c6-938A-82C39BA4D311};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\temp\data\bin\$(Platform)\$(Configuration)</OutputPath>
+    <BaseIntermediateOutputPath>..\temp\data</BaseIntermediateOutputPath>
+    <ContentRootDirectory>Content</ContentRootDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <XnaPlatform>Windows</XnaPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <XnaPlatform>Windows</XnaPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Editor|x86' ">
+    <OutputPath>..\temp\data\bin\x86\Editor\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\tiles\mine.bmp">
+      <Name>mine</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\tiles\single.bmp">
+      <Name>single</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\Creatures\bomber.png">
+      <Name>bomber</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Creatures\deminer.png">
+      <Name>deminer</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Creatures\fighter.png">
+      <Name>fighter</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Creatures\grenadier.png">
+      <Name>grenadier</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="textures\Creatures\soldier.png">
+      <Name>soldier</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="fonts\Tutorial.spritefont">
+      <Name>Tutorial</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="fonts\Button.spritefont">
+      <Name>Button</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="fonts\CreatureName.spritefont">
+      <Name>CreatureName</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\UI\Selector.png">
+      <Name>Selector</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\backgrounds\battlefield.jpg">
+      <Name>battlefield</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="xml\InputMap.xml">
+      <Name>InputMap</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="xml\Selector.xml">
+      <Name>Selector</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="xml\Screen.xml">
+      <Name>Screen</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\sfx\DeSelect.wav">
+      <Name>DeSelect</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="audio\sfx\Select.wav">
+      <Name>Select</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\sfx\Move.wav">
+      <Name>Move</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="audio\sfx\Place.wav">
+      <Name>Place</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DB\Database.xml">
+      <Name>Database</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\UI\cursor.png">
+      <Name>cursor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\tools\DataBuilders\DataBuilders.csproj">
+      <Project>{FDF9BD94-4555-45A9-9BAD-A1C38ABEDD18}</Project>
+      <Name>DataBuilders</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armies\RedTestNew.csv">
+      <Name>RedTestNew</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armies\BlueLargeTest.csv">
+      <Name>BlueLargeTest</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+    <Compile Include="Armies\BlueTest.csv">
+      <Name>BlueTest</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+    <Compile Include="Armies\RedTest.csv">
+      <Name>RedTest</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DB\CreatureDescription.csv">
+      <Name>CreatureDescription</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ClassTableProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="textures\tiles\testTiles.png">
+      <Name>testTiles</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="map\test.tilemap">
+      <Name>test</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="map\level1.tilemap">
+      <Name>level1</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level10.tilemap">
+      <Name>level10</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level2.tilemap">
+      <Name>level2</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level3.tilemap">
+      <Name>level3</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level4.tilemap">
+      <Name>level4</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level5.tilemap">
+      <Name>level5</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level6.tilemap">
+      <Name>level6</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level7.tilemap">
+      <Name>level7</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level8.tilemap">
+      <Name>level8</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+    <Compile Include="map\level9.tilemap">
+      <Name>level9</Name>
+      <Importer>TileMapImporter</Importer>
+      <Processor>TileMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Armies\level1Blue.csv">
+      <Name>level1Blue</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+    <Compile Include="Armies\level1Red.csv">
+      <Name>level1Red</Name>
+      <Importer>CSVImporter</Importer>
+      <Processor>ArmyProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="audio\music\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

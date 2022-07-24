@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Board_Game.Rendering
 {
@@ -31,7 +31,7 @@ namespace Board_Game.Rendering
             mTextureCollection = new Hashtable();
 
             Texture2D pixel = new Texture2D(device, 1, 1);
-            pixel.SetData<Color>(new Color[] { Color.White });
+            pixel.SetData(new Color[] { Color.White });
             mTextureCollection.Add("RAW", pixel);
         }
 

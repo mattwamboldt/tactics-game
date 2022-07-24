@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using System.IO;
 
 namespace Board_Game.Code.Util
@@ -30,39 +29,42 @@ namespace Board_Game.Code.Util
 
         public void Save(string fileName, string data, bool isUserData)
         {
-            //prevents trying to write a file during an existing write request
-            if (!Guide.IsVisible)
-            {
-                CheckDevice();
+            CheckDevice();
                 
-                SaveOperation op = new SaveOperation();
-                op.FileName = fileName;
-                op.Data = data;
-                op.IsUserData = isUserData;
-                mOperations.Enqueue(op);
-            }
+            SaveOperation op = new SaveOperation();
+            op.FileName = fileName;
+            op.Data = data;
+            op.IsUserData = isUserData;
+            mOperations.Enqueue(op);
         }
 
         private void WriteFile()
         {
-            StorageContainer container = mSelectedDevice.OpenContainer("Board Game");
+            // Open a storage container.
+            IAsyncResult result = mSelectedDevice.BeginOpenContainer("Board Game", null, null);
+
+            // Wait for the WaitHandle to become signaled.
+            result.AsyncWaitHandle.WaitOne();
+
+            StorageContainer container = mSelectedDevice.EndOpenContainer(result);
+
+            // Close the wait handle.
+            result.AsyncWaitHandle.Close();
+
             SaveOperation operation = mOperations.Dequeue();
-       
-            string filePath = "";
-            
+            Stream stream;
+
             //user data is save files
             if (operation.IsUserData)
             {
-                filePath = Path.Combine(container.Path, operation.FileName);
+                stream = container.CreateFile(operation.FileName);
             }
             //non user data is editor files
             else
             {
-                filePath = Path.Combine(StorageContainer.TitleLocation, operation.FileName);
+                // Open the file, creating it if necessary.
+                stream = File.Open(operation.FileName, FileMode.Create);
             }
-
-            // Open the file, creating it if necessary.
-            FileStream stream = File.Open(filePath, FileMode.Create);
 
             StreamWriter writer = new StreamWriter(stream);
             writer.Write(operation.Data);
@@ -76,7 +78,7 @@ namespace Board_Game.Code.Util
         {
             if (mSelectedDevice == null && mOperations.Count == 0)
             {
-                mResult = Guide.BeginShowStorageDeviceSelector(null, null);
+                mResult = StorageDevice.BeginShowSelector(null, null);
             }
         }
 
@@ -88,12 +90,14 @@ namespace Board_Game.Code.Util
                 {
                     if (mResult.IsCompleted)
                     {
-                        mSelectedDevice = Guide.EndShowStorageDeviceSelector(mResult);
+                        mSelectedDevice = StorageDevice.EndShowSelector(mResult);
                         if (mSelectedDevice == null || !mSelectedDevice.IsConnected)
                         {
                             //alert an error and stop the save flow
                             mOperations.Clear();
                         }
+
+                        mResult = null;
                     }
                 }
                 //write the file to the device

@@ -1,23 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 using Board_Game.Logic;
 using Board_Game.UI;
 using Board_Game.Input;
 using Board_Game.Rendering;
-using BoardGameContent.DB;
 using Board_Game.DB;
 using GameEditor;
 using Board_Game.Code.Util;
+
 #if EDITOR
 using Board_Game.Code.Editing;
 #endif
@@ -47,10 +39,9 @@ namespace Board_Game
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
-            Components.Add(new GamerServicesComponent(this));
             mStorage = new StorageManager();
 
             mAI = new AI();

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Board_Game.UI;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Board_Game.UI;
 
 namespace DataBuilder.UI
 {
@@ -21,7 +18,7 @@ namespace DataBuilder.UI
 
         protected override void Write(ContentWriter output, Label value)
         {
-            output.WriteRawObject<Shape>(value as Shape, shapeWriter);
+            output.WriteRawObject(value as Shape, shapeWriter);
 
             output.Write(value.Font);
             output.Write(value.Text);
@@ -29,7 +26,7 @@ namespace DataBuilder.UI
             output.Write(value.Centered);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(LabelReader).AssemblyQualifiedName;
         }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Board_Game.Rendering;
+﻿using Board_Game.Creatures;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Board_Game.Creatures;
 
 namespace DataBuilder.Creatures
 {
@@ -26,7 +19,7 @@ namespace DataBuilder.Creatures
             output.WriteObject(value.AttackPriorities);
         }
 
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.TargetPlatform targetPlatform)
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
             return typeof(CreatureDescriptionReader).AssemblyQualifiedName;
         }
