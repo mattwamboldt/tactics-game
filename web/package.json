@@ -1,0 +1,43 @@
+{
+  "name": "tactics-game",
+  "version": "3.0.0",
+  "description": "A tactics game that I use to learn Game Dev and new tech",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --mode=development",
+    "build": "webpack --mode=production",
+    "lint": "eslint src --ext .ts --ext .tsx",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattwamboldt/tactics-game.git"
+  },
+  "author": "Matt Wamboldt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattwamboldt/tactics-game/issues"
+  },
+  "homepage": "https://mattwamboldt.com/tactics-game/",
+  "devDependencies": {
+    "@types/react-dom": "^18.0.10",
+    "@types/webpack-env": "^1.18.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.33.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.7.2",
+    "node-sass": "^8.0.0",
+    "sass-loader": "^13.2.0",
+    "ts-loader": "^9.4.2",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "react-dom": "^18.2.0"
+  }
+}
