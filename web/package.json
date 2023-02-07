@@ -2,23 +2,24 @@
   "name": "tactics-game",
   "version": "3.0.0",
   "description": "A tactics game that I use to learn Game Dev and new tech",
+  "author": "Matt Wamboldt",
+  "license": "MIT",
   "main": "index.js",
+  "homepage": "https://mattwamboldt.com/tactics-game/",
   "scripts": {
     "start": "webpack serve --mode=development",
     "build": "webpack --mode=production",
     "lint": "eslint src --ext .ts --ext .tsx",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mattwamboldt/tactics-game.git"
   },
-  "author": "Matt Wamboldt",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mattwamboldt/tactics-game/issues"
   },
-  "homepage": "https://mattwamboldt.com/tactics-game/",
   "devDependencies": {
     "@types/react-dom": "^18.0.10",
     "@types/webpack-env": "^1.18.0",
@@ -29,6 +30,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.2",
     "node-sass": "^8.0.0",
